@@ -3,6 +3,14 @@
     --smu-blue: #354ca1;
 }
 
+.bg-smu-red {
+    background: var(--smu-red);
+}
+
+.bg-smu-blue {
+    background: var(--smu-blue);
+}
+
 body {
     margin: 0;
 }
