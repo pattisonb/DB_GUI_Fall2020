@@ -8,7 +8,7 @@
     margin-left: -150px; /* Negative half of width. */
 
     background: var(--smu-red);
-    border: 1rem solid var(--smu-red);
+    border: 0.5rem solid #000;
     border-radius: 2rem;
     z-index: 3;
     animation-name: appear;

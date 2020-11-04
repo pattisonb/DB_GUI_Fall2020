@@ -22,7 +22,7 @@ export default function Landing() {
                         <ul>
                             <li>
                                 <i className='fas fa-search text-smu-red'></i>
-                                Find the best products/services near SMU
+                                Buy and sell items with other SMU students
                             </li>
                             <li>
                                 <i className='fas fa-user-check text-smu-red'></i>
