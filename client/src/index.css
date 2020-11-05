@@ -1,0 +1,32 @@
+:root {
+    --smu-red-light: #ff094b;
+    --smu-red: #cc0035;
+    --smu-red-dark: #790222;
+    --smu-blue-light: #4968d6;
+    --smu-blue: #354ca1;
+    --smu-blue-dark: #212e61;
+}
+
+body {
+    box-sizing: border-box;
+}
+
+.bg-smu-red {
+    background: var(--smu-red);
+}
+
+.bg-smu-blue {
+    background: var(--smu-blue);
+}
+
+.text-smu-red {
+    color: var(--smu-red);
+}
+
+.text-smu-blue {
+    color: var(--smu-blue);
+}
+
+body {
+    margin: 0;
+}
