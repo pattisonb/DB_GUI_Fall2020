@@ -11,7 +11,7 @@ export default function Register(props) {
                             .querySelector('.Register')
                             .classList.add('leave');
 
-                        setTimeout(() => props.onClose(), 800);
+                        setTimeout(() => props.onClose(), 350);
                     }}
                     className='fas fa-window-close fa-2x mr-3'
                 ></i>

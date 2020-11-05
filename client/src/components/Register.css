@@ -12,12 +12,12 @@
     border-radius: 2rem;
     z-index: 3;
     animation-name: appear;
-    animation-duration: 1s;
+    animation-duration: 500ms;
 }
 
 .Register.leave {
     animation-name: disappear;
-    animation-duration: 1s;
+    animation-duration: 500ms;
 }
 
 .Register > h2 {
