@@ -5,21 +5,20 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema PonyListBackend
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema PonyListBackend
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
-USE `mydb` ;
+CREATE SCHEMA IF NOT EXISTS `PonyListBackend` DEFAULT CHARACTER SET utf8 ;
+USE `PonyListBackend` ;
 
 -- -----------------------------------------------------
--- Table `mydb`.`Users`
+-- Table `PonyListBackend`.`Users`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Users` (
-  `UserID` INT NOT NULL,
-  `UserType` VARCHAR(45) NOT NULL,
+CREATE TABLE IF NOT EXISTS `PonyListBackend`.`Users` (
+  `UserID` INT NOT NULL AUTO_INCREMENT,
   `Username` VARCHAR(45) NULL,
   `Password` VARCHAR(45) NULL,
   `OnCampus` VARCHAR(45) NULL,
@@ -34,10 +33,10 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Items`
+-- Table `PonyListBackend`.`Items`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Items` (
-  `ItemID` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `PonyListBackend`.`Items` (
+  `ItemID` INT NOT NULL AUTO_INCREMENT,
   `SellerID` INT NOT NULL,
   `ItemName` VARCHAR(45) NULL,
   `ItemCost` DECIMAL(10,2) NULL,
@@ -49,10 +48,10 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Messages`
+-- Table `PonyListBackend`.`Messages`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Messages` (
-  `MessageID` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `PonyListBackend`.`Messages` (
+  `MessageID` INT NOT NULL AUTO_INCREMENT,
   `RecipientID` INT NOT NULL,
   `SenderID` INT NOT NULL,
   `MessageText` VARCHAR(255) NULL,
@@ -63,10 +62,10 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Reviews`
+-- Table `PonyListBackend`.`Reviews`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Reviews` (
-  `ReviewID` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `PonyListBackend`.`Reviews` (
+  `ReviewID` INT NOT NULL AUTO_INCREMENT,
   `SellerID` INT NOT NULL,
   `ItemID` INT NOT NULL,
   `BuyerID` INT NOT NULL,
@@ -79,9 +78,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`AvailableTimes`
+-- Table `PonyListBackend`.`AvailableTimes`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`AvailableTimes` (
+CREATE TABLE IF NOT EXISTS `PonyListBackend`.`AvailableTimes` (
   `UserID` INT NULL,
   `Day` VARCHAR(45) NULL,
   `Time` DATETIME NULL,
@@ -90,10 +89,10 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Ratings`
+-- Table `PonyListBackend`.`Ratings`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Ratings` (
-  `RatingID` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `PonyListBackend`.`Ratings` (
+  `RatingID` INT NOT NULL AUTO_INCREMENT,
   `BuyerID` INT NULL,
   `SellerID` INT NULL,
   `Rating` DECIMAL(3,1) NULL,
@@ -104,9 +103,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Favorites`
+-- Table `PonyListBackend`.`Favorites`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Favorites` (
+CREATE TABLE IF NOT EXISTS `PonyListBackend`.`Favorites` (
   `UserID` INT NULL,
   `ItemID` INT NULL,
   INDEX `ItemID_idx` (`ItemID` ASC) VISIBLE,
@@ -115,9 +114,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`SharedProducts`
+-- Table `PonyListBackend`.`SharedProducts`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`SharedProducts` (
+CREATE TABLE IF NOT EXISTS `PonyListBackend`.`SharedProducts` (
   `UserID` INT NULL,
   `ItemID` INT NULL,
   INDEX `ItemID_idx` (`ItemID` ASC) VISIBLE,
@@ -126,10 +125,10 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Transactions`
+-- Table `PonyListBackend`.`Transactions`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Transactions` (
-  `TransactionID` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `PonyListBackend`.`Transactions` (
+  `TransactionID` INT NOT NULL AUTO_INCREMENT,
   `BuyerID` INT NOT NULL,
   `SellerID` INT NOT NULL,
   `ItemID` INT NOT NULL,
