@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './Landing.css';
 import logo from '../img/PonyList.PNG';
-import Register from './Register';
+import Register from './auth/Register';
 import logoTextAlt from '../img/PonyList-Text-alt.png';
 
 export default function Landing() {
@@ -48,9 +48,17 @@ export default function Landing() {
                             >
                                 Register
                             </button>
-                            <button className='Landing-buttons btn btn-block py-2 mt-5'>
-                                Log in
-                            </button>
+                            <Link
+                                style={{
+                                    width: '100%',
+                                    textDecoration: 'none',
+                                }}
+                                to='/login'
+                            >
+                                <button className='Landing-buttons btn btn-block py-2 mt-5'>
+                                    Log in
+                                </button>
+                            </Link>
                         </div>
                     </div>
                 </div>
