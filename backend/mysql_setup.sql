@@ -11,8 +11,9 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Schema PonyListBackend
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `PonyListBackend` DEFAULT CHARACTER SET utf8 ;
-USE `PonyListBackend` ;
+CREATE DATABASE PonyListBackend; 
+
+USE PonyListBackend;
 
 -- -----------------------------------------------------
 -- Table `PonyListBackend`.`Users`
