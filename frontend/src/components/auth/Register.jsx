@@ -62,21 +62,21 @@ export default function Register(props) {
         let msg;
         if ((!isOnCampus || (isOnCampus && dorm)) && location) {
             //axios... send all data. encrypt password.
-            // axios
-            //     .post('/users', {
-            //         Username: username,
-            //         Password: password,
-            //         OnCampus: isOnCampus,
-            //         Dorm: dorm,
-            //         IsStudent: isStudent,
-            //         Location: location,
-            //     })
-            //     .then(function (response) {
-            //         console.log(response);
-            //     })
-            //     .catch(function (error) {
-            //         console.log(error);
-            //     });
+            axios
+                .post('http://localhost:8000/registerUser', {
+                    Username: username,
+                    Password: password,
+                    OnCampus: isOnCampus,
+                    Dorm: dorm,
+                    IsStudent: isStudent,
+                    Location: location,
+                })
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
             alert('You Registered!');
             console.log({
                 Username: username,
