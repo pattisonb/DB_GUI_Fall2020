@@ -33,6 +33,10 @@ CREATE TABLE IF NOT EXISTS `PonyListBackend`.`Users` (
 ENGINE = InnoDB;
 
 
+INSERT INTO Users (Username, Password, OnCampus, Dorm, NumSales, IsStudent, Location, Rating, MilesAway) values
+  ('admin', 'password', 'yes', 'Ware', 0, 'Yes', 'Campus', 0.0, 0);
+
+
 -- -----------------------------------------------------
 -- Table `PonyListBackend`.`Items`
 -- -----------------------------------------------------
