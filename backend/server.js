@@ -11,7 +11,7 @@ var connection = mysql.createConnection({
   user: process.env.MYSQL_CLOUD_USER,
   password: process.env.MYSQL_CLOUD_PASS,
   port: process.env.MYSQL_PORT,
-  database: process.env.MYSQL_DB
+  database: "PonyListBackend"
 });
 
 // set up some configs for express.
@@ -45,8 +45,9 @@ app.get('/', (req, res) => {
   res.status(200).send('Go to 0.0.0.0:3000.');
 });
 
+
 app.post('/registerUser', (req, res) => {
-  connection.query('INSERT INTO Users (Username, Password, OnCampus, Dorm, IsStudent, Location, MilesAway) VALUES (?, ?, ?, ?, ?, ?, ?);', [req.body.Username, req.body.Password, req.body.OnCampus, req.body.Dorm, req.body.Location, req.body.MilesAway], function (err, rows, fields) {
+  connection.query('INSERT INTO Users (Username, Password, OnCampus, Dorm, IsStudent, Location) VALUES (?, ?, ?, ?, ?, ?);', [req.body.Username, req.body.Password, req.body.OnCampus, req.body.Dorm, req.body.IsStudent, req.body.Location], function (err, rows, fields) {
     if (err) {
       logger.error("Error while executing Query");
       res.status(400).json({
@@ -55,6 +56,7 @@ app.post('/registerUser', (req, res) => {
       })
     }
     else{
+      console.log("check")
       res.status(200).json({
         "data": rows
       });
@@ -62,6 +64,12 @@ app.post('/registerUser', (req, res) => {
   });
 })
 
+app.get('/users', function (req, res) {
+  connection.query("SELECT * FROM Users", function (err, result, fields) {
+    if (err) throw err;
+    res.end(JSON.stringify(result)); 
+  });
+});
 
 
 // connecting the express object to listen on a particular port as defined in the config object.
