@@ -88,6 +88,13 @@ export default function Register(props) {
                 Location: location,
                 MilesAway,
             });
+
+            axios
+                .get('http://localhost:8000/users')
+                .then(res => {
+                    console.log(res);
+                })
+                .catch(err => console.log(err));
         } else {
             msg = 'Please Fill in all fields';
             setAlertMessage(msg);
