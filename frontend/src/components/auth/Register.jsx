@@ -1,9 +1,23 @@
 import React, { useState } from 'react';
+import shortid from 'shortid';
 import './Register.css';
 import './UserCredentials';
+import Alert from '../layout/Alert';
 import UserCredentials from './UserCredentials';
+import UserOptions from './UserOptions';
+import axios from 'axios';
+import hash from 'js-sha256';
+var sha256 = hash.sha256;
 export default function Register(props) {
+    // A little validation for the form.
+    function getId() {
+        const id = shortid.generate();
+        console.log(id);
+        return id;
+    }
+
     function next(event) {
+        let msg;
         event.preventDefault();
         if (
             !(
@@ -12,31 +26,95 @@ export default function Register(props) {
                 username.split(' ').join('')
             )
         ) {
-            alert('Please fill in all fields.');
+            msg = 'Please fill in all fields';
+            setAlertMessage(msg);
+            setAlertKey(getId());
         } else if (password !== confirm) {
+            msg = 'Passwords do not match';
             setConfirm('');
-            alert('passwords do not match');
+            setAlertMessage(msg);
+            setAlertKey(getId());
         }
+
+        // user = await axios.get('userid');
         //if user exists condition here
+        /* else if (userExists){
+            setAlertMessage("user exists")
+        } */
         else {
+            setAlertMessage('');
             setOnAdditional(true);
         }
     }
+
+    // Handler for going back
     function back(event) {
         event.preventDefault();
         setOnAdditional(false);
+        setLocation('');
+        setIsOnCampus(false);
+        setIsStudent(false);
+        setDorm('');
     }
+
+    //Handler for registering
     function register(event) {
-        //axios
-        alert('You Registered!');
+        let msg;
+        if ((!isOnCampus || (isOnCampus && dorm)) && location) {
+            //axios... send all data. encrypt password.
+            // axios
+            //     .post('/users', {
+            //         Username: username,
+            //         Password: password,
+            //         OnCampus: isOnCampus,
+            //         Dorm: dorm,
+            //         IsStudent: isStudent,
+            //         Location: location,
+            //     })
+            //     .then(function (response) {
+            //         console.log(response);
+            //     })
+            //     .catch(function (error) {
+            //         console.log(error);
+            //     });
+            alert('You Registered!');
+            console.log({
+                Username: username,
+                Password: sha256(password),
+                OnCampus: isOnCampus,
+                Dorm: dorm,
+                IsStudent: isStudent,
+                Location: location,
+            });
+        } else {
+            msg = 'Please Fill in all fields';
+            setAlertMessage(msg);
+            setAlertKey(getId());
+        }
     }
+
+    // Some state for this component.
+    const [alertMessage, setAlertMessage] = useState('');
     const [onAdditional, setOnAdditional] = useState(false);
     const [password, setPassword] = useState('');
     const [confirm, setConfirm] = useState('');
     const [username, setUsername] = useState('');
+    const [alertKey, setAlertKey] = useState('');
+    const [isStudent, setIsStudent] = useState(false);
+    const [isOnCampus, setIsOnCampus] = useState(false);
+    const [dorm, setDorm] = useState('');
+    const [location, setLocation] = useState('');
 
     return (
         <div className='Register'>
+            {alertMessage && (
+                <Alert
+                    key={alertKey}
+                    top='80px'
+                    bgColor='var(--smu-blue)'
+                    message={alertMessage}
+                />
+            )}
             <div
                 className={`icon d-flex w-100 ${
                     onAdditional
@@ -48,7 +126,7 @@ export default function Register(props) {
                     className={`fas fa-arrow-left fa-2x ml-3 ${
                         onAdditional ? '' : 'd-none'
                     }`}
-                    onClick={() => setOnAdditional(false)}
+                    onClick={back}
                 ></i>
 
                 <i
@@ -64,7 +142,22 @@ export default function Register(props) {
             </div>
             <h2>Register</h2>
             <form className='Register-form mt-5'>
-                {onAdditional ? null : (
+                {onAdditional ? (
+                    <UserOptions
+                        isStudent={isStudent}
+                        isOnCampus={isOnCampus}
+                        dorm={dorm}
+                        location={location}
+                        handleIsStudent={() => {
+                            setIsStudent(!isStudent);
+                        }}
+                        handleIsOnCampus={() => {
+                            setIsOnCampus(!isOnCampus);
+                        }}
+                        handleDorm={dorm => setDorm(dorm)}
+                        handleLocation={location => setLocation(location)}
+                    />
+                ) : (
                     <UserCredentials
                         register
                         password={password}

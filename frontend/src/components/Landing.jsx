@@ -49,13 +49,14 @@ export default function Landing() {
                                 Register
                             </button>
                             <Link
+                                className='mt-5'
                                 style={{
                                     width: '100%',
                                     textDecoration: 'none',
                                 }}
                                 to='/login'
                             >
-                                <button className='Landing-buttons btn btn-block py-2 mt-5'>
+                                <button className='Landing-buttons btn btn-block py-2'>
                                     Log in
                                 </button>
                             </Link>

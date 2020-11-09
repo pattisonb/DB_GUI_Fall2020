@@ -5,10 +5,11 @@ import Navbar from './layout/Navbar';
 import Landing from './Landing';
 import Register from './auth/Register';
 import Login from './auth/Login';
+import Alert from './layout/Alert';
 
 function App() {
     return (
-        <div className='App'>
+        <div>
             <Router>
                 <Route path='/' exact component={Landing} />
                 <Route path='/login' exact component={Login} />
