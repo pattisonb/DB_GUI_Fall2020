@@ -62,6 +62,7 @@ export default function Register(props) {
         let msg;
         if ((!isOnCampus || (isOnCampus && dorm)) && location) {
             //axios... send all data. encrypt password.
+
             axios
                 .post('http://localhost:8000/registerUser', {
                     Username: username,
@@ -70,6 +71,7 @@ export default function Register(props) {
                     Dorm: dorm,
                     IsStudent: isStudent,
                     Location: location,
+                    MilesAway: null,
                 })
                 .then(function (response) {
                     console.log(response);
@@ -85,6 +87,7 @@ export default function Register(props) {
                 Dorm: dorm,
                 IsStudent: isStudent,
                 Location: location,
+                MilesAway,
             });
         } else {
             msg = 'Please Fill in all fields';
