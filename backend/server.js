@@ -46,7 +46,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/registerUser', (req, res) => {
-  connection.query('INSERT INTO Users (Username, Password, OnCampus, Dorm, IsStudent, Location, MilesAway) VALUES (?, ?, ?, ?, ?, ?, ?);', [req.body.first_name, req.body.last_name, req.body.username, req.body.hashpass, req.body.email, req.body.userType_id], function (err, rows, fields) {
+  connection.query('INSERT INTO Users (Username, Password, OnCampus, Dorm, IsStudent, Location, MilesAway) VALUES (?, ?, ?, ?, ?, ?, ?);', [req.body.Username, req.body.Password, req.body.OnCampus, req.body.Dorm, req.body.Location, req.body.MilesAway], function (err, rows, fields) {
     if (err) {
       logger.error("Error while executing Query");
       res.status(400).json({
@@ -61,6 +61,7 @@ app.post('/registerUser', (req, res) => {
     }
   });
 })
+
 
 
 // connecting the express object to listen on a particular port as defined in the config object.
