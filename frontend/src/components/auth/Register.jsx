@@ -66,8 +66,8 @@ export default function Register(props) {
             axios
                 .post('http://localhost:8000/registerUser', {
                     Username: username,
-                    Password: password,
-                    OnCampus: isOnCampus,
+                    Password: sha256(password),
+                    OnCampus: isOnCampus ? 'YES' : 'NO',
                     Dorm: dorm,
                     IsStudent: isStudent,
                     Location: location,
@@ -79,12 +79,16 @@ export default function Register(props) {
                     console.log(error);
                 });
             alert('You Registered!');
+            /*
+Username, Password, OnCampus, Dorm, IsStudent, Location
+
+            */
             console.log({
                 Username: username,
                 Password: sha256(password),
-                OnCampus: isOnCampus,
+                OnCampus: isOnCampus ? 'YES' : 'NO',
                 Dorm: dorm,
-                IsStudent: isStudent,
+                IsStudent: isStudent ? 'YES' : 'NO',
                 Location: location,
             });
 
