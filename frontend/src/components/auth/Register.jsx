@@ -71,7 +71,6 @@ export default function Register(props) {
                     Dorm: dorm,
                     IsStudent: isStudent,
                     Location: location,
-                    MilesAway: null,
                 })
                 .then(function (response) {
                     console.log(response);
