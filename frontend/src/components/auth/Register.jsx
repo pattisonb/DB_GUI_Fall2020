@@ -69,7 +69,7 @@ export default function Register(props) {
                     Password: sha256(password),
                     OnCampus: isOnCampus ? 'YES' : 'NO',
                     Dorm: dorm,
-                    IsStudent: isStudent,
+                    IsStudent: isStudent ? 'YES' : 'NO',
                     Location: location,
                 })
                 .then(function (response) {
@@ -87,7 +87,7 @@ Username, Password, OnCampus, Dorm, IsStudent, Location
                 Username: username,
                 Password: sha256(password),
                 OnCampus: isOnCampus ? 'YES' : 'NO',
-                Dorm: dorm,
+                Dorm: dorm? dorm : null,
                 IsStudent: isStudent ? 'YES' : 'NO',
                 Location: location,
             });
