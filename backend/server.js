@@ -48,6 +48,7 @@ app.get('/', (req, res) => {
 });
 
 
+//LOGIN AND REGISTER
 app.post('/registerUser', (req, res) => {
   connection.query('INSERT INTO Users (Username, Password, OnCampus, Dorm, IsStudent, Location) VALUES (?, ?, ?, ?, ?, ?);', [req.body.Username, req.body.Password, req.body.OnCampus, req.body.Dorm, req.body.IsStudent, req.body.Location], function (err, rows, fields) {
     if (err) {
@@ -66,6 +67,7 @@ app.post('/registerUser', (req, res) => {
   });
 })
 
+//USERS CALLS
 app.get('/users', function (req, res) {
   connection.query("SELECT * FROM Users", function (err, result, fields) {
     if (err) throw err;
@@ -73,15 +75,22 @@ app.get('/users', function (req, res) {
   });
 });
 
-app.get('/user', async (req, res) => {
-  var UserID = req.param('UserID')
-  con.query("SELECT * FROM Users WHERE UserID = ? ", UserID, function(err, result, fields) {
+app.get('/user/:UserID', (req, res) => {
+  connection.query('SELECT * FROM Users WHERE UserID = ?', [req.params.UserID], function (err, result, fields) {
     if (err) throw err;
-    res.end(JSON.stringify(result));
+    res.end(JSON.stringify(result)); 
+  });
+});
+
+app.get('/userItems/:ID', (req, res) => {
+  connection.query('SELECT ItemID, ItemName, ItemCost, ItemDetails, IsSold, ImageURL FROM Items i INNER JOIN Users u on i.SellerID = u.UserID WHERE u.UserID = ?', [req.params.ID], function (err, result, fields) {
+    if (err) throw err;
+    res.end(JSON.stringify(result)); 
   });
 });
 
 
+//ITEMS CALLS
 app.get('/items', function (req, res) {
   connection.query("SELECT * FROM Items", function (err, result, fields) {
     if (err) throw err;
@@ -89,14 +98,53 @@ app.get('/items', function (req, res) {
   });
 });
 
-app.get('/item', async (req, res) => {
-  var ItemID = req.param('ItemID')
-  con.query("SELECT * FROM Items WHERE ItemID = ? ", ItemID, function(err, result, fields) {
+app.get('/item/:ItemID', (req, res) => {
+  connection.query('SELECT * FROM Items WHERE ItemID = ?', [req.params.ItemID], function (err, result, fields) {
     if (err) throw err;
-    res.end(JSON.stringify(result));
+    res.end(JSON.stringify(result)); 
   });
 });
 
+app.post('/addItem', (req, res) => {
+  connection.query('INSERT INTO Items (SellerID, ItemName, ItemCost, ItemDetails, ImageURL) VALUES (?, ?, ?, ?, ?);', [req.body.SellerID, req.body.ItemName, req.body.ItemCost, req.body.ItemDetails, req.body.ImageURL], function (err, rows, fields) {
+    if (err) {
+      logger.error("Error while executing Query");
+      res.status(400).json({
+        "data": [],
+        "error": "MySQL error"
+      })
+    }
+    else{
+      console.log("check")
+      res.status(200).json({
+        "data": rows
+      });
+    }
+  });
+})
+
+
+
+//MESSAGES CALLS
+
+
+app.post('/sendMessage', (req, res) => {
+  connection.query('INSERT INTO Messages (RecipientID, SenderID, MessageText, CURRENT_TIMESTAMP) VALUES (?, ?, ?);', [req.body.RecipientID, req.body.SenderID, req.body.MessageText], function (err, rows, fields) {
+    if (err) {
+      logger.error("Error while executing Query");
+      res.status(400).json({
+        "data": [],
+        "error": "MySQL error"
+      })
+    }
+    else{
+      console.log("check")
+      res.status(200).json({
+        "data": rows
+      });
+    }
+  });
+})
 
 // connecting the express object to listen on a particular port as defined in the config object.
 app.listen(config.port, config.host, (e) => {
