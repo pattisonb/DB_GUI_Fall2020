@@ -11,7 +11,7 @@ var connection = mysql.createConnection({
   user: process.env.MYSQL_CLOUD_USER,
   password: process.env.MYSQL_CLOUD_PASS,
   port: process.env.MYSQL_PORT,
-  database: "PonyListBackend"
+  database: "PonyList"
 });
 
 // set up some configs for express.
@@ -36,8 +36,10 @@ app.use(ExpressAPILogMiddleware(logger, { request: true }));
 // Attempting to connect to the database.
 connection.connect(function (err) {
   if (err)
-    logger.error("Cannot connect to DB!");
+    {logger.error("Cannot connect to DB!");}
+  else {
   logger.info("Connected to the DB!");
+}
 });
 
 // GET /
@@ -71,11 +73,27 @@ app.get('/users', function (req, res) {
   });
 });
 
+app.get('/user', async (req, res) => {
+  var UserID = req.param('UserID')
+  con.query("SELECT * FROM Users WHERE UserID = ? ", UserID, function(err, result, fields) {
+    if (err) throw err;
+    res.end(JSON.stringify(result));
+  });
+});
+
 
 app.get('/items', function (req, res) {
   connection.query("SELECT * FROM Items", function (err, result, fields) {
     if (err) throw err;
     res.end(JSON.stringify(result)); 
+  });
+});
+
+app.get('/item', async (req, res) => {
+  var ItemID = req.param('ItemID')
+  con.query("SELECT * FROM Items WHERE ItemID = ? ", ItemID, function(err, result, fields) {
+    if (err) throw err;
+    res.end(JSON.stringify(result));
   });
 });
 
