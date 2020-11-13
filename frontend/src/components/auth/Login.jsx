@@ -5,6 +5,7 @@ import hash from 'js-sha256';
 import shortid from 'shortid';
 import './Login.css';
 import UserCredentials from './UserCredentials';
+import { useHistory } from "react-router-dom";
 var sha256 = hash.sha256;
 
 export default function Login() {
@@ -12,6 +13,7 @@ export default function Login() {
     const [password, setPassword] = useState('');
     const [alertMessage, setAlertMessage] = useState('');
     const [alertKey, setAlertKey] = useState('');
+    let history = useHistory();
 
     function getId() {
         const id = shortid.generate();
@@ -22,6 +24,7 @@ export default function Login() {
     function handleSubmit(e) {
         e.preventDefault();
         if (password.split(' ').join('') && username.split(' ').join('')) {
+            history.push('/home')
             // do stuff.
         } /*
             else if user does not exist... do stuff here.
