@@ -72,6 +72,14 @@ app.get('/users', function (req, res) {
 });
 
 
+app.get('/items', function (req, res) {
+  connection.query("SELECT * FROM Items", function (err, result, fields) {
+    if (err) throw err;
+    res.end(JSON.stringify(result)); 
+  });
+});
+
+
 // connecting the express object to listen on a particular port as defined in the config object.
 app.listen(config.port, config.host, (e) => {
   if (e) {
