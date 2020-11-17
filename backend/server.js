@@ -65,7 +65,7 @@ app.post('/registerUser', (req, res) => {
       });
     }
   });
-})
+});
 
 //USERS CALLS
 app.get('/users', function (req, res) {
@@ -145,6 +145,13 @@ app.post('/sendMessage', (req, res) => {
     }
   });
 })
+
+app.get('/messages/:SenderID/:RecipientID', (req, res) => {
+  connection.query('SELECT * FROM Messages WHERE SenderID = ? AND RecipientID = ?', [req.params.SenderID], [req.params.RecipientID], function (err, result, fields) {
+    if (err) throw err;
+    res.end(JSON.stringify(result)); 
+  });
+});
 
 // connecting the express object to listen on a particular port as defined in the config object.
 app.listen(config.port, config.host, (e) => {
