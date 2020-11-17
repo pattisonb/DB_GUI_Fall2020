@@ -67,6 +67,21 @@ app.post('/registerUser', (req, res) => {
   });
 });
 
+app.post('/loginUser', (req, res) => {
+  connection.query('SELECT EXISTS(SELECT * FROM Users WHERE UserName = ? AND Password = "password");', [req.body.Username, req.body.Password], function (err, rows, fields) {
+    if (err) {
+      logger.error("Error while executing Query");
+      res.status(400).json({
+        "data": [],
+        "error": "MySQL error"
+      })
+    }
+    else{
+      res.status(200).send(rows[0].result.toString());
+    }
+  });
+});
+
 //USERS CALLS
 app.get('/users', function (req, res) {
   connection.query("SELECT * FROM Users", function (err, result, fields) {
