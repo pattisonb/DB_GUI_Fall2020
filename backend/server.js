@@ -147,7 +147,7 @@ app.post('/sendMessage', (req, res) => {
 })
 
 app.get('/messages/:SenderID/:RecipientID', (req, res) => {
-  connection.query('SELECT * FROM Messages WHERE SenderID = ? AND RecipientID = ?', [req.params.SenderID], [req.params.RecipientID], function (err, result, fields) {
+  connection.query('SELECT * FROM Messages WHERE SenderID = ? AND RecipientID = ?', [req.params.SenderID, req.params.RecipientID], function (err, result, fields) {
     if (err) throw err;
     res.end(JSON.stringify(result)); 
   });
