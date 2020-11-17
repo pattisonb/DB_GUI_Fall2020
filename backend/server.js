@@ -68,7 +68,7 @@ app.post('/registerUser', (req, res) => {
 });
 
 app.post('/loginUser', (req, res) => {
-  connection.query('SELECT EXISTS(SELECT * FROM Users WHERE UserName = ? AND Password = "password");', [req.body.Username, req.body.Password], function (err, rows, fields) {
+  connection.query('SELECT EXISTS(SELECT * FROM Users WHERE Username = ? AND Password = ?);', [req.body.Username, req.body.Password], function (err, rows, fields) {
     if (err) {
       logger.error("Error while executing Query");
       res.status(400).json({
