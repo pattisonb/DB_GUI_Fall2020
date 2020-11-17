@@ -79,7 +79,7 @@ app.post('/registerUser', (req, res) => {
 });
 
 app.post('/loginUser', (req, res) => {
-  connection.query('SELECT EXISTS(SELECT * FROM Users WHERE Username = ? AND Password = ?);', [req.body.Username, req.body.Password], function (err, rows, fields) {
+  connection.query('SELECT EXISTS(SELECT * FROM Users WHERE Username = ? AND Password = ?) AS result;', [req.body.Username, req.body.Password], function (err, rows, fields) {
     if (err) {
       logger.error("Error while executing Query");
       res.status(400).json({
@@ -87,9 +87,9 @@ app.post('/loginUser', (req, res) => {
         "error": "MySQL error"
       })
     }
-    else{
-      res.status(200).send(rows[0].result.toString());
-    }
+    else {
+                res.status(200).send(rows[0].result.toString());
+            }
   });
 });
 
