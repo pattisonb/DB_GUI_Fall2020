@@ -25,7 +25,6 @@ export default function Login(props) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    console.log('bitch', loggedUser);
     if (password.split(' ').join('') && username.split(' ').join('')) {
       axios
         .post('http://localhost:8000/loginUser', {
