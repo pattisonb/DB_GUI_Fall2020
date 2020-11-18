@@ -173,7 +173,7 @@ app.get('/user/:UserID', (req, res) => {
 
 app.get('/userRating/:UserID', (req, res) => {
   connection.query(
-    'SELECT AVG(t.Rating) as Rating from Transactions t INNER JOIN Users u ON t.SellerID = u.UserID WHERE u.UserID = ?;',
+    'SELECT AVG(r.Rating) as Rating from Reviews r INNER JOIN Users u ON r.SellerID = u.UserID WHERE u.UserID = ?;',
     [req.params.UserID],
     function (err, result, fields) {
       if (err) throw err;
@@ -181,6 +181,46 @@ app.get('/userRating/:UserID', (req, res) => {
     }
   );
 });
+
+app.get('/reviews/:UserID', (req, res) => {
+  connection.query(
+    'SELECT * FROM Reviews WHERE SellerID = ?',
+    [req.params.UserID],
+    function (err, result, fields) {
+      if (err) throw err;
+      res.end(JSON.stringify(result));
+    }
+  );
+});
+
+
+app.post('/addReview', (req, res) => {
+  connection.query(
+    'INSERT INTO PonyList.Reviews (SellerID, ItemID, BuyerID, ReviewText, Rating) VALUES(?, ?, ?, ?, ?);',
+    [
+      req.body.SellerID,
+      req.body.ItemID,
+      req.body.BuyerID,
+      req.body.ReviewText,
+      req.body.Rating,
+    ],
+    function (err, rows, fields) {
+      if (err) {
+        logger.error('Error while executing Query');
+        res.status(400).json({
+          data: [],
+          error: 'MySQL error',
+        });
+      } else {
+        console.log('check');
+        res.status(200).json({
+          data: rows,
+        });
+      }
+    }
+  );
+});
+
 
 app.get('/userItems/:ID', (req, res) => {
   connection.query(
@@ -211,6 +251,114 @@ app.get('/boughtItems/:UserID', (req, res) => {
     function (err, result, fields) {
       if (err) throw err;
       res.end(JSON.stringify(result));
+    }
+  );
+});
+
+app.get('/sharedProducts/:UserID', (req, res) => {
+  connection.query(
+    'SELECT * FROM SharedProducts WHERE UserID = ?',
+    [req.params.UserID],
+    function (err, result, fields) {
+      if (err) throw err;
+      res.end(JSON.stringify(result));
+    }
+  );
+});
+
+
+app.get('/favorites/:UserID', (req, res) => {
+  connection.query(
+    'SELECT Items.ItemID, ItemName, ItemCost, ItemDetails, ImageURL FROM Items INNER JOIN Favorites on Favorites.ItemID = Items.ItemID WHERE Favorites.UserID = ?',
+    [req.params.UserID],
+    function (err, result, fields) {
+      if (err) throw err;
+      res.end(JSON.stringify(result));
+    }
+  );
+});
+
+app.post('/addFavorite', (req, res) => {
+  connection.query(
+    'INSERT INTO PonyList.Favorites (UserID, ItemID) VALUES(?, ?);',
+    [
+      req.body.UserID,
+      req.body.ItemID,
+    ],
+    function (err, rows, fields) {
+      if (err) {
+        logger.error('Error while executing Query');
+        res.status(400).json({
+          data: [],
+          error: 'MySQL error',
+        });
+      } else {
+        console.log('check');
+        res.status(200).json({
+          data: rows,
+        });
+      }
+    }
+  );
+});
+
+app.post('/shareProduct', (req, res) => {
+  connection.query(
+    'INSERT INTO PonyList.SharedProducts (UserID, ItemID) VALUES(?, ?);',
+    [
+      req.body.UserID,
+      req.body.ItemID,
+    ],
+    function (err, rows, fields) {
+      if (err) {
+        logger.error('Error while executing Query');
+        res.status(400).json({
+          data: [],
+          error: 'MySQL error',
+        });
+      } else {
+        console.log('check');
+        res.status(200).json({
+          data: rows,
+        });
+      }
+    }
+  );
+});
+
+
+app.get('/availableTimes/:UserID', (req, res) => {
+  connection.query(
+    'SELECT Day, Time FROM AvailableTimes WHERE UserID = ?',
+    [req.params.UserID],
+    function (err, result, fields) {
+      if (err) throw err;
+      res.end(JSON.stringify(result));
+    }
+  );
+});
+
+app.post('/addTime', (req, res) => {
+  connection.query(
+    'INSERT INTO PonyList.AvailableTimes (UserID, Day, Time) VALUES(?, ?, ?);',
+    [
+      req.body.UserID,
+      req.body.Day,
+      req.body.Time,
+    ],
+    function (err, rows, fields) {
+      if (err) {
+        logger.error('Error while executing Query');
+        res.status(400).json({
+          data: [],
+          error: 'MySQL error',
+        });
+      } else {
+        console.log('check');
+        res.status(200).json({
+          data: rows,
+        });
+      }
     }
   );
 });
