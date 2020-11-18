@@ -29,11 +29,7 @@ function App() {
     <>
       <div>
         <Router>
-          {window.localStorage.getItem('id') === null ? (
-            <Redirect to='/' />
-          ) : (
-            <Redirect to='/home' />
-          )}
+          {window.localStorage.getItem('id') === null && <Redirect to='/' />}
           <Switch>
             <Route path='/' exact component={Landing}></Route>
             <Route path='/login' exact component={Login} />
