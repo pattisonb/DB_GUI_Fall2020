@@ -269,7 +269,7 @@ app.get('/sharedProducts/:UserID', (req, res) => {
 
 app.get('/favorites/:UserID', (req, res) => {
   connection.query(
-    'SELECT ItemID FROM Favorites WHERE UserID = ?',
+    'SELECT Items.ItemID, ItemName, ItemCost, ItemDetails, ImageURL FROM Items INNER JOIN Favorites on Favorites.ItemID = Items.ItemID WHERE Favorites.UserID = ?',
     [req.params.UserID],
     function (err, result, fields) {
       if (err) throw err;
