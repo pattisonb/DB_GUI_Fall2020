@@ -269,7 +269,7 @@ app.get('/sharedProducts/:UserID', (req, res) => {
 
 app.get('/favorites/:UserID', (req, res) => {
   connection.query(
-    'SELECT * FROM Favorites WHERE UserID = ?',
+    'SELECT ItemID FROM Favorites WHERE UserID = ?',
     [req.params.UserID],
     function (err, result, fields) {
       if (err) throw err;
@@ -326,6 +326,42 @@ app.post('/shareProduct', (req, res) => {
   );
 });
 
+
+app.get('/availableTimes/:UserID', (req, res) => {
+  connection.query(
+    'SELECT Day, Time FROM AvailableTimes WHERE UserID = ?',
+    [req.params.UserID],
+    function (err, result, fields) {
+      if (err) throw err;
+      res.end(JSON.stringify(result));
+    }
+  );
+});
+
+app.post('/addTime', (req, res) => {
+  connection.query(
+    'INSERT INTO PonyList.AvailableTimes (UserID, Day, Time) VALUES(?, ?, ?);',
+    [
+      req.body.UserID,
+      req.body.Day,
+      req.body.Time,
+    ],
+    function (err, rows, fields) {
+      if (err) {
+        logger.error('Error while executing Query');
+        res.status(400).json({
+          data: [],
+          error: 'MySQL error',
+        });
+      } else {
+        console.log('check');
+        res.status(200).json({
+          data: rows,
+        });
+      }
+    }
+  );
+});
 
 //ITEMS CALLS
 app.get('/items', function (req, res) {
