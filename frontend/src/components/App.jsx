@@ -39,6 +39,9 @@ function App() {
                 <Redirect to='/' />
               )}
             </Route>
+            <Route path='/chat' exact component={Chat}>
+              {!getLogged() && <Redirect to='/' />}
+            </Route>
             <Route component={Error} />
           </Switch>
         </Router>

@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import queryString from 'query-string';
 import io from 'socket.io-client';
+import { Contacts } from '../Contacts';
 
+import './Chat.css';
+import { InfoBar } from '../InfoBar';
+import { Input } from '../Input';
 let socket;
 
 export const Chat = ({ location }) => {
@@ -47,16 +51,22 @@ export const Chat = ({ location }) => {
   console.log(message, messages);
 
   return (
-    <div className='outerContainer'>
-      <div className='container'>
-        {messages.length > 0 && <div>{messages.map((msg) => msg.text)}</div>}
-        <input
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          onKeyPress={(e) => (e.key === 'Enter' ? sendMessage(e) : null)}
-        />
-      </div>
-    </div>
+    <>
+      {name && room ? (
+        <div className='outerContainer'>
+          <div className='container'>
+            <InfoBar />
+            <Input
+              message={message}
+              setMessage={setMessage}
+              sendMessage={sendMessage}
+            />
+          </div>
+        </div>
+      ) : (
+        <Contacts />
+      )}
+    </>
   );
 };
 

@@ -35,7 +35,7 @@ var server = app.listen(config.port, config.host, (e) => {
 //create sockets server
 const options = {
   cors: true,
-  origins: ['http://127.0.0.1:5347'],
+  origins: '*:*',
 };
 const io = require('socket.io')(server, options);
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./users.js');
