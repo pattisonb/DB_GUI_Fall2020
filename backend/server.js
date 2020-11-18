@@ -302,7 +302,7 @@ app.post('/addFavorite', (req, res) => {
   );
 });
 
-app.post('/shareProducts', (req, res) => {
+app.post('/shareProduct', (req, res) => {
   connection.query(
     'INSERT INTO PonyList.SharedProducts (UserID, ItemID) VALUES(?, ?);',
     [
