@@ -261,3 +261,14 @@ app.get('/messages/:SenderID/:RecipientID', (req, res) => {
     }
   );
 });
+
+app.get('/contacts/:SenderID', (req, res) => {
+  connection.query(
+    'SELECT RecipientID FROM Messages WHERE SenderID = ?',
+    [req.params.SenderID],
+    function (err, result, fields) {
+      if (err) throw err;
+      res.end(JSON.stringify(result));
+    }
+  );
+});
