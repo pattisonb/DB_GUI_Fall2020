@@ -6,6 +6,8 @@ import { Contacts } from '../Contacts';
 import './Chat.css';
 import { InfoBar } from '../InfoBar';
 import { Input } from '../Input';
+import { Messages } from '../Messages';
+
 let socket;
 
 export const Chat = ({ location }) => {
@@ -56,6 +58,7 @@ export const Chat = ({ location }) => {
         <div className='outerContainer'>
           <div className='container'>
             <InfoBar />
+            <Messages messages={[...messages]} name={name} />
             <Input
               message={message}
               setMessage={setMessage}
