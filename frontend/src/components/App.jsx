@@ -29,19 +29,16 @@ function App() {
     <>
       <div>
         <Router>
+          {window.localStorage.getItem('id') === null ? (
+            <Redirect to='/' />
+          ) : (
+            <Redirect to='/home' />
+          )}
           <Switch>
-            <Route path='/' exact component={Landing}>
-              {getLogged() && getLogged() >= 0 ? <Redirect to='/home' /> : null}
-            </Route>
+            <Route path='/' exact component={Landing}></Route>
             <Route path='/login' exact component={Login} />
-            <Route path='/home' exact component={Home}>
-              {!(getLogged() >= 0) && getLogged() !== false && (
-                <Redirect to='/' />
-              )}
-            </Route>
-            <Route path='/chat' exact component={Chat}>
-              {!getLogged() && <Redirect to='/' />}
-            </Route>
+            <Route path='/home' exact component={Home}></Route>
+            <Route path='/chat' exact component={Chat}></Route>
             <Route component={Error} />
           </Switch>
         </Router>

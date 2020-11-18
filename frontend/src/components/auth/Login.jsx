@@ -38,7 +38,6 @@ export default function Login(props) {
           }
           setLoggedUser(res.data);
           setLoggedIn(true);
-          props.history.push('/home');
         })
         .catch((err) => {
           console.log("we really shouldn't be here");
@@ -53,6 +52,7 @@ export default function Login(props) {
   }
   return (
     <div className='Login-page'>
+      {window.localStorage.getItem('id') >= 1 ? <Redirect to='/home' /> : null}
       <div className='Login'>
         <div className='icon d-flex w-100 justify-content-end'></div>
         <h2>Login</h2>
