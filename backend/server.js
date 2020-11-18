@@ -171,10 +171,43 @@ app.get('/user/:UserID', (req, res) => {
   );
 });
 
+app.get('/userRating/:UserID', (req, res) => {
+  connection.query(
+    'SELECT AVG(t.Rating) as Rating from Transactions t INNER JOIN Users u ON t.SellerID = u.UserID WHERE u.UserID = ?;',
+    [req.params.UserID],
+    function (err, result, fields) {
+      if (err) throw err;
+      res.end(JSON.stringify(result));
+    }
+  );
+});
+
 app.get('/userItems/:ID', (req, res) => {
   connection.query(
-    'SELECT ItemID, ItemName, ItemCost, ItemDetails, IsSold, ImageURL FROM Items i INNER JOIN Users u on i.SellerID = u.UserID WHERE u.UserID = ?',
+    'SELECT ItemID, ItemName, ItemCost, ItemDetails, ImageURL FROM Items i INNER JOIN Users u on i.SellerID = u.UserID WHERE u.UserID = ?',
     [req.params.ID],
+    function (err, result, fields) {
+      if (err) throw err;
+      res.end(JSON.stringify(result));
+    }
+  );
+});
+
+app.get('/soldItems/:UserID', (req, res) => {
+  connection.query(
+    'SELECT Items.ItemID, ItemName, ItemCost, ItemDetails, ImageURL FROM Items INNER JOIN Transactions on Items.ItemID = Transactions.ItemID WHERE Transactions.SellerID = ?',
+    [req.params.UserID],
+    function (err, result, fields) {
+      if (err) throw err;
+      res.end(JSON.stringify(result));
+    }
+  );
+});
+
+app.get('/boughtItems/:UserID', (req, res) => {
+  connection.query(
+    'SELECT Items.ItemID, ItemName, ItemCost, ItemDetails, ImageURL FROM Items INNER JOIN Transactions on Items.ItemID = Transactions.ItemID WHERE Transactions.BuyerID = ?',
+    [req.params.UserID],
     function (err, result, fields) {
       if (err) throw err;
       res.end(JSON.stringify(result));
@@ -228,6 +261,52 @@ app.post('/addItem', (req, res) => {
   );
 });
 
+app.get('/isSold/:ItemID', (req, res) => {
+  connection.query(
+    'SELECT COUNT(1) FROM Transactions WHERE ItemID = ?',
+    [req.params.ItemID],
+    function (err, result, fields) {
+      if (err) throw err;
+      res.end(JSON.stringify(result));
+    }
+  );
+});
+
+//transaction calls
+app.get('/allTransactions', function (req, res) {
+  connection.query('SELECT * FROM Transactions', function (err, result, fields) {
+    if (err) throw err;
+    res.end(JSON.stringify(result));
+  });
+});
+
+app.post('/buyItem', (req, res) => {
+  connection.query(
+    'INSERT INTO Transactions (BuyerID, SellerID, ItemID, Rating) VALUES(?, ?, ?, ?);',
+    [
+      req.body.BuyerID,
+      req.body.SellerID,
+      req.body.ItemID,
+      req.body.Rating,
+    ],
+    function (err, rows, fields) {
+      if (err) {
+        logger.error('Error while executing Query');
+        res.status(400).json({
+          data: [],
+          error: 'MySQL error',
+        });
+      } else {
+        console.log('check');
+        res.status(200).json({
+          data: rows,
+        });
+      }
+    }
+  );
+});
+
+
 //MESSAGES CALLS
 
 app.post('/sendMessage', (req, res) => {
@@ -255,6 +334,17 @@ app.get('/messages/:SenderID/:RecipientID', (req, res) => {
   connection.query(
     'SELECT * FROM Messages WHERE SenderID = ? AND RecipientID = ?',
     [req.params.SenderID, req.params.RecipientID],
+    function (err, result, fields) {
+      if (err) throw err;
+      res.end(JSON.stringify(result));
+    }
+  );
+});
+
+app.get('/contacts/:SenderID', (req, res) => {
+  connection.query(
+    'SELECT RecipientID FROM Messages WHERE SenderID = ?',
+    [req.params.SenderID],
     function (err, result, fields) {
       if (err) throw err;
       res.end(JSON.stringify(result));
