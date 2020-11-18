@@ -33,11 +33,19 @@ export default function Login(props) {
         })
         .then((res) => {
           window.localStorage.setItem('id', res.data);
+          if (res.data === false) {
+            throw new Error('bad');
+          }
           setLoggedUser(res.data);
           setLoggedIn(true);
           props.history.push('/home');
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log("we really shouldn't be here");
+          setAlertMessage('Invalid credentials');
+          setAlertKey(getId());
+          setPassword('');
+        });
     } else {
       setAlertMessage('Please fill in all fields');
       setAlertKey(getId());
