@@ -27,7 +27,7 @@ class ReviewForm extends React.Component {
     return (
       <div className="card">
         <div className="card-header text-white bg-secondary text-bold font-weight-bold">
-          Add Review
+          Add Seller Review
         </div>
 
 

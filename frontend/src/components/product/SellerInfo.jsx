@@ -1,5 +1,6 @@
 
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 import Rating from './Rating'
 import './SellerInfo.css'
@@ -16,19 +17,20 @@ class SellerInfo extends React.Component {
     return (
       <div className="seller-info-box m-5">
         <img src={buffDogImg} alt="seller-photo" />
-        <div>
-          <p>Seller:   Shiba</p>
+        <div className="seller-info-details-box">
+          <p><b>Seller:</b> Shiba</p>
           <div className="rating-box">
-            <p className="rating-text">Rating:</p>
+            <p className="rating-text"><b>Rating:</b></p>
             <Rating />
           </div>
+          <p><b>On campus:</b> Yes</p>
+          <p><b>Items sold: </b>3</p>
+          <Link to="/home"><p><b>Reviews</b> (<span>18</span>)</p></Link>
         </div>
 
 
-
-
-
       </div>
+
     )
   }
 
