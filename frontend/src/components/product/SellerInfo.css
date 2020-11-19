@@ -1,11 +1,16 @@
 
 .seller-info-box {
   display: flex;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius: .25rem;
+  padding: 1rem;
 }
-
+.seller-info-details-box {
+  margin-left: 1rem;
+}
 .rating-box {
   display: flex;
-  /* position: relative; */
+  position: relative;
 }
 .rating-text {
   margin-top: 0.3rem;
@@ -13,8 +18,9 @@
 }
 
 .seller-info-box img {
-  width: 200px;
-  height: 200px;
-  border-radius: 5%;
+  width: 180px;
+  height: 180px;
+  border-radius: 10%;
+  margin-right: 1rem;
 }
 
