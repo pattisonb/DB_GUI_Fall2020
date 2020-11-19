@@ -32,7 +32,7 @@ export class Home extends React.Component {
       <div className="container-fluid master-container">
 
         <div className="banner-container jumbotron">
-          <div className="banner-logo-box">
+          <div className="banner-logo-box--home">
             <a href="#" className="account-logo"><i class="fas fa-user"></i></a>
             <a href="#" className="shopping-cart-logo"><i className="fas fa-shopping-cart"></i>(<span className="cart-count">0</span>)</a>
           </div>
