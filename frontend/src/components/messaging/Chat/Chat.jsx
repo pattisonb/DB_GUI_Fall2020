@@ -19,13 +19,33 @@ export const Chat = ({ location }) => {
   const [messages, setMessages] = useState('');
   const ENDPOINT = 'localhost:8000';
 
+  async function fetchMessages(repId) {
+    let sentMessages;
+    let receivedMessages;
+    let senderId = window.localStorage.getItem('id');
+    await axios
+      .get(`http://localhost:8000/messages/${senderId}/${repId}`)
+      .then((res) => (sentMessages = res.data));
+    await axios
+      .get(`http://localhost:8000/messages/${repId}/${senderId}`)
+      .then((res) => (receivedMessages = res.data));
+    let sorted = [...sentMessages, ...receivedMessages].sort((a, b) =>
+      a.MessageID > b.MessageID ? 1 : -1
+    );
+    let msg = sorted.map((m) => ({
+      user: m.SenderID.toString(),
+      text: m.MessageText,
+    }));
+    return msg;
+  }
+
   useEffect(() => {
     const { name, room } = queryString.parse(location.search);
     if (name && room) {
       let arr = room.split('-');
       let repId = arr[0] == window.localStorage.getItem('id') ? arr[1] : arr[0];
+      fetchMessages(repId).then((res) => setMessages(res));
       setRecipientId(repId);
-
       setName(name);
       setRoom(room);
     }
