@@ -42,7 +42,6 @@ const { addUser, removeUser, getUser, getUsersInRoom } = require('./users.js');
 
 io.on('connection', (socket) => {
   socket.on('join', ({ name, room }, callback) => {
-    console.log('hello there, bitch');
     const { error, user } = addUser({ id: socket.id, name, room });
 
     if (error) return callback(error);
@@ -193,7 +192,6 @@ app.get('/reviews/:UserID', (req, res) => {
   );
 });
 
-
 app.post('/addReview', (req, res) => {
   connection.query(
     'INSERT INTO PonyList.Reviews (SellerID, ItemID, BuyerID, ReviewText, Rating) VALUES(?, ?, ?, ?, ?);',
@@ -220,7 +218,6 @@ app.post('/addReview', (req, res) => {
     }
   );
 });
-
 
 app.get('/userItems/:ID', (req, res) => {
   connection.query(
@@ -266,7 +263,6 @@ app.get('/sharedProducts/:UserID', (req, res) => {
   );
 });
 
-
 app.get('/favorites/:UserID', (req, res) => {
   connection.query(
     'SELECT Items.ItemID, ItemName, ItemCost, ItemDetails, ImageURL FROM Items INNER JOIN Favorites on Favorites.ItemID = Items.ItemID WHERE Favorites.UserID = ?',
@@ -281,10 +277,7 @@ app.get('/favorites/:UserID', (req, res) => {
 app.post('/addFavorite', (req, res) => {
   connection.query(
     'INSERT INTO PonyList.Favorites (UserID, ItemID) VALUES(?, ?);',
-    [
-      req.body.UserID,
-      req.body.ItemID,
-    ],
+    [req.body.UserID, req.body.ItemID],
     function (err, rows, fields) {
       if (err) {
         logger.error('Error while executing Query');
@@ -305,10 +298,7 @@ app.post('/addFavorite', (req, res) => {
 app.post('/shareProduct', (req, res) => {
   connection.query(
     'INSERT INTO PonyList.SharedProducts (UserID, ItemID) VALUES(?, ?);',
-    [
-      req.body.UserID,
-      req.body.ItemID,
-    ],
+    [req.body.UserID, req.body.ItemID],
     function (err, rows, fields) {
       if (err) {
         logger.error('Error while executing Query');
@@ -326,7 +316,6 @@ app.post('/shareProduct', (req, res) => {
   );
 });
 
-
 app.get('/availableTimes/:UserID', (req, res) => {
   connection.query(
     'SELECT Day, Time FROM AvailableTimes WHERE UserID = ?',
@@ -341,11 +330,7 @@ app.get('/availableTimes/:UserID', (req, res) => {
 app.post('/addTime', (req, res) => {
   connection.query(
     'INSERT INTO PonyList.AvailableTimes (UserID, Day, Time) VALUES(?, ?, ?);',
-    [
-      req.body.UserID,
-      req.body.Day,
-      req.body.Time,
-    ],
+    [req.body.UserID, req.body.Day, req.body.Time],
     function (err, rows, fields) {
       if (err) {
         logger.error('Error while executing Query');
@@ -422,7 +407,11 @@ app.get('/isSold/:ItemID', (req, res) => {
 
 //transaction calls
 app.get('/allTransactions', function (req, res) {
-  connection.query('SELECT * FROM Transactions', function (err, result, fields) {
+  connection.query('SELECT * FROM Transactions', function (
+    err,
+    result,
+    fields
+  ) {
     if (err) throw err;
     res.end(JSON.stringify(result));
   });
@@ -431,12 +420,7 @@ app.get('/allTransactions', function (req, res) {
 app.post('/buyItem', (req, res) => {
   connection.query(
     'INSERT INTO Transactions (BuyerID, SellerID, ItemID, Rating) VALUES(?, ?, ?, ?);',
-    [
-      req.body.BuyerID,
-      req.body.SellerID,
-      req.body.ItemID,
-      req.body.Rating,
-    ],
+    [req.body.BuyerID, req.body.SellerID, req.body.ItemID, req.body.Rating],
     function (err, rows, fields) {
       if (err) {
         logger.error('Error while executing Query');
@@ -453,7 +437,6 @@ app.post('/buyItem', (req, res) => {
     }
   );
 });
-
 
 //MESSAGES CALLS
 
