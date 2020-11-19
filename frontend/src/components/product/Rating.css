@@ -1,0 +1,24 @@
+
+.stars {
+  font-size: 1.5rem;
+  font-style: normal;
+  color: rgb(227, 193, 0);
+}
+.stars-box {
+  /* To vertically center the stars in the box */
+  display: flex;
+  /* align-items: center; */
+  /* margin: 1rem; */
+}
+
+.stars i {
+  font-style: normal;
+}
+
+.full-star:after {
+  content: "\2605";
+}
+
+.empty-star:after {
+  content: "\2606";
+}

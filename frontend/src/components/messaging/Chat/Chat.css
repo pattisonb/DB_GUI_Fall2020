@@ -6,7 +6,7 @@
   background-color: #1a1a1d;
 }
 
-.container {
+.innerContainer {
   display: flex;
   flex-direction: column;
   justify-content: space-between;

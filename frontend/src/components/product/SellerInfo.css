@@ -1,0 +1,20 @@
+
+.seller-info-box {
+  display: flex;
+}
+
+.rating-box {
+  display: flex;
+  /* position: relative; */
+}
+.rating-text {
+  margin-top: 0.3rem;
+  margin-right: 0.3rem;
+}
+
+img {
+  width: 200px;
+  height: 200px;
+  border-radius: 5%;
+}
+

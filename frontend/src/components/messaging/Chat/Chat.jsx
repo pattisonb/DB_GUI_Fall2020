@@ -69,7 +69,7 @@ export const Chat = ({ location }) => {
     <>
       {name && room ? (
         <div className='outerContainer'>
-          <div className='container'>
+          <div className='innerContainer'>
             <InfoBar />
             <Messages messages={[...messages]} name={name} />
             <Input
