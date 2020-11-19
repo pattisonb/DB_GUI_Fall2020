@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import './ProductDetails.css'
 import { Product } from '../../models/Product'
 import { UserReview } from '../../models/UserReview'
@@ -62,7 +63,7 @@ class ProductDetails extends React.Component {
 
         <nav className="top-nav-bar">
           <div className="ponyListLogo-box">
-            <img src={PonyListLogo} alt="PonyList-logo" width="100px" height="100px" />
+            <Link to='/home'><img src={PonyListLogo} alt="PonyList-logo" width="100px" height="100px" /></Link>
           </div>
           <div className="banner-logo-box">
             <a href="#" className="account-logo"><i className="fas fa-user"></i></a>
