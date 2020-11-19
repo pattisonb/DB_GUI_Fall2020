@@ -20,7 +20,7 @@ export const Contacts = () => {
         `http://localhost:8000/contacts/${window.localStorage.getItem('id')}`
       )
       .then((res) => {
-        contacts = [...new Set(res.data.map((contact) => contact.RecipientID))];
+        contacts = res.data;
       })
       .catch((err) => {
         return err;
@@ -34,21 +34,25 @@ export const Contacts = () => {
   }, []);
   return (
     <div>
+      <h1 className='text-center display-4'>Recent Contacts</h1>
       <ul>
         {contacts.map((contact) => {
           return (
-            <li key={contact}>
-              <Link
-                to={`/chat?name=${window.localStorage.getItem('id')}&room=${[
-                  `${window.localStorage.getItem('id')}`,
-                  '-',
-                  contact,
-                ]
-                  .swap(0, 2)
-                  .join('')}`}
-              >
-                {contact}
-              </Link>
+            <li key={contact.RecipientID}>
+              <div className='text-center card p-3 mx-5'>
+                <Link
+                  style={{ textDecoration: 'none' }}
+                  to={`/chat?name=${window.localStorage.getItem('id')}&room=${[
+                    `${window.localStorage.getItem('id')}`,
+                    '-',
+                    contact.RecipientID,
+                  ]
+                    .swap(0, 2)
+                    .join('')}`}
+                >
+                  {contact.Username}
+                </Link>
+              </div>
             </li>
           );
         })}

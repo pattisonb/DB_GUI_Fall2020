@@ -1,19 +1,15 @@
-.outerContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #1a1a1d;
-}
-
 .innerContainer {
+  position: fixed;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   background: #ffffff;
   border-radius: 8px;
-  height: 60%;
+  height: 30rem;
   width: 35%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  border: solid black 2px;
 }
 
 @media (min-width: 320px) and (max-width: 480px) {

@@ -2,6 +2,7 @@ import React from 'react';
 import './InfoBar.css';
 import closeIcon from '../../icons/closeIcon.png';
 import onlineIcon from '../../icons/onlineIcon.png';
+import { Link } from 'react-router-dom';
 
 export const InfoBar = () => {
   return (
@@ -11,7 +12,7 @@ export const InfoBar = () => {
         <h3>Room</h3>
       </div>
       <div className='rightInnerContainer'>
-        <a href='/'>
+        <a href='/chat'>
           <img src={closeIcon} alt='close' />
         </a>
       </div>

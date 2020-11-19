@@ -8,6 +8,8 @@ import { InfoBar } from '../InfoBar';
 import { Input } from '../Input';
 import { Messages } from '../Messages';
 import axios from 'axios';
+import { Loader } from '../../layout/Loader';
+import { Redirect } from 'react-router-dom';
 
 let socket;
 
@@ -17,6 +19,7 @@ export const Chat = ({ location }) => {
   const [recipientId, setRecipientId] = useState('');
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState('');
+  const [loading, setLoading] = useState(true);
   const ENDPOINT = 'localhost:8000';
 
   async function fetchMessages(repId) {
@@ -49,6 +52,7 @@ export const Chat = ({ location }) => {
       setName(name);
       setRoom(room);
     }
+    setLoading(false);
     socket = io(ENDPOINT);
     socket.emit('join', { name, room }, () => {
       // stuff here
@@ -87,20 +91,26 @@ export const Chat = ({ location }) => {
 
   return (
     <>
-      {name && room ? (
-        <div className='outerContainer'>
-          <div className='innerContainer'>
-            <InfoBar />
-            <Messages messages={[...messages]} name={name} />
-            <Input
-              message={message}
-              setMessage={setMessage}
-              sendMessage={sendMessage}
-            />
-          </div>
-        </div>
+      {window.localStorage.getItem('id') === null && <Redirect to='/' />}
+      {loading ? (
+        <Loader />
       ) : (
-        <Contacts />
+        <div>
+          <Contacts />
+          {name && room && (
+            <div className='outerContainer'>
+              <div className='innerContainer'>
+                <InfoBar />
+                <Messages messages={[...messages]} name={name} />
+                <Input
+                  message={message}
+                  setMessage={setMessage}
+                  sendMessage={sendMessage}
+                />
+              </div>
+            </div>
+          )}
+        </div>
       )}
     </>
   );
