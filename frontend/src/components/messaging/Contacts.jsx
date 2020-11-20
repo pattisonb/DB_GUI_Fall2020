@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { API_URL } from '../../api_url';
-export const Contacts = () => {
+import Navbar from '../layout/Navbar';
+export const Contacts = props => {
     Array.prototype.swap = function (x, y) {
         if (this[x] > this[y]) {
             let b = this[x];
@@ -32,6 +33,7 @@ export const Contacts = () => {
     }, []);
     return (
         <div>
+            <Navbar />
             <h1 className='text-center display-4'>Recent Contacts</h1>
             <ul>
                 {contacts.map(contact => {
@@ -39,6 +41,7 @@ export const Contacts = () => {
                         <li key={contact.RecipientID}>
                             <div className='text-center card p-3 mx-5'>
                                 <Link
+                                    onClick={props.toggleClosed}
                                     style={{ textDecoration: 'none' }}
                                     to={`/chat?name=${window.localStorage.getItem(
                                         'id'

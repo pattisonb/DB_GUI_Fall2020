@@ -21,6 +21,7 @@ export const Chat = ({ location }) => {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState('');
     const [loading, setLoading] = useState(true);
+    const [closed, setClosed] = useState(true);
 
     async function fetchMessages(repId) {
         let sentMessages;
@@ -97,11 +98,11 @@ export const Chat = ({ location }) => {
                 <Loader />
             ) : (
                 <div>
-                    <Contacts />
-                    {name && room && (
+                    <Contacts toggleClosed={() => setClosed(false)} />
+                    {name && room && !closed && (
                         <div className='outerContainer'>
                             <div className='innerContainer'>
-                                <InfoBar />
+                                <InfoBar toggleClosed={() => setClosed(true)} />
                                 <Messages
                                     messages={[...messages]}
                                     name={name}
