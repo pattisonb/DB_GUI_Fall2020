@@ -363,6 +363,29 @@ app.post('/addTime', (req, res) => {
   )
 })
 
+app.get('/onCampusStatus/:UserID', (req, res) => {
+  connection.query(
+    'SELECT OnCampus FROM Users WHERE UserID = ?',
+    [req.params.UserID],
+    function (err, result, fields) {
+      if (err) throw err
+      res.end(JSON.stringify(result))
+    }
+  )
+})
+
+app.get('/dormLocation/:UserID', (req, res) => {
+  connection.query(
+    'SELECT Dorm FROM Users WHERE UserID = ?',
+    [req.params.UserID],
+    function (err, result, fields) {
+      if (err) throw err
+      res.end(JSON.stringify(result))
+    }
+  )
+})
+
+
 //ITEMS CALLS
 app.get('/items', function (req, res) {
   connection.query('SELECT * FROM Items', function (err, result, fields) {
@@ -384,13 +407,16 @@ app.get('/item/:ItemID', (req, res) => {
 
 app.post('/addItem', (req, res) => {
   connection.query(
-    'INSERT INTO Items (SellerID, ItemName, ItemCost, ItemDetails, ImageURL) VALUES (?, ?, ?, ?, ?)',
+    'INSERT INTO Items (SellerID, ItemName, ItemCost, ItemDetails, ImageURL, ImageURL2, ImageURL3, ImageURL4) VALUES (?, ?, ?, ?, ?)',
     [
       req.body.SellerID,
       req.body.ItemName,
       req.body.ItemCost,
       req.body.ItemDetails,
       req.body.ImageURL,
+      req.body.ImageURL2,
+      req.body.ImageURL3,
+      req.body.ImageURL4,
     ],
     function (err, rows, fields) {
       if (err) {
