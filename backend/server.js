@@ -363,6 +363,29 @@ app.post('/addTime', (req, res) => {
   )
 })
 
+app.get('/onCampusStatus/:UserID', (req, res) => {
+  connection.query(
+    'SELECT OnCampus FROM Users WHERE UserID = ?',
+    [req.params.UserID],
+    function (err, result, fields) {
+      if (err) throw err
+      res.end(JSON.stringify(result))
+    }
+  )
+})
+
+app.get('/dormLocation/:UserID', (req, res) => {
+  connection.query(
+    'SELECT Dorm FROM Users WHERE UserID = ?',
+    [req.params.UserID],
+    function (err, result, fields) {
+      if (err) throw err
+      res.end(JSON.stringify(result))
+    }
+  )
+})
+
+
 //ITEMS CALLS
 app.get('/items', function (req, res) {
   connection.query('SELECT * FROM Items', function (err, result, fields) {
