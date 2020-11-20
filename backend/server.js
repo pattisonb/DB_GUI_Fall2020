@@ -407,13 +407,16 @@ app.get('/item/:ItemID', (req, res) => {
 
 app.post('/addItem', (req, res) => {
   connection.query(
-    'INSERT INTO Items (SellerID, ItemName, ItemCost, ItemDetails, ImageURL) VALUES (?, ?, ?, ?, ?)',
+    'INSERT INTO Items (SellerID, ItemName, ItemCost, ItemDetails, ImageURL, ImageURL2, ImageURL3, ImageURL4) VALUES (?, ?, ?, ?, ?)',
     [
       req.body.SellerID,
       req.body.ItemName,
       req.body.ItemCost,
       req.body.ItemDetails,
       req.body.ImageURL,
+      req.body.ImageURL2,
+      req.body.ImageURL3,
+      req.body.ImageURL4,
     ],
     function (err, rows, fields) {
       if (err) {
