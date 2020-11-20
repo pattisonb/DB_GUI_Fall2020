@@ -10,7 +10,7 @@ import { Messages } from '../Messages';
 import axios from 'axios';
 import { Loader } from '../../layout/Loader';
 import { Redirect } from 'react-router-dom';
-import { API_URL } from '../../../api_url';
+import { API_URL, ENDPOINT } from '../../../api_url';
 
 let socket;
 
@@ -21,7 +21,6 @@ export const Chat = ({ location }) => {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState('');
     const [loading, setLoading] = useState(true);
-    const ENDPOINT = 'localhost:8000';
 
     async function fetchMessages(repId) {
         let sentMessages;
