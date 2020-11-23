@@ -24,6 +24,7 @@ import { ProductsRepository } from './api/ProductsRepository';
 export class Home extends React.Component {
   state = {
     products: []
+    // users: []
   };
 
   productsRepository = new ProductsRepository();
@@ -31,7 +32,7 @@ export class Home extends React.Component {
   render() {
     return (
       <>
-        {window.localStorage.getItem('id') === null && <Redirect to='/' />}
+        {/* {window.localStorage.getItem('id') === null && <Redirect to='/' />} */}
         <Navbar className='mb-3' />
         <div className='container-fluid master-container mt-4'>
           <div className='banner-container jumbotron'>
@@ -151,24 +152,20 @@ export class Home extends React.Component {
             {this.state.products.map((product, idx) => (
               <div key={idx} className='product-box'>
                 <img
-                  src={iPhone12Img}
-                  alt='iPhone12-img'
+                  src={product.ImageURL}
+                  alt='product-image'
                   width='100px'
                   height='100px'
                 />
                 <div>
-                  <Link to='/products/5' className='product-name'>
-                    <p>
-                      iPhone12 Pro,
-                      <br />
-                      256GB
-                    </p>
+                  <Link to={`/products/${product.ItemID}`} className='product-name'>
+                    <b>{product.ItemName}</b>
+                    <br />
+                    <p className="text-secondary">{product.ItemDetails}</p>
                   </Link>
-                  <div className='product-price'>$999</div>
-                  <br></br>
-                  <p>
-                    By <a href='#'>Seller</a>
-                  </p>
+                  <div className='badge badge-primary ml-2'>${product.ItemCost}</div>
+                  <br />
+                  <p className="mt-3 ml-5">By <Link to="/">{product.SellerID}</ Link></p>
                 </div>
               </div>
             ))}
@@ -183,6 +180,8 @@ export class Home extends React.Component {
   componentDidMount() {
     this.productsRepository.getProducts()
       .then(products => this.setState({ products }))
+    // this.productsRepository.getUsers()
+    //   .then(users => this.setState({ users }))
   }
 
 }

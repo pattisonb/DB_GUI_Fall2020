@@ -6,6 +6,9 @@ export class ProductsRepository {
   url = 'http://localhost:8000'
   
 
+
+  // GET methods
+
   // For populating the ProductsList
   getProducts() {
     return new Promise((resolve, reject) => {
@@ -18,9 +21,6 @@ export class ProductsRepository {
     })
   }
 
-
-
-  // The GET method
   getProduct(id) {
     return new Promise((resolve, reject) => {
       axios.get(`${this.url}/${id}`, this.config)  
@@ -31,6 +31,19 @@ export class ProductsRepository {
       }); 
     })
   }
+
+  // getUsers() {
+  //   return new Promise((resolve, reject) => {
+  //     axios.get(`${this.url}/users`, this.config) 
+  //       .then(x => resolve(x.data))
+  //       .catch(err => {
+  //         alert(err);
+  //         reject();
+  //     }); 
+  //   })
+  // }
+
+
 
   // The POST method
   addReview(id, review) {

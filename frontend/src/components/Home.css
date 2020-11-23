@@ -48,18 +48,6 @@
   text-decoration: none !important;
   color: black;
 }
-.product-price {
-  font-size: 1rem;
-  font-weight: 700;
-  text-align: center;
-  width: 50px;
-  /* padding: 2rem 1rem; */
-  background-color: rgb(50, 122, 230);
-  color: white;
-  border-radius: 7%;
-  /* margin-bottom: 2rem; */
-  margin: 0;
-}
 
 
 
