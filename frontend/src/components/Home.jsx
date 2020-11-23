@@ -19,11 +19,14 @@ import Navbar from './layout/Navbar';
 import './Home.css';
 import iPhone12Img from '../img/iphones/iPhone12-black.png';
 import PonyListLogo from '../img/PonyList.PNG';
+import { ProductsRepository } from './api/ProductsRepository';
 
 export class Home extends React.Component {
   state = {
-    products: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+    products: []
   };
+
+  productsRepository = new ProductsRepository();
 
   render() {
     return (
@@ -174,6 +177,14 @@ export class Home extends React.Component {
       </>
     );
   }
+
+
+  // Get an array of products from the API to populate our ProductsList 
+  componentDidMount() {
+    this.productsRepository.getProducts()
+      .then(products => this.setState({ products }))
+  }
+
 }
 
 export default Home;

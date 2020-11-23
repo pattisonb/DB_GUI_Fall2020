@@ -3,13 +3,13 @@ import axios from 'axios'
 
 export class ProductsRepository {
 
-  url = '// http://localhost:8000'
+  url = 'http://localhost:8000'
   
 
   // For populating the ProductsList
   getProducts() {
     return new Promise((resolve, reject) => {
-      axios.get(`${this.url}`, this.config) 
+      axios.get(`${this.url}/items`, this.config) 
         .then(x => resolve(x.data))
         .catch(err => {
           alert(err);
