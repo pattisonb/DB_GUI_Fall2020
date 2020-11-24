@@ -21,43 +21,43 @@ class ProductDetails extends React.Component {
   productsRepository = new ProductsRepository();
 
   state = {
-    product: new Product(
-      1,
-      "iPhone 12",
-      "5G speed. A14 Bionic, the fastest chip in a smartphone. An edge-to-edge OLED display. Ceramic Shield with four times better drop performance.",
-      999,
-      [iPhone12BlackImg, iPhone12BlueImg, iPhone12GoldImg, iPhone12PinkImg],
-      "2 month old",
-    ),
-
-    index: 0
+    product: '',
+    sellerReviews: '',
+    currImgIndex: 0
   }
 
 
-  addReview = (name, rating, comment) => {
+  myAddReview = (name, rating, comment) => {
     let newReview = new UserReview(name, rating, comment, new Date());
     this.productsRepository.addReview(this.state.product.id, newReview)
-      .then(() => {
+      .then(review => {
+        let product = this.state.product;
+        product.reviews.push(review)
+        this.setState({ product })
         alert('Review added!');
-        // ..to re-render the component
       });
   }
 
 
   thumbsBoxRef = React.createRef();
 
-  thumbnailClicked = (idx) => {
-    this.setState({ index: idx })
+  // thumbnailClicked = (idx) => {
+  //   this.setState({ currImgIndex: idx })
 
-    const images = this.thumbsBoxRef.current.children
-    for (let i = 0; i < images.length; i += 1) {
-      images[i].className = images[i].className.replace("active", "");
-    }
-    images[idx].className = "active";
-  }
+  //   const images = this.thumbsBoxRef.current.children
+  //   for (let i = 0; i < images.length; i += 1) {
+  //     images[i].className = images[i].className.replace("active", "");
+  //   }
+  //   images[idx].className = "active";
+  // }
 
 
   render() {
+
+    if (!this.state.product || !this.state.sellerReviews) {
+      return <div>Loading ProductDetails...</div>
+    }
+
     return (
       <div className="container mt-4">
 
@@ -73,21 +73,20 @@ class ProductDetails extends React.Component {
 
         <div className="productDetails-box">
           <div className="product-img-box">
-            <img src={this.state.product.imageName[this.state.index]} alt="iPhone12"/>
+            {/* <img src={this.state.product.imageName[this.state.currImgIndex]} alt="iPhone12"/> */}
+            <img src={ this.state.product.ImageURL } alt="iPhone12"/>
           </div>
           <div>
-            <p className="productDetails-name">{this.state.product.name}</p>
-            <div className="productDetails-price">${this.state.product.price}</div>
-            <p>{this.state.product.description}</p>
-            <p className="condition-text"><b>Condition: </b>{this.state.product.condition}</p>
-
+            <p className="productDetails-name">{this.state.product.ItemName}</p>
+            <div className="productDetails-price">${this.state.product.ItemCost}</div>
+            <p>{this.state.product.ItemDetails}</p>
             <div className="product-thumbnails-box" ref={this.thumbsBoxRef}>
-              {
+              {/* {
                 this.state.product.imageName.map((img, idx) => 
                   <img key={idx} src={img} alt="iPhone12"
                   onClick={() => this.thumbnailClicked(idx)} />
                 )
-              }
+              } */}
             </div>
             <button type="button" className="btn btn-warning btn-lg">Add to cart</button>
           </div>
@@ -97,7 +96,7 @@ class ProductDetails extends React.Component {
 
         <SellerInfo />
         
-        {/* <ReviewList reviews={this.state.product.reviews} /> */}
+        <ReviewList reviews={this.state.sellerReviews} />
 
         <ReviewForm addReview={this.addReview} />
 
@@ -110,13 +109,18 @@ class ProductDetails extends React.Component {
 
 
   componentDidMount() {
+    // The item is returned as an object inside an array 
     const productId = +this.props.match.params.productId;
     this.productsRepository.getProduct(productId) 
-      .then(product => this.setState({ product: product }))
+      .then(product => this.setState({ product: product[0] }))
+    
+    const sellerId = +this.state.product.SellerID;
+    this.productsRepository.getSellerReviews(sellerId)
+      .then(reviews => this.setState({ sellerReviews: reviews }))
 
     // To add the "active" className to the initial active image 
-    const idx = this.state.index;
-    this.thumbsBoxRef.current.children[idx].className = "active"
+    // const idx = this.state.currImgIndex;
+    // this.thumbsBoxRef.current.children[idx].className = "active"
   }
 
 

@@ -26,7 +26,7 @@ class ReviewList extends React.Component {
               <div className="card-body">
                 <p className="text-secondary">{review.userName}
                   <span className="float-right">{review.date}</span>                  
-                  {/* <span className="float-right">{review.date.getFullYear()}-{review.date.getMonth() + 1}-{review.date.getDate()}</span> */}
+                  <span className="float-right">{new Date(review.date).getFullYear()}-{new Date(review.date).getMonth() + 1}-{new Date(review.date).getDate()}</span>
                 </p>
                 <p>"{review.comment}"</p>
               </div>

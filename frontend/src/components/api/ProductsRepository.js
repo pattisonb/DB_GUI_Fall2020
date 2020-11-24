@@ -4,12 +4,12 @@ import axios from 'axios'
 export class ProductsRepository {
 
   url = 'http://localhost:8000'
+  // url = 'http://18.188.219.228:8000'
   
 
 
   // GET methods
 
-  // For populating the ProductsList
   getProducts() {
     return new Promise((resolve, reject) => {
       axios.get(`${this.url}/items`, this.config) 
@@ -20,10 +20,9 @@ export class ProductsRepository {
       }); 
     })
   }
-
-  getProduct(id) {
+  getProduct(itemId) {
     return new Promise((resolve, reject) => {
-      axios.get(`${this.url}/${id}`, this.config)  
+      axios.get(`${this.url}/item/${itemId}`, this.config)  
         .then(x => resolve(x.data))
         .catch(err => {
           alert(err);
@@ -31,18 +30,26 @@ export class ProductsRepository {
       }); 
     })
   }
-
-  // getUsers() {
-  //   return new Promise((resolve, reject) => {
-  //     axios.get(`${this.url}/users`, this.config) 
-  //       .then(x => resolve(x.data))
-  //       .catch(err => {
-  //         alert(err);
-  //         reject();
-  //     }); 
-  //   })
-  // }
-
+  getUsers() {
+    return new Promise((resolve, reject) => {
+      axios.get(`${this.url}/users`, this.config) 
+        .then(x => resolve(x.data))
+        .catch(err => {
+          alert(err);
+          reject();
+      }); 
+    })
+  }
+  getSellerReviews(sellerId) {
+    return new Promise((resolve, reject) => {
+      axios.get(`${this.url}/reviews/${sellerId}`, this.config)  
+        .then(x => resolve(x.data))
+        .catch(err => {
+          alert(err);
+          reject();
+      }); 
+    })
+  }
 
 
   // The POST method

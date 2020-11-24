@@ -1,35 +1,27 @@
-// import React, { useState, useEffect } from 'react';
-// import logo from '../img/PonyList.PNG';
-// import { Loader } from './layout/Loader';
-// import Navbar from './layout/Navbar';
-
-// export default function Home() {
-//   const [loading, setLoading] = useState(true);
-//   useEffect(() => {
-//     setTimeout(() => {
-//       setLoading(false);
-//     }, 500);
-//   }, []); // here
-//   return <>{loading ? <Loader /> : <Navbar />}</>;
-// }
 
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
+
 import Navbar from './layout/Navbar';
 import './Home.css';
-import iPhone12Img from '../img/iphones/iPhone12-black.png';
 import PonyListLogo from '../img/PonyList.PNG';
 import { ProductsRepository } from './api/ProductsRepository';
 
 export class Home extends React.Component {
   state = {
-    products: []
-    // users: []
+    products: [],
+    users: []
   };
 
   productsRepository = new ProductsRepository();
 
+
   render() {
+
+    if (this.state.products.length == 0 || this.state.users.length == 0) {
+      return <div>Loading Home...</div>
+    }
+
     return (
       <>
         {/* {window.localStorage.getItem('id') === null && <Redirect to='/' />} */}
@@ -149,8 +141,8 @@ export class Home extends React.Component {
           </div>
 
           <div className='container-fluid products-container mt-4'>
-            {this.state.products.map((product, idx) => (
-              <div key={idx} className='product-box'>
+            {this.state.products.map((product, idx) => {
+              return <div key={idx} className='product-box'>
                 <img
                   src={product.ImageURL}
                   alt='product-image'
@@ -165,10 +157,14 @@ export class Home extends React.Component {
                   </Link>
                   <div className='badge badge-primary ml-2'>${product.ItemCost}</div>
                   <br />
-                  <p className="mt-3 ml-5">By <Link to="/">{product.SellerID}</ Link></p>
+                  <p className="mt-3 ml-5">By&nbsp;
+                    <Link to="/home">
+                      { this.state.users.find(user => user.UserID === product.SellerID).Username }
+                    </ Link>
+                  </p>
                 </div>
               </div>
-            ))}
+            })}
           </div>
         </div>
       </>
@@ -176,12 +172,13 @@ export class Home extends React.Component {
   }
 
 
+
   // Get an array of products from the API to populate our ProductsList 
   componentDidMount() {
     this.productsRepository.getProducts()
       .then(products => this.setState({ products }))
-    // this.productsRepository.getUsers()
-    //   .then(users => this.setState({ users }))
+    this.productsRepository.getUsers()
+      .then(users => this.setState({ users }))
   }
 
 }
