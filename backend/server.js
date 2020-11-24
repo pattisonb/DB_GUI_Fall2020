@@ -363,32 +363,9 @@ app.post('/addTime', (req, res) => {
   )
 })
 
-app.get('/onCampusStatus/:UserID', (req, res) => {
-  connection.query(
-    'SELECT OnCampus FROM Users WHERE UserID = ?',
-    [req.params.UserID],
-    function (err, result, fields) {
-      if (err) throw err
-      res.end(JSON.stringify(result))
-    }
-  )
-})
-
-app.get('/dormLocation/:UserID', (req, res) => {
-  connection.query(
-    'SELECT Dorm FROM Users WHERE UserID = ?',
-    [req.params.UserID],
-    function (err, result, fields) {
-      if (err) throw err
-      res.end(JSON.stringify(result))
-    }
-  )
-})
-
-
 //ITEMS CALLS
 app.get('/items', function (req, res) {
-  connection.query('SELECT ItemID, SellerID, Username, OnCampus, ItemName, ItemCost, ItemDetails, ImageURL, ImageURL2, ImageURL3, ImageURL4, DatePosted FROM Items Inner Join Users on Items.SellerID = Users.UserID;', function (err, result, fields) {
+  connection.query('SELECT * FROM Items', function (err, result, fields) {
     if (err) throw err
     res.end(JSON.stringify(result))
   })
@@ -396,7 +373,7 @@ app.get('/items', function (req, res) {
 
 app.get('/item/:ItemID', (req, res) => {
   connection.query(
-    'SELECT ItemID, SellerID, Username, OnCampus, ItemName, ItemCost, ItemDetails, ImageURL, ImageURL2, ImageURL3, ImageURL4, DatePosted FROM Items Inner Join Users on Items.SellerID = Users.UserID WHERE ItemID = ?',
+    'SELECT *, SellerID FROM Items INNER JOIN Items on Items.ItemID = Transactions.ItemID WHERE ItemID = ?',
     [req.params.ItemID],
     function (err, result, fields) {
       if (err) throw err
@@ -407,16 +384,13 @@ app.get('/item/:ItemID', (req, res) => {
 
 app.post('/addItem', (req, res) => {
   connection.query(
-    'INSERT INTO Items (SellerID, ItemName, ItemCost, ItemDetails, ImageURL, ImageURL2, ImageURL3, ImageURL4) VALUES (?, ?, ?, ?, ?)',
+    'INSERT INTO Items (SellerID, ItemName, ItemCost, ItemDetails, ImageURL) VALUES (?, ?, ?, ?, ?)',
     [
       req.body.SellerID,
       req.body.ItemName,
       req.body.ItemCost,
       req.body.ItemDetails,
       req.body.ImageURL,
-      req.body.ImageURL2,
-      req.body.ImageURL3,
-      req.body.ImageURL4,
     ],
     function (err, rows, fields) {
       if (err) {
@@ -431,6 +405,17 @@ app.post('/addItem', (req, res) => {
           data: rows,
         })
       }
+    }
+  )
+})
+
+app.get('/SellerID/:ItemID', (req, res) => {
+  connection.query(
+    'SELECT SellerID FROM Transactions WHERE ItemID = ?',
+    [req.params.ItemID],
+    function(err, result, fields){
+      if(err) throw err
+      res.end(JSON.stringify(result))
     }
   )
 })
