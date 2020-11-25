@@ -13,7 +13,7 @@ class ReviewForm extends React.Component {
 
   handleFormSubmit = (event) => {
     event.preventDefault();
-    this.props.addReview(this.state.name, this.state.rating, this.state.comment);
+    this.props.myAddReview(this.state.comment, this.state.rating);
     // Clear input fields
     this.setState({ 
       name: '',

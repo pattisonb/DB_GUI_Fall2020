@@ -1,10 +1,12 @@
 
 export class UserReview {
-
-	constructor(userName, rating, comment, date) {
-		this.userName = userName;
-		this.rating = rating;
-		this.comment = comment;
-		this.date = date;
+	// date
+	constructor(SellerID, ItemID, BuyerID, ReviewText, Rating) {
+		this.SellerID = SellerID;
+		this.ItemID = ItemID;
+		this.BuyerID = BuyerID;
+		this.ReviewText = ReviewText;
+		this.Rating = Rating;
+		// this.date = date;
 	}
 }

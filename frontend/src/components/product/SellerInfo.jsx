@@ -8,24 +8,19 @@ import buffDogImg from '../../img/buff_dog.png'
 
 class SellerInfo extends React.Component {
 
-  state = {
-
-  }
-
-
   render() {
     return (
       <div className="seller-info-box m-5">
         <img src={buffDogImg} alt="seller-photo" />
         <div className="seller-info-details-box">
-          <p><b>Seller:</b> Shiba</p>
+          <p><b>Seller:</b> {this.props.seller.Username}</p>
           <div className="rating-box">
             <p className="rating-text"><b>Rating:</b></p>
-            <Rating />
+            <Rating value={this.props.seller.Rating} />
           </div>
-          <p><b>On campus:</b> Yes</p>
-          <p><b>Items sold: </b>3</p>
-          <Link to="/home"><p><b>Reviews</b> (<span>18</span>)</p></Link>
+          <p><b>On campus: </b>{ this.props.seller.OnCampus }</p>
+          <p><b>Items sold: </b>{ this.props.seller.NumSales }</p>
+          <Link to="/home" className="btn btn-info btn-sm">Go to Profile</Link>
         </div>
 
 

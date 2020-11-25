@@ -15,20 +15,19 @@ class ReviewList extends React.Component {
 
     return (
       <div>
-        <h3>Product Reviews <span className="text-secondary">({this.props.reviews.length})</span></h3>
+        <h3>Seller Reviews <span className="text-secondary">({ this.props.reviews.length })</span></h3>
         <p className="add-review-reminder" style={this.dynamicDisplayReminder()}>Be the first to add a review!</p>
         {
           this.props.reviews.map((review, idx) =>
             <article key={idx} className="card mb-4">
               <div className="card-header">
-                <Rating value={review.rating} />
+                <Rating value={ review.Rating } />
               </div>
               <div className="card-body">
-                <p className="text-secondary">{review.userName}
-                  <span className="float-right">{review.date}</span>                  
-                  <span className="float-right">{new Date(review.date).getFullYear()}-{new Date(review.date).getMonth() + 1}-{new Date(review.date).getDate()}</span>
+                <p className="text-secondary">User { review.BuyerID }
+                  {/* <span className="float-right">{ new Date(review.date).getFullYear() }-{ new Date(review.date).getMonth() + 1 }-{ new Date(review.date).getDate() }</span> */}
                 </p>
-                <p>"{review.comment}"</p>
+                <p>"{ review.ReviewText }"</p>
               </div>
             </article>)
         }

@@ -22,19 +22,20 @@ class ProductDetails extends React.Component {
 
   state = {
     product: '',
+    seller: '',
     sellerReviews: '',
     currImgIndex: 0
   }
 
 
-  myAddReview = (name, rating, comment) => {
-    let newReview = new UserReview(name, rating, comment, new Date());
-    this.productsRepository.addReview(this.state.product.id, newReview)
+  myAddReview = (ReviewText, Rating) => {
+    let newReview = new UserReview(this.state.product.SellerID, this.state.product.ItemID, 1, ReviewText, Rating);
+    this.productsRepository.addReview(newReview)
       .then(review => {
-        let product = this.state.product;
-        product.reviews.push(review)
-        this.setState({ product })
-        alert('Review added!');
+        let reviews = this.state.sellerReviews;
+        reviews.push(review)
+        this.setState({ sellerReviews: reviews })
+        alert('User review added!');
       });
   }
 
@@ -74,7 +75,7 @@ class ProductDetails extends React.Component {
         <div className="productDetails-box">
           <div className="product-img-box">
             {/* <img src={this.state.product.imageName[this.state.currImgIndex]} alt="iPhone12"/> */}
-            <img src={ this.state.product.ImageURL } alt="iPhone12"/>
+            <img src={this.state.product.ImageURL} alt="iPhone12" />
           </div>
           <div>
             <p className="productDetails-name">{this.state.product.ItemName}</p>
@@ -92,13 +93,13 @@ class ProductDetails extends React.Component {
           </div>
         </div>
 
-        
 
-        <SellerInfo />
-        
+
+        <SellerInfo seller={this.state.seller} />
+
         <ReviewList reviews={this.state.sellerReviews} />
 
-        <ReviewForm addReview={this.addReview} />
+        <ReviewForm myAddReview={ (ReviewText, Rating) => this.myAddReview(ReviewText, Rating) } />
 
 
 
@@ -109,14 +110,25 @@ class ProductDetails extends React.Component {
 
 
   componentDidMount() {
-    // The item is returned as an object inside an array 
+    // Get the product (the item and user are both returned as an object inside an array) 
     const productId = +this.props.match.params.productId;
-    this.productsRepository.getProduct(productId) 
+    this.productsRepository.getProduct(productId)
       .then(product => this.setState({ product: product[0] }))
+      .then(() => {
+        // Get sellerReviews
+        const sellerId = this.state.product.SellerID;
+        this.productsRepository.getSellerReviews(sellerId)
+          .then(reviews => this.setState({ sellerReviews: reviews }))
+      })
+      .then(() => {
+        // Get the seller
+        const sellerId = this.state.product.SellerID;
+        this.productsRepository.getUser(sellerId)
+          .then(user => this.setState({ seller: user[0] }))
+      })
+
     
-    const sellerId = +this.state.product.SellerID;
-    this.productsRepository.getSellerReviews(sellerId)
-      .then(reviews => this.setState({ sellerReviews: reviews }))
+    
 
     // To add the "active" className to the initial active image 
     // const idx = this.state.currImgIndex;
