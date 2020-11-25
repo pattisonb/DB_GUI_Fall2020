@@ -184,7 +184,7 @@ app.get('/userRating/:UserID', (req, res) => {
 
 app.get('/reviews/:UserID', (req, res) => {
   connection.query(
-    'SELECT * FROM Reviews WHERE SellerID = ?',
+    'SELECT ReviewID, SellerID, ItemID, BuyerID, Username, ReviewText, r.Rating, Date FROM Reviews r INNER JOIN Users u ON r.BuyerID = u.UserID WHERE SellerID = ?',
     [req.params.UserID],
     function (err, result, fields) {
       if (err) throw err
