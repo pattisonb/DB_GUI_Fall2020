@@ -13,7 +13,7 @@ export const InfoBar = props => {
                     src={onlineIcon}
                     alt='online image'
                 />
-                <h3>Room</h3>
+                <h3>{props.username}</h3>
             </div>
             <div className='rightInnerContainer'>
                 <Link to='/chat' onClick={props.toggleClosed}>

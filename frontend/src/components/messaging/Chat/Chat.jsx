@@ -22,10 +22,12 @@ export const Chat = ({ location }) => {
     const [messages, setMessages] = useState('');
     const [loading, setLoading] = useState(true);
     const [closed, setClosed] = useState(true);
+    const [receivername, setReceiverName] = useState('');
 
     async function fetchMessages(repId) {
         let sentMessages;
         let receivedMessages;
+        let receiver;
         let senderId = window.localStorage.getItem('id');
         await axios
             .get(`${API_URL}/messages/${senderId}/${repId}`)
@@ -33,6 +35,9 @@ export const Chat = ({ location }) => {
         await axios
             .get(`${API_URL}/messages/${repId}/${senderId}`)
             .then(res => (receivedMessages = res.data));
+        await axios.get(`${API_URL}/user/${repId}`).then(res => {
+            receiver = res.data[0].Username;
+        });
         let sorted = [...sentMessages, ...receivedMessages].sort((a, b) =>
             a.MessageID > b.MessageID ? 1 : -1
         );
@@ -40,7 +45,7 @@ export const Chat = ({ location }) => {
             user: m.SenderID.toString(),
             text: m.MessageText,
         }));
-        return msg;
+        return [msg, receiver];
     }
 
     useEffect(() => {
@@ -49,7 +54,10 @@ export const Chat = ({ location }) => {
             let arr = room.split('-');
             let repId =
                 arr[0] == window.localStorage.getItem('id') ? arr[1] : arr[0];
-            fetchMessages(repId).then(res => setMessages(res));
+            fetchMessages(repId).then(res => {
+                setMessages(res[0]);
+                setReceiverName(res[1]);
+            });
             setRecipientId(repId);
             setName(name);
             setRoom(room);
@@ -102,8 +110,12 @@ export const Chat = ({ location }) => {
                     {name && room && !closed && (
                         <div className='outerContainer'>
                             <div className='innerContainer'>
-                                <InfoBar toggleClosed={() => setClosed(true)} />
+                                <InfoBar
+                                    username={receivername}
+                                    toggleClosed={() => setClosed(true)}
+                                />
                                 <Messages
+                                    username={receivername}
                                     messages={[...messages]}
                                     name={name}
                                 />
