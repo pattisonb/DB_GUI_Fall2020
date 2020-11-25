@@ -382,6 +382,41 @@ app.get('/item/:ItemID', (req, res) => {
   )
 })
 
+app.get('/images/:ItemID', (req, res) => {
+  connection.query(
+    'SELECT ImageURL FROM Images WHERE ItemID = ?',
+    [req.params.ItemID],
+    function (err, result, fields) {
+      if (err) throw err
+      res.end(JSON.stringify(result))
+    }
+  )
+})
+
+app.post('/addImage', (req, res) => {
+  connection.query(
+    'INSERT INTO Images (ItemID, ImageURL) VALUES (?, ?)',
+    [
+      req.body.ImageID,
+      req.body.ImageURL,
+    ],
+    function (err, rows, fields) {
+      if (err) {
+        logger.error('Error while executing Query')
+        res.status(400).json({
+          data: [],
+          error: 'MySQL error',
+        })
+      } else {
+        console.log('check')
+        res.status(200).json({
+          data: rows,
+        })
+      }
+    }
+  )
+})
+
 app.post('/addItem', (req, res) => {
   connection.query(
     'INSERT INTO Items (SellerID, ItemName, ItemCost, ItemDetails, ImageURL) VALUES (?, ?, ?, ?, ?)',
