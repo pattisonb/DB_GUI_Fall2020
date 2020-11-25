@@ -24,10 +24,6 @@
 }
 
 .product-box {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
   width: 250px;
   height: 250px;
 
@@ -47,8 +43,11 @@
   font-size: 1rem;
   text-decoration: none !important;
   color: black;
+  margin: 0.5rem;
 }
-
+.lower-half-product-box {
+  display: flex;
+}
 
 
 .banner-container {

@@ -141,30 +141,39 @@ export class Home extends React.Component {
           </div>
 
           <div className='container-fluid products-container mt-4'>
-            {this.state.products.map((product, idx) => {
-              return <div key={idx} className='product-box'>
-                <img
-                  src={product.ImageURL}
-                  alt='product-image'
-                  width='100px'
-                  height='100px'
-                />
-                <div>
-                  <Link to={`/products/${product.ItemID}`} className='product-name'>
-                    <b>{product.ItemName}</b>
-                    <br />
+            {this.state.products.map((product, idx) =>
+
+              <div key={idx} className='product-box'>
+
+                <Link to={`/products/${product.ItemID}`}>
+                  <div className="text-center mt-2">
+                    <b className='product-name'>{product.ItemName}</b>
+                  </div>
+                  <div className="m-2">
                     <p className="text-secondary">{product.ItemDetails}</p>
-                  </Link>
-                  <div className='badge badge-primary ml-2'>${product.ItemCost}</div>
-                  <br />
-                  <p className="mt-3 ml-5">By&nbsp;
-                    <Link to="/home">
-                      { this.state.users.find(user => user.UserID === product.SellerID).Username }
-                    </ Link>
-                  </p>
+                  </div>
+                </Link>
+
+                <div className="lower-half-product-box">
+                  <img
+                    src={product.ImageURL}
+                    alt='product-image'
+                    width='100px'
+                    height='100px'
+                    className="ml-3 mr-2"
+                  />
+                  <div>
+                    <div className='badge badge-primary ml-2'>${product.ItemCost}</div>
+                    <p className="mt-5 ml-2">By&nbsp;
+                      <Link to="/home">
+                          {this.state.users.find(user => user.UserID === product.SellerID).Username}
+                      </ Link>
+                    </p>
+                  </div>
+
                 </div>
               </div>
-            })}
+            )}
           </div>
         </div>
       </>
