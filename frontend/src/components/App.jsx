@@ -42,11 +42,6 @@ function App() {
                             component={ProductDetails}
                         ></Route>
                         <Route path='/chat' exact component={Chat}></Route>
-                        <Route
-                            path='/userProfile/:userid'
-                            exact
-                            component={UserProfile}
-                        />
                         <Route component={Error} />
                     </Switch>
                 </Router>

@@ -23,6 +23,7 @@ export const Chat = ({ location }) => {
     const [loading, setLoading] = useState(true);
     const [closed, setClosed] = useState(true);
     const [receivername, setReceiverName] = useState('');
+    const [isNew, setIsNew] = useState(false);
 
     async function fetchMessages(repId) {
         let sentMessages;
@@ -45,6 +46,10 @@ export const Chat = ({ location }) => {
             user: m.SenderID.toString(),
             text: m.MessageText,
         }));
+        if (msg.length === 0) {
+            setIsNew(true);
+            setClosed(false);
+        }
         return [msg, receiver];
     }
 
@@ -107,7 +112,7 @@ export const Chat = ({ location }) => {
             ) : (
                 <div>
                     <Contacts toggleClosed={() => setClosed(false)} />
-                    {name && room && !closed && (
+                    {name && room && (
                         <div className='outerContainer'>
                             <div className='innerContainer'>
                                 <InfoBar
