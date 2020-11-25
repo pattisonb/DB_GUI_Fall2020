@@ -15,7 +15,6 @@ import Alert from './layout/Alert';
 import Error from './Error';
 import { Contacts } from './messaging/Contacts';
 import Chat from './messaging/Chat/Chat';
-import UserProfile from './user/UserProfile';
 const getLogged = () => {
     let id = window.localStorage.getItem('id');
     console.log(id);
