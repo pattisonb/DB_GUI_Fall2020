@@ -10,11 +10,28 @@ import { ProductsRepository } from './api/ProductsRepository';
 export class Home extends React.Component {
   state = {
     products: [],
-    users: []
+    users: [],
+    searchItemName: '',
+    searchSellerName: ''
   };
 
   productsRepository = new ProductsRepository();
 
+  searchItem(ItemName) {
+    let filtered_products = this.state.products.filter(item => item.ItemName.toLowerCase().includes(ItemName.toLowerCase()))
+    this.setState({ products: filtered_products })
+  }
+  searchSeller(SellerName) {
+    let filtered_products = this.state.products.filter(item => item.Username.toLowerCase().includes(SellerName.toLowerCase()))
+    this.setState({ products: filtered_products })
+  }
+  startOver() {
+    this.productsRepository.getProducts()
+      .then(products => this.setState({ products }))
+    // Clear input fields
+    this.setState({ searchItemName: '', searchSeller: '' })
+  }
+  
 
   render() {
 
@@ -126,18 +143,45 @@ export class Home extends React.Component {
           </nav>
 
           <div className='search-bar-container'>
-            <div className='input-group'>
-              <input
-                type='text'
-                className='search-bar-input form-control'
-                placeholder='Enter an item or a seller to search for...'
-              />
-              <div class='input-group-append'>
-                <button className='btn btn-primary' type='button'>
-                  <i className='fas fa-search'></i>
-                </button>
+            <div className="search-bars-box">
+              <div className='input-group'>
+                <input
+                  type='text'
+                  className='search-bar-input form-control'
+                  placeholder='Enter an item...'
+                  value={ this.state.searchItemName }
+                  onChange={event => this.setState({ searchItemName: event.target.value })}
+                />
+                <div className='input-group-append'>
+                  <button className='btn btn-primary' type='button'
+                    onClick={() => this.searchItem(this.state.searchItemName)}>
+                    <i className='fas fa-search'></i>
+                  </button>
+                </div>
+              </div>
+              <div className='input-group'>
+                <input
+                  type='text'
+                  className='search-bar-input form-control'
+                  placeholder='Enter a seller...'
+                  value={ this.state.searchSellerName }
+                  onChange={event => this.setState({ searchSellerName: event.target.value })}
+                />
+                <div class='input-group-append'>
+                  <button className='btn btn-primary' type='button'
+                    onClick={() => this.searchSeller(this.state.searchSellerName)}>
+                    <i className='fas fa-search'></i>
+                  </button>
+                </div>
               </div>
             </div>
+
+            <div className="search-bar-btn-box">
+              <button className="btn btn-secondary" type="button"
+                onClick={ () => this.startOver() }>Start over
+              </button>
+            </div>
+
           </div>
 
           <div className='container-fluid products-container mt-4'>
@@ -166,7 +210,7 @@ export class Home extends React.Component {
                     <div className='badge badge-primary ml-2'>${product.ItemCost}</div>
                     <p className="mt-5 ml-2">By&nbsp;
                       <Link to="/home">
-                          {this.state.users.find(user => user.UserID === product.SellerID).Username}
+                        {this.state.users.find(user => user.UserID === product.SellerID).Username}
                       </ Link>
                     </p>
                   </div>

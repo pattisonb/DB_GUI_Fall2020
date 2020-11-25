@@ -124,11 +124,18 @@
 
 .search-bar-container {
   grid-area: search;
-  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
 }
 .input-group {
-  width: 90%;
   margin-left: 2rem;
+  margin-top: 0.5rem;
 }
-
-
+.search-bars-box {
+  flex-grow: 2;
+}
+.search-bar-btn-box {
+  flex-grow: 3;
+  margin-left: 4rem;
+  margin-top: 0.5rem;
+}

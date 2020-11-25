@@ -4,9 +4,11 @@ import axios from 'axios'
 export class ProductsRepository {
 
   // url = 'http://localhost:8000'
-
   url = 'http://18.188.219.228:8000'
 
+  config = {
+
+  }
 
   // GET methods
 
