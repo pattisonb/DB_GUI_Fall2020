@@ -31,8 +31,6 @@
   border: 1px solid lightgrey;
   border-radius: 5%;
   margin: 1rem;
-  /* To make the whole container appear clickable */
-  /* cursor: pointer; */
 }
 .product-box:hover {
   transform: scale(1.05);
@@ -47,6 +45,9 @@
 }
 .lower-half-product-box {
   display: flex;
+}
+.lower-half-product-box img {
+  border-radius: 5%;
 }
 
 
