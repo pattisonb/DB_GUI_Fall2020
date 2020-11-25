@@ -5,6 +5,8 @@
     --smu-blue-light: #4968d6;
     --smu-blue: #354ca1;
     --smu-blue-dark: #212e61;
+    --smu-blue-home: rgb(75, 104, 201);
+    --smu-white: white;
 }
 
 body {
@@ -19,12 +21,20 @@ body {
     background: var(--smu-blue);
 }
 
+.bg-smu-blue-home {
+    background: var(--smu-blue-home);
+}
+
 .text-smu-red {
     color: var(--smu-red);
 }
 
 .text-smu-blue {
     color: var(--smu-blue);
+}
+
+.text-smu-white {
+    color: var(--smu-white);
 }
 
 body {

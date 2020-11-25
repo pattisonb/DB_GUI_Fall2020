@@ -1,33 +1,34 @@
 import React from 'react';
 import logo from '../../img/PonyList-alt.png';
+import './Navbar.css'
 
 export default function Navbar() {
   return (
-    <nav className='navbar navbar-light bg-smu-blue p-1 navbar-expand-lg'>
+    <nav className='navbar navbar-dark bg-smu-blue-home p-1 navbar-expand-lg'>
       <a className='navbar-brand' href='/home'>
         <img
           src={logo}
           width='50'
           height='50'
-          class='d-inline-block align-top'
+          className='d-inline-block align-top'
           alt=''
           loading='lazy'
         />
       </a>
-      <ul class='navbar-nav mr-auto'>
-        <li class='nav-item m-2'>
-          <a class='nav-link' href='/home'>
+      <ul className='navbar-nav mr-auto'>
+        <li className='nav-item m-2'>
+          <a className='nav-link' href='/home'>
             Home
           </a>
         </li>
-        <li class='nav-item m-2'>
-          <a class='nav-link' href='/contact'>
+        <li className='nav-item m-2'>
+          <a className='nav-link' href='/contact'>
             Contact
           </a>
         </li>
-        <li class='nav-item dropdown m-2'>
+        <li className='nav-item dropdown m-2'>
           <a
-            class='nav-link dropdown-toggle'
+            className='nav-link dropdown-toggle'
             href='#'
             id='navbarDropdownMenuLink'
             role='button'
@@ -37,23 +38,23 @@ export default function Navbar() {
           >
             Dropdown link
           </a>
-          <div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>
-            <a class='dropdown-item' href='#'>
+          <div className='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>
+            <a className='dropdown-item' href='#'>
               Action
             </a>
-            <a class='dropdown-item' href='#'>
+            <a className='dropdown-item' href='#'>
               Another action
             </a>
-            <a class='dropdown-item' href='#'>
+            <a className='dropdown-item' href='#'>
               Something else here
             </a>
           </div>
         </li>
       </ul>
-      <ul class='navbar-nav'>
-        <li class='nav-item m-2'>
+      <ul className='navbar-nav'>
+        <li className='nav-item m-2'>
           <a
-            class='nav-link'
+            className='nav-link'
             href='/'
             onClick={() => {
               window.localStorage.removeItem('id');

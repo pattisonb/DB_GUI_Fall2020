@@ -1,5 +1,6 @@
 import React from 'react'
 import Rating from './Rating'
+import './ReviewForm.css'
 
 class ReviewForm extends React.Component {
 
@@ -33,13 +34,7 @@ class ReviewForm extends React.Component {
 
         <form onSubmit={this.handleFormSubmit} className="add-review-form m-4">
 
-          <div className="name-rating-box">
-            <div className="form-group input-name">
-              <label htmlFor="name">Your Name</label>
-              <input type="text" id="name" className="form-control" 
-                value={this.state.name}
-                onChange={event => this.setState({ name: event.target.value })} />
-            </div>
+          <div className="rating-box">
 
             <div className="form-group select-rating">
               <label htmlFor="rating">Rating</label>

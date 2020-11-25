@@ -7,8 +7,9 @@
 .stars-box {
   /* To vertically center the stars in the box */
   display: flex;
-  /* align-items: center; */
-  /* margin: 1rem; */
+  align-items: center;
+  margin-top: 0.5rem;
+  margin-left: 1rem;
 }
 
 .stars i {
