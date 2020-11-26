@@ -7,16 +7,19 @@ import PonyListLogo from '../img/PonyList.PNG';
 import { ProductsRepository } from './api/ProductsRepository';
 
 export class Home extends React.Component {
+
   state = {
     products: [],
     users: [],
     searchItemName: '',
     searchSellerName: '',
 
-    sortMethod: ''
+    sortMethod: 'priceLH'
   };
 
+
   productsRepository = new ProductsRepository();
+
 
   searchItem(ItemName) {
     let filtered_products = this.state.products.filter(item => item.ItemName.toLowerCase().includes(ItemName.toLowerCase()));
@@ -32,6 +35,36 @@ export class Home extends React.Component {
     // Clear input fields
     this.setState({ searchItemName: '', searchSeller: '' });
   }
+
+  sortProducts() {
+    let products = this.state.products;
+    
+    if (this.state.sortMethod == 'priceLH') {
+      products.sort((a, b) => {
+        return a.ItemCost - b.ItemCost;
+      })
+    }
+    else if (this.state.sortMethod == 'priceHL') {
+      products.sort((a, b) => {
+        return b.ItemCost - a.ItemCost ;
+      })
+    }
+    else if (this.state.sortMethod == 'date') {
+      products.sort((a, b) => {
+        let da = new Date(a.DatePosted)
+        let db = new Date(b.DatePosted)
+        return db - da;
+      })
+    }
+    else if (this.state.sortMethod == 'sellerRating') {
+      
+    }
+    
+    this.setState({ products })
+  }
+
+
+
 
   render() {
     if (this.state.products.length == 0 || this.state.users.length == 0) {
@@ -76,6 +109,7 @@ export class Home extends React.Component {
               >
                 <option value='priceLH'>Price: Low-High</option>
                 <option value='priceHL'>Price: High-Low</option>
+                <option value='date'>New Arrivals</option>
                 <option value='sellerRating'>Seller Ratings</option>
               </select>
             </div>
@@ -84,7 +118,7 @@ export class Home extends React.Component {
               <button
                 type='button'
                 className='btn btn-info btn-sm'
-                onClick=""
+                onClick={ () => this.sortProducts() }
               >
                 Sort
               </button>
@@ -203,7 +237,7 @@ export class Home extends React.Component {
               <button
                 className='btn btn-secondary'
                 type='button'
-                onClick={() => this.startOver()}
+                onClick={ () => this.startOver() }
               >
                 Start over
               </button>
