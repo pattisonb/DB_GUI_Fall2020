@@ -21,7 +21,7 @@ class SellerInfo extends React.Component {
           </div>
           <p><b>On campus: </b>{ this.props.seller.OnCampus }</p>
           <p><b>Items sold: </b>{ this.props.seller.NumSales }</p>
-          <Link to="/home" className="btn btn-info btn-sm">Go to Profile</Link>
+          <Link to="/home" className="btn btn-info btn-sm">Seller Profile</Link>
         </div>
 
       </div>
