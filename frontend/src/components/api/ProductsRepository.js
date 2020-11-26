@@ -2,7 +2,7 @@ import axios from 'axios';
 import { API_URL } from '../../api_url';
 
 export class ProductsRepository {
-    // url = 'http://localhost:8000'
+
     url = `${API_URL}`;
 
     config = {};
@@ -64,6 +64,19 @@ export class ProductsRepository {
                 });
         });
     }
+    getImages(itemId) {
+      return new Promise((resolve, reject) => {
+          axios
+              .get(`${this.url}/images/${itemId}`, this.config)
+              .then(x => resolve(x.data))
+              .catch(err => {
+                  alert(err);
+                  reject();
+              });
+      });
+  }
+
+
 
     // POST methods
 
@@ -78,4 +91,7 @@ export class ProductsRepository {
                 });
         });
     }
+
+
+
 }

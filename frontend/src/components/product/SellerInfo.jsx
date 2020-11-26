@@ -10,10 +10,11 @@ class SellerInfo extends React.Component {
 
   render() {
     return (
-      <div className="seller-info-box m-5">
+      <div className="seller-info-box">
+
         <img src={buffDogImg} alt="seller-photo" />
         <div className="seller-info-details-box">
-          <p><b>Seller:</b> {this.props.seller.Username}</p>
+          <p className="seller-text-box"><b>Seller:</b> {this.props.seller.Username}</p>
           <div className="rating-box">
             <p className="rating-text"><b>Rating:</b></p>
             <Rating value={this.props.seller.Rating} />
@@ -22,7 +23,6 @@ class SellerInfo extends React.Component {
           <p><b>Items sold: </b>{ this.props.seller.NumSales }</p>
           <Link to="/home" className="btn btn-info btn-sm">Go to Profile</Link>
         </div>
-
 
       </div>
 
