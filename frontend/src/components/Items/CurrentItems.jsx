@@ -20,6 +20,7 @@ export const CurrentItems = () => {
     const [updateItemName, setUpdateItemName] = useState('');
     const [updateItemDetails, setUpdateItemDetails] = useState('');
     const [updateItemPrice, setUpdateItemPrice] = useState(null);
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         axios.get(`${API_URL}/userItems/${userId}`).then(res => {
@@ -59,6 +60,17 @@ export const CurrentItems = () => {
             setOkayPopup(true);
             setOkayMessage(`Editing item: ${item.ItemName}`);
         });
+    };
+
+    const searchResults = () => {
+        if (searchQuery) {
+            let filtered_products = items.filter(item =>
+                item.ItemName.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+            return filtered_products;
+        } else {
+            return items;
+        }
     };
 
     const handleDelete = itemId => {
@@ -110,6 +122,22 @@ export const CurrentItems = () => {
                     <Loader />
                 ) : (
                     <>
+                        <div className='d-flex my-5'>
+                            <input className='form-control' type='text' />
+                            <button
+                                onClick={e => {
+                                    e.target.previousSibling
+                                        ? setSearchQuery(
+                                              e.target.previousSibling.value
+                                          )
+                                        : setSearchQuery('');
+                                }}
+                                className='mx-4 px-4 btn btn-warning'
+                            >
+                                <i className='fas fa-search'></i>
+                            </button>
+                        </div>
+
                         <ul className='list-group'>
                             {updateItemId
                                 ? items
@@ -180,7 +208,8 @@ export const CurrentItems = () => {
                                               </div>
                                           </form>
                                       ))
-                                : items.map(item => {
+                                : searchResults().map(item => {
+                                      // filter?
                                       return (
                                           <li
                                               className='list-group-item d-flex row'
