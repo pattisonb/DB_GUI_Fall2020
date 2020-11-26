@@ -24,8 +24,8 @@ class ReviewList extends React.Component {
                 <Rating value={ review.Rating } />
               </div>
               <div className="card-body">
-                <p className="text-secondary">User { review.BuyerID }
-                  {/* <span className="float-right">{ new Date(review.date).getFullYear() }-{ new Date(review.date).getMonth() + 1 }-{ new Date(review.date).getDate() }</span> */}
+                <p className="text-secondary">{ review.Username }
+                  <span className="float-right">{ new Date(review.Date).getFullYear() }-{ new Date(review.Date).getMonth() + 1 }-{ new Date(review.Date).getDate() }</span>
                 </p>
                 <p>"{ review.ReviewText }"</p>
               </div>

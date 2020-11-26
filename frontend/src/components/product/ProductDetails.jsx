@@ -22,6 +22,7 @@ class ProductDetails extends React.Component {
         product: '',
         seller: '',
         sellerReviews: '',
+        images: '',
         currImgIndex: 0,
     };
 
@@ -111,23 +112,23 @@ class ProductDetails extends React.Component {
     componentDidMount() {
         // Get the product (the item and user are both returned as an object inside an array)
         const productId = +this.props.match.params.productId;
-        this.productsRepository
-            .getProduct(productId)
-            .then(product => this.setState({ product: product[0] }))
-            .then(() => {
-                // Get sellerReviews
-                const sellerId = this.state.product.SellerID;
-                this.productsRepository
-                    .getSellerReviews(sellerId)
-                    .then(reviews => this.setState({ sellerReviews: reviews }));
-            })
-            .then(() => {
-                // Get the seller
-                const sellerId = this.state.product.SellerID;
-                this.productsRepository
-                    .getUser(sellerId)
-                    .then(user => this.setState({ seller: user[0] }));
-            });
+        this.productsRepository.getProduct(productId)
+          .then(product => this.setState({ product: product[0] }))
+          .then(() => {
+              // Get sellerReviews
+              const sellerId = this.state.product.SellerID;
+              this.productsRepository.getSellerReviews(sellerId)
+                .then(reviews => this.setState({ sellerReviews: reviews }));
+          })
+          .then(() => {
+              // Get the seller
+              const sellerId = this.state.product.SellerID;
+              this.productsRepository.getUser(sellerId)
+                .then(user => this.setState({ seller: user[0] }));
+          });
+      
+        this.productsRepository.getImages(productId)
+          .then((images) => this.setState({ images }))
 
         // To add the "active" className to the initial active image
         // const idx = this.state.currImgIndex;
