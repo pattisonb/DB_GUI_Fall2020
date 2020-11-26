@@ -117,6 +117,7 @@ Username, Password, OnCampus, Dorm, IsStudent, Location
     const [isOnCampus, setIsOnCampus] = useState(false);
     const [dorm, setDorm] = useState('');
     const [location, setLocation] = useState('');
+    const [geolocation, setGeolocation] = useState(navigator.geolocation);
     const [isRegistered, setIsRegistered] = useState(false);
 
     return (

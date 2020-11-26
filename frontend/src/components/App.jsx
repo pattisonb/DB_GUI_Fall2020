@@ -15,6 +15,7 @@ import Alert from './layout/Alert';
 import Error from './Error';
 import { Contacts } from './messaging/Contacts';
 import Chat from './messaging/Chat/Chat';
+import SellItem from './Sell/SellItem';
 const getLogged = () => {
     let id = window.localStorage.getItem('id');
     console.log(id);
@@ -40,6 +41,11 @@ function App() {
                             exact
                             component={ProductDetails}
                         ></Route>
+                        <Route
+                            path='/sellItems/:userId'
+                            exact
+                            component={SellItem}
+                        />
                         <Route path='/chat' exact component={Chat}></Route>
                         <Route component={Error} />
                     </Switch>

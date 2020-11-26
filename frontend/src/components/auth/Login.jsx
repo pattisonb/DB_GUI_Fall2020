@@ -33,15 +33,19 @@ export default function Login(props) {
                     Password: sha256(password),
                 })
                 .then(res => {
+                    const location = navigator.geolocation;
                     window.localStorage.setItem('id', res.data);
                     if (res.data === false) {
                         throw new Error('bad');
                     }
+                    location.getCurrentPosition(position => {
+                        console.log(position.coords.latitude);
+                        console.log(position.coords.longitude);
+                    });
                     setLoggedUser(res.data);
                     setLoggedIn(true);
                 })
                 .catch(err => {
-                    console.log("we really shouldn't be here");
                     setAlertMessage('Invalid credentials');
                     setAlertKey(getId());
                     setPassword('');
