@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useEffect, useState } from 'react';
 import DetailNav from '../layout/DetailNav';
 import axios from 'axios';
@@ -106,3 +107,14 @@ export const CurrentItems = () => {
 /userItems/:ID
 ItemID, ItemName, ItemCost, ItemDetails, ImageURL
 */
+=======
+import React from 'react';
+import DetailNav from '../layout/DetailNav';
+export const CurrentItems = () => {
+    return (
+        <div className='container mt-4'>
+            <DetailNav />
+        </div>
+    );
+};
+>>>>>>> 34ddf954f6a8b054345d35404426ab1a0a24ddd2
