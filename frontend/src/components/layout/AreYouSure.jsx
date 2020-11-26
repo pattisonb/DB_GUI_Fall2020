@@ -1,7 +1,7 @@
 import React from 'react';
 import './AreYouSure.css';
 
-export const AreYouSure = ({ theyAreSure }) => {
+export const AreYouSure = ({ theyAreSure, message }) => {
     const handleYes = e => {
         theyAreSure(true);
     };
@@ -10,7 +10,7 @@ export const AreYouSure = ({ theyAreSure }) => {
     };
     return (
         <div className='AreYouSure'>
-            <h2 className='Message'>Are You Sure?</h2>
+            <h2 className='Message'>{message}</h2>
             <div className='Confirm-Buttons w-100 d-flex justify-content-center align-items-center'>
                 <button onClick={handleYes} className='mx-2 btn w-50'>
                     Yes
