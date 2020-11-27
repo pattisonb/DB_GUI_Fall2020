@@ -29,3 +29,10 @@
 input.Edit-Price {
     color: white !important;
 }
+
+button > i {
+    color: var(--smu-blue);
+}
+button > i:hover {
+    color: #aaa;
+}

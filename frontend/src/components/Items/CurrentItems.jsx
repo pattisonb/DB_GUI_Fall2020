@@ -31,6 +31,10 @@ export const CurrentItems = () => {
 
     const handleCancelEdit = e => {
         setUpdateItemId(null);
+        setUpdateItemImage('');
+        setUpdateItemName('');
+        setUpdateItemPrice(null);
+        setUpdateItemDetails('');
     };
 
     const handleOkayClicked = () => {
@@ -57,8 +61,6 @@ export const CurrentItems = () => {
             setUpdateItemName(item.ItemName);
             setUpdateItemPrice(item.ItemCost);
             setUpdateItemDetails(item.ItemDetails);
-            setOkayPopup(true);
-            setOkayMessage(`Editing item: ${item.ItemName}`);
         });
     };
 
@@ -142,6 +144,11 @@ export const CurrentItems = () => {
                             </button>
                         </div>
 
+                        {items.length === 0 && (
+                            <h2 className='display-3 mt-5 text-center'>
+                                No items to show... Start Selling!
+                            </h2>
+                        )}
                         <ul className='list-group'>
                             {updateItemId
                                 ? items
@@ -213,7 +220,6 @@ export const CurrentItems = () => {
                                           </form>
                                       ))
                                 : searchResults().map(item => {
-                                      // filter?
                                       return (
                                           <li
                                               className='list-group-item d-flex row'
