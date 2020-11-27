@@ -435,6 +435,22 @@ app.delete('/deleteItem/:ItemID', async (req, res) => {
     });
 });
 
+app.put('/updateItem', async (req, res) => {
+  var patientID = req.body.PatientID;
+  var doctorID =  req.body.doctor_id;
+  var drugID = req.body.DrugID;
+  var quantity =  req.body.Quantity;
+  var createDate = req.body.create_date;
+  var fillDate = req.body.fill_date;
+  var orderID = req.body.id;
+
+  connection.query("UPDATE `pharmtech`.`prescriptions` SET `patient_id` = ?, `doctor_id` = ?, `drug_id` = ?, `quantity` = ?, `create_date` = ?, `fill_date` = ? WHERE `id` = ?", [patientID, doctorID, drugID, quantity, createDate, fillDate, orderID],function (err, result, fields) {
+  if (err) throw err;
+  //console.log(result);
+  res.end(JSON.stringify(result)); 
+  });
+});
+
 
 app.get('/SellerID/:ItemID', (req, res) => {
     connection.query(
