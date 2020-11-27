@@ -436,15 +436,15 @@ app.delete('/deleteItem/:ItemID', async (req, res) => {
 });
 
 app.put('/updateItem', async (req, res) => {
-  var patientID = req.body.PatientID;
-  var doctorID =  req.body.doctor_id;
-  var drugID = req.body.DrugID;
-  var quantity =  req.body.Quantity;
-  var createDate = req.body.create_date;
-  var fillDate = req.body.fill_date;
-  var orderID = req.body.id;
+  var SellerID = req.body.SellerID;
+  var ItemName =  req.body.ItemName;
+  var ItemCost = req.body.ItemCost;
+  var ItemDetails =  req.body.ItemDetails;
+  var Condition = req.body.Condition;
+  var ImageURL = req.body.ImageURL;
+  var ItemID = req.body.ItemID;
 
-  connection.query("UPDATE `pharmtech`.`prescriptions` SET `patient_id` = ?, `doctor_id` = ?, `drug_id` = ?, `quantity` = ?, `create_date` = ?, `fill_date` = ? WHERE `id` = ?", [patientID, doctorID, drugID, quantity, createDate, fillDate, orderID],function (err, result, fields) {
+  connection.query("UPDATE PonyList.Items SET SellerID=?, ItemName=?, ItemCost=?, ItemDetails=?, `Condition`=?, ImageURL=?, DatePosted=CURRENT_TIMESTAMP WHERE ItemID=?;", [SellerID, ItemName, ItemCost, ItemDetails, Condition, ImageURL, ItemID],function (err, result, fields) {
   if (err) throw err;
   //console.log(result);
   res.end(JSON.stringify(result)); 
