@@ -425,6 +425,17 @@ app.post('/addItem', (req, res) => {
     );
 });
 
+app.delete('/deleteItem/:ItemID', async (req, res) => {
+  var drugID = req.body.drug_id;
+
+  connection.query("DELETE FROM Items WHERE ItemID = ?", [drugID, req.params.ItemID], function (err, result, fields) {
+    if (err) 
+      return console.error(error.message);
+    res.end(JSON.stringify(result)); 
+    });
+});
+
+
 app.get('/SellerID/:ItemID', (req, res) => {
     connection.query(
         'SELECT SellerID FROM Transactions WHERE ItemID = ?',
