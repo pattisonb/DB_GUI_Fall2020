@@ -400,7 +400,7 @@ app.post('/addImage', (req, res) => {
 
 app.post('/addItem', (req, res) => {
     connection.query(
-        'INSERT INTO Items (SellerID, ItemName, ItemCost, ItemDetails, Condition, ImageURL) VALUES (?, ?, ?, ?, ?)',
+        'INSERT INTO Items (SellerID, ItemName, ItemCost, ItemDetails, Condition, ImageURL) VALUES (?, ?, ?, ?, ?, ?)',
         [
             req.body.SellerID,
             req.body.ItemName,
