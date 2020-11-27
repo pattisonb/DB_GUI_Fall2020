@@ -15,7 +15,10 @@ import Alert from './layout/Alert';
 import Error from './Error';
 import { Contacts } from './messaging/Contacts';
 import Chat from './messaging/Chat/Chat';
-import SellItem from './Sell/SellItem';
+import SellItem from './Items/SellItem';
+import ManageItems from './Items/ManageItems';
+import PastItems from './Items/PastItems';
+import { CurrentItems } from './Items/CurrentItems';
 const getLogged = () => {
     let id = window.localStorage.getItem('id');
     console.log(id);
@@ -41,6 +44,21 @@ function App() {
                             exact
                             component={ProductDetails}
                         ></Route>
+                        <Route
+                            path='/manageItems/:userId'
+                            exact
+                            component={ManageItems}
+                        />
+                        <Route
+                            path='/manageItems/:userId/pastSales'
+                            exact
+                            component={PastItems}
+                        />
+                        <Route
+                            path='/manageItems/:userId/currentSales'
+                            exact
+                            component={CurrentItems}
+                        />
                         <Route
                             path='/sellItems/:userId'
                             exact
