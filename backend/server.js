@@ -344,7 +344,7 @@ app.post('/addTime', (req, res) => {
 //ITEMS CALLS
 app.get('/items', function (req, res) {
     connection.query(
-        'SELECT ItemID, SellerID, Username, OnCampus, ItemName, ItemCost, ItemDetails, Condition, ImageURL, DatePosted FROM Items Inner Join Users on Items.SellerID = Users.UserID;',
+        'SELECT ItemID, SellerID, Username, OnCampus, ItemName, ItemCost, ItemDetails, `Condition`, ImageURL, DatePosted FROM Items Inner Join Users on Items.SellerID = Users.UserID;',
         function (err, result, fields) {
             if (err) throw err;
             res.end(JSON.stringify(result));
@@ -354,7 +354,7 @@ app.get('/items', function (req, res) {
 
 app.get('/item/:ItemID', (req, res) => {
     connection.query(
-        'SELECT ItemID, SellerID, Username, OnCampus, ItemName, ItemCost, ItemDetails, Condition, ImageURL, DatePosted FROM Items Inner Join Users on Items.SellerID = Users.UserID WHERE ItemID = ?',
+        'SELECT ItemID, SellerID, Username, OnCampus, ItemName, ItemCost, ItemDetails, `Condition`, ImageURL, DatePosted FROM Items Inner Join Users on Items.SellerID = Users.UserID WHERE ItemID = ?',
         [req.params.ItemID],
         function (err, result, fields) {
             if (err) throw err;
@@ -400,7 +400,7 @@ app.post('/addImage', (req, res) => {
 
 app.post('/addItem', (req, res) => {
     connection.query(
-        'INSERT INTO Items (SellerID, ItemName, ItemCost, ItemDetails, Condition, ImageURL) VALUES (?, ?, ?, ?, ?, ?)',
+        'INSERT INTO Items (SellerID, ItemName, ItemCost, ItemDetails, `Condition`, ImageURL) VALUES (?, ?, ?, ?, ?, ?)',
         [
             req.body.SellerID,
             req.body.ItemName,
