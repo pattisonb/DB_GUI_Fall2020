@@ -78,7 +78,7 @@ class ProductDetails extends React.Component {
               {
                 this.state.images.map((img, idx) =>
                   <img key={idx} src={img.ImageURL} alt="item-img"
-                    onClick={() => this.thumbnailClicked(idx)} 
+                    onMouseOver={() => this.thumbnailClicked(idx)} 
                   />)
               }
             </div>

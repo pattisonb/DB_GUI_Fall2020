@@ -5,6 +5,7 @@ import Navbar from './layout/Navbar';
 import './Home.css';
 import PonyListLogo from '../img/PonyList.PNG';
 import { ProductsRepository } from './api/ProductsRepository';
+import Alert from 'react-bootstrap/Alert'
 
 export class Home extends React.Component {
 
@@ -14,19 +15,30 @@ export class Home extends React.Component {
     searchItemName: '',
     searchSellerName: '',
 
-    sortMethod: 'priceLH'
+    noMatchAlertShow: false
   };
 
 
   productsRepository = new ProductsRepository();
 
 
-  searchItem(ItemName) {
-    let filtered_products = this.state.products.filter(item => item.ItemName.toLowerCase().includes(ItemName.toLowerCase()));
-    this.setState({ products: filtered_products });
+  searchItem(input) {
+    // This makes the search case-insensitive and whitespace-insensitive
+    let filtered_products = this.state.products.filter(item =>
+      item.ItemName.toLowerCase().replace(/\s+/g, '').includes(input.toLowerCase().replace(/\s+/g, '')));
+
+    if (filtered_products.length > 0) {
+      this.setState({ products: filtered_products });
+    }
+    else {
+      this.setState({ noMatchAlertShow: true })
+    }
+
   }
-  searchSeller(SellerName) {
-    let filtered_products = this.state.products.filter(item => item.Username.toLowerCase().includes(SellerName.toLowerCase()));
+  searchSeller(input) {
+    let filtered_products = this.state.products.filter(item =>
+      item.Username.toLowerCase().replace(/\s+/g, '').includes(input.toLowerCase().replace(/\s+/g, '')));
+
     this.setState({ products: filtered_products });
   }
   startOver() {
@@ -36,30 +48,30 @@ export class Home extends React.Component {
     this.setState({ searchItemName: '', searchSeller: '' });
   }
 
-  sortProducts() {
+  sortProducts(sortMethod) {
     let products = this.state.products;
-    
-    if (this.state.sortMethod == 'priceLH') {
+
+    if (sortMethod == 'priceLH') {
       products.sort((a, b) => {
         return a.ItemCost - b.ItemCost;
       })
     }
-    else if (this.state.sortMethod == 'priceHL') {
+    else if (sortMethod == 'priceHL') {
       products.sort((a, b) => {
-        return b.ItemCost - a.ItemCost ;
+        return b.ItemCost - a.ItemCost;
       })
     }
-    else if (this.state.sortMethod == 'date') {
+    else if (sortMethod == 'date') {
       products.sort((a, b) => {
         let da = new Date(a.DatePosted)
         let db = new Date(b.DatePosted)
         return db - da;
       })
     }
-    else if (this.state.sortMethod == 'sellerRating') {
-      
+    else if (sortMethod == 'sellerRating') {
+
     }
-    
+
     this.setState({ products })
   }
 
@@ -70,6 +82,13 @@ export class Home extends React.Component {
     if (this.state.products.length == 0 || this.state.users.length == 0) {
       return <div>Loading Home...</div>;
     }
+
+    // if (this.state.noMatchAlertShow) {
+    //   return (
+
+    //   );
+    // }
+
 
     return (
       <>
@@ -104,24 +123,14 @@ export class Home extends React.Component {
                 name='sort-menu'
                 id='sort-menu'
                 className='form-control'
-                value={this.state.sortMethod}
-                onChange={event => this.setState({ sortMethod: event.target.value })}
+                onChange={event => this.sortProducts(event.target.value)}
               >
+                <option value='' selected disabled>Choose...</option>
                 <option value='priceLH'>Price: Low-High</option>
                 <option value='priceHL'>Price: High-Low</option>
-                <option value='date'>New Arrivals</option>
-                <option value='sellerRating'>Seller Ratings</option>
+                <option value='date'>Newest Posts</option>
+                <option value='sellerRating'>Seller Rating</option>
               </select>
-            </div>
-
-            <div className='mb-4'>
-              <button
-                type='button'
-                className='btn btn-info btn-sm'
-                onClick={ () => this.sortProducts() }
-              >
-                Sort
-              </button>
             </div>
 
             <div className='logo-separator'></div>
@@ -133,6 +142,7 @@ export class Home extends React.Component {
                 id='location-menu'
                 className='form-control'
               >
+                <option value='' selected disabled>Choose...</option>
                 <option value=''>On-campus</option>
                 <option value=''>Off-campus</option>
                 <option value=''>Both</option>
@@ -149,7 +159,7 @@ export class Home extends React.Component {
               />
               <label class='form-check-label' for='radio-btn-new'>
                 New
-                            </label>
+              </label>
             </div>
             <div class='form-check form-check-inline'>
               <input
@@ -164,7 +174,7 @@ export class Home extends React.Component {
                 for='radio-btn-used'
               >
                 Used
-                            </label>
+              </label>
             </div>
 
             <div class='price-range-input-box'>
@@ -190,64 +200,80 @@ export class Home extends React.Component {
               </button>
             </div>
 
-          
+
           </nav>
 
           <div className='search-bar-container'>
-            <div className='search-bars-box'>
-              <div className='input-group'>
-                <input
-                  type='text'
-                  className='search-bar-input form-control'
-                  placeholder='Enter an item...'
-                  value={this.state.searchItemName}
-                  onChange={event => this.setState({ searchItemName: event.target.value })}
-                />
-                <div className='input-group-append'>
-                  <button
-                    className='btn btn-primary'
-                    type='button'
-                    onClick={() => this.searchItem(this.state.searchItemName)}
-                  >
-                    <i className='fas fa-search'></i>
-                  </button>
+
+            <div className='search-bar-container-inner'>
+
+              <div className='search-bars-box'>
+                <div className='input-group'>
+                  <input
+                    type='text'
+                    className='search-bar-input form-control'
+                    placeholder='Enter an item...'
+                    value={this.state.searchItemName}
+                    onChange={event => this.setState({ searchItemName: event.target.value })}
+                  />
+                  <div className='input-group-append'>
+                    <button
+                      className='btn btn-primary'
+                      type='button'
+                      onClick={() => this.searchItem(this.state.searchItemName)}
+                    >
+                      <i className='fas fa-search'></i>
+                    </button>
+                  </div>
                 </div>
-              </div>
-              <div className='input-group'>
-                <input
-                  type='text'
-                  className='search-bar-input form-control'
-                  placeholder='Enter a seller...'
-                  value={this.state.searchSellerName}
-                  onChange={event => this.setState({ searchSellerName: event.target.value })}
-                />
-                <div class='input-group-append'>
-                  <button
-                    className='btn btn-primary'
-                    type='button'
-                    onClick={() => this.searchSeller(this.state.searchSellerName)}
-                  >
-                    <i className='fas fa-search'></i>
-                  </button>
+                <div className='input-group'>
+                  <input
+                    type='text'
+                    className='search-bar-input form-control'
+                    placeholder='Enter a seller...'
+                    value={this.state.searchSellerName}
+                    onChange={event => this.setState({ searchSellerName: event.target.value })}
+                  />
+                  <div class='input-group-append'>
+                    <button
+                      className='btn btn-primary'
+                      type='button'
+                      onClick={() => this.searchSeller(this.state.searchSellerName)}
+                    >
+                      <i className='fas fa-search'></i>
+                    </button>
+                  </div>
                 </div>
+
               </div>
+
+
+              <div className='search-bar-btn-box'>
+                <button
+                  className='btn btn-secondary'
+                  type='button'
+                  onClick={() => this.startOver()}
+                >
+                  Start over
+              </button>
+              </div>
+
+              <div className='Home-SellItem'>
+                <Link to={`/sellItems/${window.localStorage.getItem('id')}`} type='button' className='btn btn-warning mr-3 mt-2'>
+                  Sell Items
+                </Link>
+              </div>
+
             </div>
 
-            <div className='search-bar-btn-box'>
-              <button
-                className='btn btn-secondary'
-                type='button'
-                onClick={ () => this.startOver() }
-              >
-                Start over
-              </button>
-            </div>
-            
-            <div className='Home-SellItem'>
-              <Link to={`/sellItems/${window.localStorage.getItem('id')}`} type='button' className='btn btn-warning mr-3 mt-2'>
-                Sell Items
-              </Link>
-            </div>
+
+            <Alert variant="primary"
+              show={this.state.noMatchAlertShow}
+              onClose={() => this.setState({ noMatchAlertShow: false })}
+              dismissible
+              className="noMatchAlert">
+              <p>Sorry, we couldn't find the item you searched for</p>
+            </Alert>
 
           </div>
 
@@ -275,13 +301,14 @@ export class Home extends React.Component {
                     />
                     <div>
                       <div className='badge badge-primary ml-2'>${product.ItemCost}</div>
-                      <p className='mt-5 ml-2'>
+                      <p className='mt-3 ml-2'>
                         By&nbsp;
                         <Link to='/home'>
                           {
                             this.state.users.find(user => user.UserID === product.SellerID).Username
                           }
                         </Link>
+                        <p><small className="text-muted">{new Date(product.DatePosted).getFullYear()}-{new Date(product.DatePosted).getMonth() + 1}-{new Date(product.DatePosted).getDate()}</small></p>
                       </p>
                     </div>
                   </div>
