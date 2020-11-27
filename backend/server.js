@@ -426,9 +426,9 @@ app.post('/addItem', (req, res) => {
 });
 
 app.delete('/deleteItem/:ItemID', async (req, res) => {
-  var drugID = req.body.drug_id;
+  var ItemID = req.body.ItemID;
 
-  connection.query("DELETE FROM Items WHERE ItemID = ?", [drugID, req.params.ItemID], function (err, result, fields) {
+  connection.query("DELETE FROM Items WHERE ItemID = ?", [req.params.ItemID], function (err, result, fields) {
     if (err) 
       return console.error(error.message);
     res.end(JSON.stringify(result)); 
