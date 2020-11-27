@@ -123,7 +123,11 @@ export const CurrentItems = () => {
                 ) : (
                     <>
                         <div className='d-flex my-5'>
-                            <input className='form-control' type='text' />
+                            <input
+                                placeholder='Find An Item by Name...'
+                                className='form-control'
+                                type='text'
+                            />
                             <button
                                 onClick={e => {
                                     e.target.previousSibling
