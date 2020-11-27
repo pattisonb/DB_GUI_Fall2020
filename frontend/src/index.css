@@ -37,6 +37,10 @@ body {
     color: var(--smu-white);
 }
 
+.small {
+    font-size: 1.2rem;
+}
+
 body {
     margin: 0;
 }
