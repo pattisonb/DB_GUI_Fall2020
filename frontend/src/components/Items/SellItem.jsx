@@ -9,6 +9,7 @@ const SellItem = () => {
     const [itemName, setItemName] = useState('');
     const [itemCost, setItemCost] = useState(0);
     const [itemDetails, setItemDetails] = useState('');
+    const [condition, setCondition] = useState('Used');
     const [imageUrl, setImageUrl] = useState('');
     const [image2, setImage2] = useState('');
     const [image3, setImage3] = useState('');
@@ -60,6 +61,7 @@ const SellItem = () => {
                     ItemName: itemName,
                     ItemCost: itemCost,
                     ItemDetails: itemDetails,
+                    Condition: condition,
                     ImageURL: imageUrl,
                 })
                 .then(res => {
@@ -78,7 +80,6 @@ const SellItem = () => {
                 },
             };
 
-            console.log('this should be fuckig printed', itemId);
             await axios
                 .post(
                     `${API_URL}/addImage`,
@@ -184,6 +185,36 @@ const SellItem = () => {
                         required
                     ></textarea>
                 </div>
+
+                <div className='form-group d-flex flex-column justify-content-center align-items-center'>
+                    <h4 className='display-4'>Condition</h4>
+                    <div className='form-check'>
+                        <input
+                            className='form-check-input'
+                            onClick={e => setCondition('New')}
+                            type='radio'
+                            name='condition'
+                            id='New'
+                        />
+                        <label className='form-check-label' htmlFor='New'>
+                            New
+                        </label>
+                    </div>
+                    <div className='form-check'>
+                        <input
+                            className='form-check-input'
+                            defaultChecked
+                            onClick={e => setCondition('Used')}
+                            type='radio'
+                            name='condition'
+                            id='Used'
+                        />
+                        <label className='form-check-label' htmlFor='Used'>
+                            Used
+                        </label>
+                    </div>
+                </div>
+
                 <div className='form-group d-flex flex-column'>
                     <label className='mx-auto h3 display-4' htmlFor='imageUrl'>
                         Image Url <small className='small'>(Main)</small>
@@ -254,7 +285,7 @@ const SellItem = () => {
                 </div>
 
                 <button
-                    className='btn btn-warning btn-block w-50 mx-auto'
+                    className='btn btn-warning btn-block w-50 mx-auto mb-5'
                     onClick={handleSubmit}
                     type='submit'
                 >

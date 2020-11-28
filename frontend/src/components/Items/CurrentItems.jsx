@@ -19,6 +19,7 @@ export const CurrentItems = () => {
     const [updateItemImage, setUpdateItemImage] = useState('');
     const [updateItemName, setUpdateItemName] = useState('');
     const [updateItemDetails, setUpdateItemDetails] = useState('');
+    const [updateCondition, setUpdateCondition] = useState('');
     const [updateItemPrice, setUpdateItemPrice] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
 
@@ -27,7 +28,7 @@ export const CurrentItems = () => {
             setItems(res.data);
             setLoading(false);
         });
-    }, []);
+    }, [updateItemId, deletingItemId]);
 
     const handleCancelEdit = e => {
         setUpdateItemId(null);
@@ -35,6 +36,7 @@ export const CurrentItems = () => {
         setUpdateItemName('');
         setUpdateItemPrice(null);
         setUpdateItemDetails('');
+        setUpdateCondition('');
     };
 
     const handleOkayClicked = () => {
@@ -42,15 +44,27 @@ export const CurrentItems = () => {
         setOkayMessage('');
     };
 
-    const handleConfirmEdit = e => {
-        //axios call.
-        setUpdateItemId(null);
-        setUpdateItemImage('');
-        setUpdateItemName('');
-        setUpdateItemPrice(null);
-        setUpdateItemDetails('');
-        setOkayPopup(true);
-        setOkayMessage('Item Updated!');
+    const handleConfirmEdit = async e => {
+        axios
+            .put(`${API_URL}/updateItem`, {
+                SellerID: window.localStorage.getItem('id'),
+                ItemName: updateItemName,
+                ItemCost: updateItemPrice,
+                ItemDetails: updateItemDetails,
+                Condition: updateCondition,
+                ImageURL: updateItemImage,
+                ItemID: updateItemId,
+            })
+            .then(res => {
+                setUpdateItemId(null);
+                setUpdateItemImage('');
+                setUpdateItemName('');
+                setUpdateItemPrice(null);
+                setUpdateItemDetails('');
+                setUpdateCondition('');
+                setOkayPopup(true);
+                setOkayMessage('Item Updated!');
+            });
     };
 
     const handleEdit = async itemId => {
@@ -61,6 +75,7 @@ export const CurrentItems = () => {
             setUpdateItemName(item.ItemName);
             setUpdateItemPrice(item.ItemCost);
             setUpdateItemDetails(item.ItemDetails);
+            setUpdateCondition(item.Condition);
         });
     };
 
@@ -76,17 +91,18 @@ export const CurrentItems = () => {
     };
 
     const handleDelete = itemId => {
-        /*
-        /item/:ItemID'
-        */
         setDeletingItemId(itemId);
     };
 
-    const deleteItem = confirmed => {
+    const deleteItem = async confirmed => {
         if (confirmed && deletingItemId) {
-            setDeletingItemId(null);
-            setOkayPopup(true);
-            setOkayMessage('Item deleted!');
+            await axios
+                .delete(`${API_URL}/deleteItem/${deletingItemId}`)
+                .then(res => {
+                    setOkayPopup(true);
+                    setOkayMessage('Item deleted!');
+                    setDeletingItemId(null);
+                });
         } else {
             setDeletingItemId(null);
         }
@@ -126,15 +142,18 @@ export const CurrentItems = () => {
                     <>
                         <div className='d-flex my-5'>
                             <input
+                                id='searchQuery'
                                 placeholder='Find An Item by Name...'
                                 className='form-control'
                                 type='text'
                             />
                             <button
                                 onClick={e => {
-                                    e.target.previousSibling
+                                    document.getElementById('searchQuery').value
                                         ? setSearchQuery(
-                                              e.target.previousSibling.value
+                                              document.getElementById(
+                                                  'searchQuery'
+                                              ).value
                                           )
                                         : setSearchQuery('');
                                 }}
@@ -205,6 +224,23 @@ export const CurrentItems = () => {
                                                       }
                                                       className='Edit-Price bg-primary rounded text-center'
                                                   />
+                                                  <select
+                                                      value={updateCondition}
+                                                      onChange={e =>
+                                                          setUpdateCondition(
+                                                              e.target.value
+                                                          )
+                                                      }
+                                                      name='condition'
+                                                      id='condition'
+                                                  >
+                                                      <option value='Used'>
+                                                          Used
+                                                      </option>
+                                                      <option value='New'>
+                                                          New
+                                                      </option>
+                                                  </select>
                                                   <textarea
                                                       value={updateItemDetails}
                                                       onChange={e =>
