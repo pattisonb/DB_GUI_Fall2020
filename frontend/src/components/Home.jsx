@@ -12,10 +12,20 @@ export class Home extends React.Component {
   state = {
     products: [],
     users: [],
+    // For searching 
     searchItemName: '',
     searchSellerName: '',
+    noMatchAlertShow: false,
+    // sellerRating: '',
+    // ratingA: 0,
+    // ratingB: 0
+    sortMethod: '',
 
-    noMatchAlertShow: false
+    // For filtering
+    location: '',
+    condition: '',
+    priceMin: '',
+    priceMax: ''
   };
 
 
@@ -23,30 +33,56 @@ export class Home extends React.Component {
 
 
   searchItem(input) {
-    // This makes the search case-insensitive and whitespace-insensitive
-    let filtered_products = this.state.products.filter(item =>
-      item.ItemName.toLowerCase().replace(/\s+/g, '').includes(input.toLowerCase().replace(/\s+/g, '')));
+    this.productsRepository.getProducts()
+      .then(products => {
+        // This resets the products 
+        this.setState({ products })
+        // This makes the search case-insensitive and whitespace-insensitive
+        let filtered_products = this.state.products.filter(item =>
+          item.ItemName.toLowerCase().replace(/\s+/g, '').includes(input.toLowerCase().replace(/\s+/g, '')));
 
-    if (filtered_products.length > 0) {
-      this.setState({ products: filtered_products });
-    }
-    else {
-      this.setState({ noMatchAlertShow: true })
-    }
-
+        if (filtered_products.length > 0) {
+          this.setState({ products: filtered_products });
+        }
+        else {
+          this.setState({ noMatchAlertShow: true })
+        }
+      })
   }
   searchSeller(input) {
-    let filtered_products = this.state.products.filter(item =>
-      item.Username.toLowerCase().replace(/\s+/g, '').includes(input.toLowerCase().replace(/\s+/g, '')));
+    this.productsRepository.getProducts()
+      .then(products => {
+        // This resets the products 
+        this.setState({ products })
+        // This makes the search case-insensitive and whitespace-insensitive
+        let filtered_products = this.state.products.filter(item =>
+          item.Username.toLowerCase().replace(/\s+/g, '').includes(input.toLowerCase().replace(/\s+/g, '')));
 
-    this.setState({ products: filtered_products });
+        if (filtered_products.length > 0) {
+          this.setState({ products: filtered_products });
+        }
+        else {
+          this.setState({ noMatchAlertShow: true })
+        }
+      })
   }
+
+
   startOver() {
     this.productsRepository.getProducts()
       .then(products => this.setState({ products }));
     // Clear input fields
-    this.setState({ searchItemName: '', searchSeller: '' });
+    this.setState({
+      searchItemName: '',
+      searchSeller: '',
+      sortMethod: '',
+      location: '',
+      condition: '',
+      priceMin: '',
+      priceMax: ''
+    });
   }
+
 
   sortProducts(sortMethod) {
     let products = this.state.products;
@@ -63,17 +99,122 @@ export class Home extends React.Component {
     }
     else if (sortMethod == 'date') {
       products.sort((a, b) => {
-        let da = new Date(a.DatePosted)
-        let db = new Date(b.DatePosted)
-        return db - da;
+        let dateA = new Date(a.DatePosted)
+        let dateB = new Date(b.DatePosted)
+        return dateB - dateA;
       })
     }
     else if (sortMethod == 'sellerRating') {
+      products.sort((a, b) => {
 
+        this.productsRepository.getSellerRating(a.SellerID)
+          .then(obj => this.setState({ ratingA: obj[0].Rating }))
+        this.productsRepository.getSellerRating(b.SellerID)
+          .then(obj => this.setState({ ratingB: obj[0].Rating }))
+
+        return this.state.ratingB - this.state.ratingA;
+      })
     }
 
     this.setState({ products })
   }
+
+
+  filterProducts() {
+    let products = this.state.products;
+
+    // Location
+    if (this.state.location == 'onCampus') {
+      let filtered_products = products.filter(item =>
+        item.OnCampus == 'YES')
+      if (filtered_products.length > 0) {
+        this.setState({ products: filtered_products });
+        products = filtered_products
+      }
+      else {
+        this.setState({ noMatchAlertShow: true })
+      }
+    }
+    else if (this.state.location == 'offCampus') {
+      let filtered_products = products.filter(item =>
+        item.OnCampus == 'NO')
+      if (filtered_products.length > 0) {
+        this.setState({ products: filtered_products });
+        products = filtered_products
+      }
+      else {
+        this.setState({ noMatchAlertShow: true })
+      }
+    }
+
+    // Condition
+    if (this.state.condition == 'new') {
+      let filtered_products = products.filter(item =>
+        item.Condition == 'New')
+      if (filtered_products.length > 0) {
+        this.setState({ products: filtered_products });
+        products = filtered_products
+      }
+      else {
+        this.setState({ noMatchAlertShow: true })
+      }
+    }
+    else if (this.state.condition == 'used') {
+      let filtered_products = products.filter(item =>
+        item.Condition == 'Used')
+      if (filtered_products.length > 0) {
+        this.setState({ products: filtered_products });
+        products = filtered_products
+      }
+      else {
+        this.setState({ noMatchAlertShow: true })
+      }
+    }
+
+    // Min price range
+    if (this.state.priceMin) {
+      let filtered_products = products.filter(item =>
+        item.ItemCost >= this.state.priceMin)
+      if (filtered_products.length > 0) {
+        this.setState({ products: filtered_products });
+        products = filtered_products
+      }
+      else {
+        this.setState({ noMatchAlertShow: true })
+      }
+    }
+    // Max price range
+    if (this.state.priceMax) {
+      let filtered_products = products.filter(item =>
+        item.ItemCost <= this.state.priceMax)
+      if (filtered_products.length > 0) {
+        this.setState({ products: filtered_products });
+        products = filtered_products
+      }
+      else {
+        this.setState({ noMatchAlertShow: true })
+      }
+    }
+
+
+
+
+
+  }
+
+  // myGetSellerRating(sellerId) {
+  //   this.productsRepository.getSellerRating(sellerId)
+  //     .then(object => {
+  //       if (!object[0].Rating) {
+  //         this.setState({ sellerRating: 0 })
+  //       }
+  //       else {
+  //         this.setState({ sellerRating: object[0].Rating })
+  //       }
+  //     })
+
+  //   return this.state.sellerRating
+  // }
 
 
 
@@ -82,12 +223,6 @@ export class Home extends React.Component {
     if (this.state.products.length == 0 || this.state.users.length == 0) {
       return <div>Loading Home...</div>;
     }
-
-    // if (this.state.noMatchAlertShow) {
-    //   return (
-
-    //   );
-    // }
 
 
     return (
@@ -100,10 +235,7 @@ export class Home extends React.Component {
               <a href='#' className='account-logo'>
                 <i class='fas fa-user'></i>
               </a>
-              <a href='#' className='shopping-cart-logo'>
-                <i className='fas fa-shopping-cart'></i>(
-                                <span className='cart-count'>0</span>)
-                            </a>
+              
               <Link className='shopping-cart-logo' to='/chat'>
                 <i className='fas fa-comments'></i>
               </Link>
@@ -123,7 +255,11 @@ export class Home extends React.Component {
                 name='sort-menu'
                 id='sort-menu'
                 className='form-control'
-                onChange={event => this.sortProducts(event.target.value)}
+                value={this.state.sortMethod}
+                onChange={event => {
+                  this.setState({ sortMethod: event.target.value })
+                  this.sortProducts(event.target.value)
+                }}
               >
                 <option value='' selected disabled>Choose...</option>
                 <option value='priceLH'>Price: Low-High</option>
@@ -141,11 +277,12 @@ export class Home extends React.Component {
                 name='location-menu'
                 id='location-menu'
                 className='form-control'
+                value={this.state.location}
+                onChange={event => this.setState({ location: event.target.value })}
               >
                 <option value='' selected disabled>Choose...</option>
-                <option value=''>On-campus</option>
-                <option value=''>Off-campus</option>
-                <option value=''>Both</option>
+                <option value='onCampus'>On-campus</option>
+                <option value='offCampus'>Off-campus</option>
               </select>
             </div>
 
@@ -155,7 +292,8 @@ export class Home extends React.Component {
                 type='radio'
                 name='condition-radio-options'
                 id='radio-btn-new'
-                value=''
+                value="new"
+                onChange={event => this.setState({ condition: event.target.value })}
               />
               <label class='form-check-label' for='radio-btn-new'>
                 New
@@ -167,7 +305,8 @@ export class Home extends React.Component {
                 type='radio'
                 name='condition-radio-options'
                 id='radio-btn-used'
-                value=''
+                value='used'
+                onChange={event => this.setState({ condition: event.target.value })}
               />
               <label
                 class='form-check-label'
@@ -182,23 +321,37 @@ export class Home extends React.Component {
                 type='text'
                 class='price-range-input-min form-control form-control-sm'
                 placeholder='$ Min'
+                value={this.state.priceMin}
+                onChange={event => this.setState({ priceMin: event.target.value })}
               />
               <input
                 type='text'
                 class='price-range-input-max form-control form-control-sm'
                 placeholder='$ Max'
+                value={this.state.priceMax}
+                onChange={event => this.setState({ priceMax: event.target.value })}
               />
             </div>
 
-            <div className='mb-4'>
-              <button
-                type='button'
-                className='btn btn-info btn-sm'
-                onClick=""
-              >
-                Filter
+            <div className="side-nav-bar-btn-box">
+                <button
+                  className='btn btn-secondary btn-sm mr-3'
+                  type='button'
+                  onClick={() => this.startOver()}
+                >
+                  Start over
+                </button>
+                
+                <button
+                  type='button'
+                  className='btn btn-info btn-sm'
+                  onClick={() => this.filterProducts()}
+                >
+                  Filter
               </button>
             </div>
+
+
 
 
           </nav>
@@ -248,16 +401,6 @@ export class Home extends React.Component {
               </div>
 
 
-              <div className='search-bar-btn-box'>
-                <button
-                  className='btn btn-secondary'
-                  type='button'
-                  onClick={() => this.startOver()}
-                >
-                  Start over
-              </button>
-              </div>
-
               <div className='Home-SellItem'>
                 <Link to={`/sellItems/${window.localStorage.getItem('id')}`} type='button' className='btn btn-warning mr-3 mt-2'>
                   Sell Items
@@ -272,16 +415,18 @@ export class Home extends React.Component {
               onClose={() => this.setState({ noMatchAlertShow: false })}
               dismissible
               className="noMatchAlert">
-              <p>Sorry, we couldn't find the item you searched for</p>
+              <Alert.Heading>No match found.</Alert.Heading>
+              <p>Please try a different search.</p>
             </Alert>
 
           </div>
 
-          <div className='container-fluid products-container mt-4'>
+          <div className='products-container'>
             {
               this.state.products.map((product, idx) => (
 
                 <div key={idx} className='product-box'>
+
                   <Link to={`/products/${product.ItemID}`}>
                     <div className='text-center mt-2'>
                       <b className='product-name'>{product.ItemName}</b>
@@ -308,6 +453,11 @@ export class Home extends React.Component {
                             this.state.users.find(user => user.UserID === product.SellerID).Username
                           }
                         </Link>
+                        <p>
+                          {
+                            // this.myGetSellerRating(product.SellerID)
+                          }
+                        </p>
                         <p><small className="text-muted">{new Date(product.DatePosted).getFullYear()}-{new Date(product.DatePosted).getMonth() + 1}-{new Date(product.DatePosted).getDate()}</small></p>
                       </p>
                     </div>
@@ -327,6 +477,16 @@ export class Home extends React.Component {
       .then(products => this.setState({ products }));
     this.productsRepository.getUsers()
       .then(users => this.setState({ users }));
+
+    // this.productsRepository.getSellerRating(1)
+    //   .then(object => {
+    //     if (!object[0].Rating) {
+    //       this.setState({ sellerRating: 0 })
+    //     }
+    //     else {
+    //       this.setState({ sellerRating: object[0].Rating })
+    //     }
+    //   })
   }
 }
 
