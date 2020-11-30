@@ -456,6 +456,8 @@ app.delete('/deleteItem/:ItemID', async (req, res) => {
     });
 });
 
+
+
 app.put('/updateItem', async (req, res) => {
   var SellerID = req.body.SellerID;
   var ItemName =  req.body.ItemName;
@@ -473,6 +475,25 @@ app.put('/updateItem', async (req, res) => {
 });
 
 
+// app.get('/addSale/:UserID', (req, res) => {
+//     connection.query("UPDATE Users SET NumSales = NumSales + 1 WHERE UserID = ?",
+//         [req.params.ItemID],
+//         function (err, result, fields) {
+//             if (err) throw err;
+//             res.end(JSON.stringify(result));
+//         }
+//     );
+// });
+
+
+app.patch('/addSale/:UserID', async (req, res) => {
+    connection.query("UPDATE Users SET NumSales = NumSales + 1 WHERE UserID = ?", [req.params.UserID],function (err, result, fields) {
+    if (err) throw err;
+    //console.log(result);
+    res.end(JSON.stringify(result)); 
+    });
+  });
+
 app.get('/SellerID/:ItemID', (req, res) => {
     connection.query(
         'SELECT SellerID FROM Transactions WHERE ItemID = ?',
@@ -483,6 +504,8 @@ app.get('/SellerID/:ItemID', (req, res) => {
         }
     );
 });
+
+
 
 app.get('/isSold/:ItemID', (req, res) => {
     connection.query(
