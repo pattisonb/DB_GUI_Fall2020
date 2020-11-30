@@ -541,6 +541,16 @@ app.get('/messages/:SenderID/:RecipientID', (req, res) => {
     );
 });
 
+app.delete('/deleteMessafe/:MessageID', async (req, res) => {
+    var ItemID = req.body.ItemID;
+  
+    connection.query("DELETE FROM Messages WHERE MessageID = ?", [req.params.MessageID], function (err, result, fields) {
+      if (err) 
+        return console.error(error.message);
+      res.end(JSON.stringify(result)); 
+      });
+  });
+
 app.get('/contacts/:SenderID', (req, res) => {
     connection.query(
         'SELECT DISTINCT(RecipientID), Username FROM Messages INNER JOIN Users on Messages.RecipientID = Users.UserID WHERE SenderID = ?',
