@@ -344,7 +344,7 @@ app.post('/addTime', (req, res) => {
 //ITEMS CALLS
 app.get('/items', function (req, res) {
     connection.query(
-        'SELECT ItemID, SellerID, Username, OnCampus, ItemName, ItemCost, ItemDetails, `Condition`, ImageURL, DatePosted FROM Items Inner Join Users on Items.SellerID = Users.UserID;',
+        'SELECT Items.ItemID, Items.SellerID, Username, AVG(Reviews.Rating) as Rating, OnCampus, ItemName, ItemCost, ItemDetails, `Condition`, ImageURL, DatePosted FROM Items Inner Join Users on Items.SellerID = Users.UserID Left Outer Join Reviews on Items.SellerID = Reviews.SellerID group by ItemID;',
         function (err, result, fields) {
             if (err) throw err;
             res.end(JSON.stringify(result));
@@ -354,7 +354,7 @@ app.get('/items', function (req, res) {
 
 app.get('/item/:ItemID', (req, res) => {
     connection.query(
-        'SELECT ItemID, SellerID, Username, OnCampus, ItemName, ItemCost, ItemDetails, `Condition`, ImageURL, DatePosted FROM Items Inner Join Users on Items.SellerID = Users.UserID WHERE ItemID = ?',
+        'SELECT Items.ItemID, Items.SellerID, Username, AVG(Reviews.Rating) as Rating, OnCampus, ItemName, ItemCost, ItemDetails, `Condition`, ImageURL, DatePosted FROM Items Inner Join Users on Items.SellerID = Users.UserID Left Outer Join Reviews on Items.SellerID = Reviews.SellerID WHERE Items.ItemID = ?',
         [req.params.ItemID],
         function (err, result, fields) {
             if (err) throw err;
