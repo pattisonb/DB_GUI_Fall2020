@@ -267,6 +267,16 @@ app.get('/favorites/:UserID', (req, res) => {
     );
 });
 
+app.delete('/deleteFavorite/:ItemID', async (req, res) => {
+    var ItemID = req.body.ItemID;
+  
+    connection.query("DELETE FROM Favorites WHERE ItemID = ?", [req.params.ItemID], function (err, result, fields) {
+      if (err) 
+        return console.error(error.message);
+      res.end(JSON.stringify(result)); 
+      });
+  });
+
 app.post('/addFavorite', (req, res) => {
     connection.query(
         'INSERT INTO PonyList.Favorites (UserID, ItemID) VALUES(?, ?)',
@@ -287,6 +297,16 @@ app.post('/addFavorite', (req, res) => {
         }
     );
 });
+
+app.delete('/deleteShared/:ItemID', async (req, res) => {
+    var ItemID = req.body.ItemID;
+  
+    connection.query("DELETE FROM SharedProducts WHERE ItemID = ?", [req.params.ItemID], function (err, result, fields) {
+      if (err) 
+        return console.error(error.message);
+      res.end(JSON.stringify(result)); 
+      });
+  });
 
 app.post('/shareProduct', (req, res) => {
     connection.query(
