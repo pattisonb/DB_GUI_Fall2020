@@ -1,0 +1,165 @@
+import React from 'react';
+import { useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import axios from 'axios';
+import { API_URL } from '../../api_url';
+import { useState } from 'react';
+import DetailNav from '../layout/DetailNav';
+import Rating from '../product/Rating';
+import SellerInfo from '../product/SellerInfo';
+import ReviewList from '../product/ReviewList';
+// http:/localhost:3000/profile/:id
+
+import './ProfilePage.css';
+
+Array.prototype.swap = function (x, y) {
+    if (this[x] > this[y]) {
+        let b = this[x];
+        this[x] = this[y];
+        this[y] = b;
+    }
+    return this;
+};
+
+const ProfilePage = () => {
+    const { id } = useParams();
+    const [user, setUser] = useState('');
+    const [userRating, setUserRating] = useState('');
+    const [reviews, setReviews] = useState([]);
+    useEffect(() => {
+        axios.get(`${API_URL}/user/${id}`).then(res => {
+            console.log(res.data[0]);
+            setUser(res.data[0]);
+        });
+        axios.get(`${API_URL}/userRating/${id}`).then(res => {
+            console.log(res.data[0]);
+            setUserRating(res.data[0]);
+        });
+        axios.get(`${API_URL}/reviews/${id}`).then(res => {
+            console.log(res.data);
+            setReviews(res.data);
+        });
+    }, []);
+
+    const selfId = parseInt(window.localStorage.getItem('id'));
+    return (
+        <div className='ProfilePage mt-4 p-4'>
+            <DetailNav />
+            <div className='ProfilePage-UserDetails d-flex flex-column m-3 justify-content-center align-items-center'>
+                <h1 className='display-4 mb-4 align-self-start'>
+                    {user.UserID === selfId ? 'Your' : user.Username + "'s"}{' '}
+                    Profile
+                </h1>
+                <img
+                    className='mx-auto'
+                    style={{
+                        width: '75%',
+                        maxWidth: '700px',
+                        maxHeight: '700px',
+                        border: '1rem solid var(--smu-blue)',
+                        borderRadius: '15px',
+                    }}
+                    src={`${
+                        user.ProfilePicture ||
+                        'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'
+                    }`}
+                    alt='Profile-Image'
+                />
+                {selfId === user.UserID && <h1>Change Profile Image</h1>}
+                <table className='table table-striped my-5'>
+                    <thead></thead>
+                    <tbody>
+                        <tr>
+                            <th>On Campus?</th>
+                            <td>{user.OnCampus}</td>
+                        </tr>
+                        <tr>
+                            <th>Dorm</th>
+                            <td>{user.Dorm}</td>
+                        </tr>
+                        <tr>
+                            <th>Miles Away</th>
+                            <td>{user.MilesAway}</td>
+                        </tr>
+                        <tr>
+                            <th>Location</th>
+                            <td>{user.Location}</td>
+                        </tr>
+                        <tr>
+                            <th>Number of Sales</th>
+                            <td>{user.NumSales}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div className='ProfilePage-Actions my-5 d-flex flex-column justify-content-between'>
+                    {selfId !== user.UserID ? (
+                        <>
+                            <Link
+                                to={`/manageItems/${user.UserID}/pastSales`}
+                                className='btn btn-block btn-previousSales'
+                            >
+                                View Previous Sales{' '}
+                            </Link>
+                            <Link
+                                to={`/manageItems/${user.UserID}/currentSales`}
+                                className='btn btn-block btn-currentSales'
+                            >
+                                {' '}
+                                View Current Sales{' '}
+                            </Link>
+                            <Link
+                                to={`/chat?name=${window.localStorage.getItem(
+                                    'id'
+                                )}&room=${[
+                                    `${window.localStorage.getItem('id')}`,
+                                    '-',
+                                    user.UserID,
+                                ]
+                                    .swap(0, 2)
+                                    .join('')}`}
+                                className='btn btn-block btn-chat'
+                            >
+                                Contact User
+                            </Link>
+                        </>
+                    ) : (
+                        <>
+                            <Link
+                                className='btn btn-block btn-warning'
+                                to={`/manageItems/${selfId}`}
+                            >
+                                Manage your items
+                            </Link>
+                            <Link
+                                className='btn btn-block btn-warning'
+                                to={`/favoriteItems/${selfId}`}
+                            >
+                                View Your favorite Items
+                            </Link>
+                            <Link
+                                className='btn btn-block btn-warning'
+                                to={`/manageItems/${selfId}`}
+                            >
+                                View Your favorite Sellers
+                            </Link>
+                        </>
+                    )}
+                </div>
+
+                <div className='d-flex flex-column justify-content-center align-items-center w-100'>
+                    <h2 className='display-4 mx-auto text-center'>
+                        Seller Rating
+                    </h2>
+
+                    <Rating value={userRating.Rating} />
+                    <div className='mt-5 w-75'>
+                        <ReviewList reviews={reviews} />
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default ProfilePage;

@@ -19,6 +19,8 @@ import SellItem from './Items/SellItem';
 import ManageItems from './Items/ManageItems';
 import PastItems from './Items/PastItems';
 import { CurrentItems } from './Items/CurrentItems';
+import ProfilePage from './profile/ProfilePage';
+import Favorites from './Items/Favorites';
 const getLogged = () => {
     let id = window.localStorage.getItem('id');
     console.log(id);
@@ -37,6 +39,11 @@ function App() {
                     {/* {window.localStorage.getItem('id') === null && <Redirect to='/' />} */}
                     <Switch>
                         <Route path='/' exact component={Landing}></Route>
+                        <Route
+                            path='/profile/:id'
+                            exact
+                            component={ProfilePage}
+                        />
                         <Route path='/login' exact component={Login} />
                         <Route path='/home' exact component={Home}></Route>
                         <Route
@@ -58,6 +65,11 @@ function App() {
                             path='/manageItems/:userId/currentSales'
                             exact
                             component={CurrentItems}
+                        />
+                        <Route
+                            path='/favorites/:itemId'
+                            exact
+                            component={Favorites}
                         />
                         <Route
                             path='/sellItems/:userId'

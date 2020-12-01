@@ -25,7 +25,8 @@ export const CurrentItems = () => {
 
     useEffect(() => {
         axios.get(`${API_URL}/userItems/${userId}`).then(res => {
-            setItems(res.data);
+            console.log(res.data.filter(item => item.IsSold != 1));
+            setItems(res.data.filter(item => item.IsSold != 1));
             setLoading(false);
         });
     }, [updateItemId, deletingItemId]);
@@ -64,6 +65,20 @@ export const CurrentItems = () => {
                 setUpdateCondition('');
                 setOkayPopup(true);
                 setOkayMessage('Item Updated!');
+            });
+    };
+
+    const handleSell = itemId => {
+        axios
+            .patch(`${API_URL}/addSale/${window.localStorage.getItem('id')}`)
+            .then(res => {
+                axios
+                    .patch(`${API_URL}/updateIsSold/${itemId}`)
+                    .then(res => {
+                        setOkayPopup(true);
+                        setOkayMessage(`Item has been sold!`);
+                    })
+                    .catch(err => console.error(err));
             });
     };
 
@@ -125,13 +140,24 @@ export const CurrentItems = () => {
                 )}
                 <DetailNav />
                 <div className='row'>
-                    <Link
-                        to={`/manageItems/${window.localStorage.getItem('id')}`}
-                        style={{ color: 'var(--smu-blue)' }}
-                    >
-                        <i className={`fas fa-arrow-left fa-2x mr-2`}></i>
-                    </Link>
-                    <small className='ml-0 p-0'>Back to Manage Items</small>
+                    {window.localStorage.getItem('id') === userId && (
+                        <>
+                            <Link
+                                to={`/manageItems/${window.localStorage.getItem(
+                                    'id'
+                                )}`}
+                                style={{ color: 'var(--smu-blue)' }}
+                            >
+                                <i
+                                    className={`fas fa-arrow-left fa-2x mr-2`}
+                                ></i>
+                            </Link>
+
+                            <small className='ml-0 p-0'>
+                                Back to Manage Items
+                            </small>
+                        </>
+                    )}
                     <h2 className='text-center display-4 mb-5 col-11'>
                         Current Items For Sale
                     </h2>
@@ -165,7 +191,7 @@ export const CurrentItems = () => {
 
                         {items.length === 0 && (
                             <h2 className='display-3 mt-5 text-center'>
-                                No items to show... Start Selling!
+                                No items to show...
                             </h2>
                         )}
                         <ul className='list-group'>
@@ -262,7 +288,12 @@ export const CurrentItems = () => {
                                               key={item.itemID}
                                           >
                                               <div className='d-flex flex-column col-5'>
-                                                  <h4>{item.ItemName}</h4>
+                                                  <Link
+                                                      style={{ color: 'black' }}
+                                                      to={`/products/${item.ItemID}`}
+                                                  >
+                                                      <h4>{item.ItemName}</h4>
+                                                  </Link>
                                                   <img
                                                       style={{
                                                           width: '100px',
@@ -281,27 +312,57 @@ export const CurrentItems = () => {
                                                   </p>
                                               </div>
                                               <div className='col-2 d-flex justify-content-center align-items-center'>
-                                                  <button
-                                                      onClick={e => {
-                                                          handleEdit(
-                                                              item.ItemID
-                                                          );
-                                                      }}
-                                                      className='mx-1'
-                                                  >
-                                                      <i className='mx-2 fas fa-pencil-alt'></i>
-                                                  </button>
-                                                  <button
-                                                      onClick={e => {
-                                                          handleDelete(
-                                                              item.ItemID
-                                                          );
-                                                      }}
-                                                      className='mx-1'
-                                                  >
-                                                      <i className='mx-2 fas fa-trash-alt'></i>
-                                                  </button>
+                                                  {window.localStorage.getItem(
+                                                      'id'
+                                                  ) === userId && (
+                                                      <>
+                                                          <button
+                                                              onClick={e => {
+                                                                  handleEdit(
+                                                                      item.ItemID
+                                                                  );
+                                                              }}
+                                                              className='mx-1'
+                                                          >
+                                                              <i className='mx-2 fas fa-pencil-alt'></i>
+                                                          </button>
+                                                          <button
+                                                              onClick={e => {
+                                                                  handleDelete(
+                                                                      item.ItemID
+                                                                  );
+                                                              }}
+                                                              className='mx-1'
+                                                          >
+                                                              <i className='mx-2 fas fa-trash-alt'></i>
+                                                          </button>
+                                                      </>
+                                                  )}
                                               </div>
+
+                                              {window.localStorage.getItem(
+                                                  'id'
+                                              ) === userId && (
+                                                  <div className='mx-auto'>
+                                                      <button
+                                                          onClick={e => {
+                                                              handleSell(
+                                                                  item.ItemID
+                                                              );
+                                                          }}
+                                                          className='mx-2 my-3 btn btn-primary'
+                                                      >
+                                                          Mark Item as Sold
+                                                      </button>
+
+                                                      <Link
+                                                          className='btn btn-primary mx-2'
+                                                          to={`/favorites/${item.ItemID}`}
+                                                      >
+                                                          See Interested Buyers
+                                                      </Link>
+                                                  </div>
+                                              )}
                                           </li>
                                       );
                                   })}

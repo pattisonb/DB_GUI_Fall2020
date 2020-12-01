@@ -20,18 +20,25 @@ const ManageItems = () => {
                 </h3>
                 <div className='row mx-auto mt-5'>
                     <Link
-                        className='col-4 btn btn-primary mx-auto'
-                        to={`/manageItems/${userId}/currentSales`}
-                    >
-                        {' '}
-                        Current Items on Sale
-                    </Link>
-                    <Link
-                        className='col-4 btn btn-primary mx-auto'
+                        className='col-3 btn btn-primary mx-auto'
                         to={`/manageItems/${userId}/pastSales`}
                     >
                         {' '}
                         Previous Sales{' '}
+                    </Link>
+                    <Link
+                        className='col-3 btn btn-primary mx-auto'
+                        to={`/sellItems/${userId}`}
+                    >
+                        {' '}
+                        Post a new item!{' '}
+                    </Link>
+                    <Link
+                        className='col-3 btn btn-primary mx-auto'
+                        to={`/manageItems/${userId}/currentSales`}
+                    >
+                        {' '}
+                        Current Items on Sale
                     </Link>
                 </div>
             </div>

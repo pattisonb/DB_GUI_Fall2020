@@ -1,0 +1,21 @@
+.btn-previousSales {
+    background: var(--smu-blue-light);
+    color: white;
+}
+.btn-currentSales {
+    background: var(--smu-red-light);
+    color: white;
+}
+.btn-chat {
+    background: var(--smu-red);
+    color: white;
+}
+.btn-previousSales:hover {
+    background: var(--smu-blue-dark);
+}
+.btn-currentSales:hover {
+    background: var(--smu-red-dark);
+}
+.btn-chat:hover {
+    background: darkred;
+}
