@@ -214,7 +214,7 @@ app.post('/addReview', (req, res) => {
 
 app.get('/userItems/:ID', (req, res) => {
     connection.query(
-        'SELECT ItemID, ItemName, ItemCost, ItemDetails, IsSold, ImageURL FROM Items i INNER JOIN Users u on i.SellerID = u.UserID WHERE u.UserID = ?',
+        'SELECT ItemID, ItemName, ItemCost, ItemDetails, `Condition`, IsSold, ImageURL FROM Items i INNER JOIN Users u on i.SellerID = u.UserID WHERE u.UserID = ?',
         [req.params.ID],
         function (err, result, fields) {
             if (err) throw err;
