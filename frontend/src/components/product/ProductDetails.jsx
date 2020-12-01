@@ -10,6 +10,9 @@ import ReviewForm from './ReviewForm';
 import SellerInfo from './SellerInfo';
 import { ProductsRepository } from '../api/ProductsRepository';
 import DetailNav from '../layout/DetailNav';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import Alert from '../layout/Alert';
+import shortid from 'shortid';
 
 class ProductDetails extends React.Component {
     productsRepository = new ProductsRepository();
@@ -20,8 +23,14 @@ class ProductDetails extends React.Component {
         sellerReviews: '',
         images: '',
         currImgIndex: 0,
+        alertMessage: '',
+        alertKey: '',
     };
-
+    getId() {
+        const id = shortid.generate();
+        console.log(id);
+        return id;
+    }
     myAddReview = (ReviewText, Rating) => {
         let newReview = new UserReview(
             this.state.product.SellerID,
@@ -65,6 +74,7 @@ class ProductDetails extends React.Component {
     };
 
     render() {
+        const url = window.location.href;
         if (
             !this.state.product ||
             !this.state.sellerReviews ||
@@ -76,7 +86,14 @@ class ProductDetails extends React.Component {
         return (
             <div className='container mt-4'>
                 <DetailNav />
-
+                {this.state.alertMessage && (
+                    <Alert
+                        key={this.state.alertKey}
+                        top='45px'
+                        bgColor='var(--smu-red)'
+                        message={this.state.alertMessage}
+                    />
+                )}
                 <div className='productDetails-box'>
                     <div className='product-img-box'>
                         <img
@@ -122,6 +139,19 @@ class ProductDetails extends React.Component {
                                     Favorite this item
                                 </button>
                             )}
+                        <CopyToClipboard text={url}>
+                            <button
+                                onClick={e => {
+                                    this.setState({
+                                        alertMessage: 'URL Copied!',
+                                    });
+                                    this.setState({ alertKey: this.getId() });
+                                }}
+                                className='ml-3 btn btn-info btn-lg'
+                            >
+                                <i className='fas fa-share-alt'></i>
+                            </button>
+                        </CopyToClipboard>
                     </div>
                 </div>
 
