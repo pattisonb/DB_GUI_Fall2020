@@ -3,6 +3,7 @@ import { Link, Redirect } from 'react-router-dom';
 
 import Navbar from './layout/Navbar';
 import './Home.css';
+import Rating from './product/Rating'
 import PonyListLogo from '../img/PonyList.PNG';
 import { ProductsRepository } from './api/ProductsRepository';
 import Alert from 'react-bootstrap/Alert'
@@ -106,13 +107,7 @@ export class Home extends React.Component {
     }
     else if (sortMethod == 'sellerRating') {
       products.sort((a, b) => {
-
-        this.productsRepository.getSellerRating(a.SellerID)
-          .then(obj => this.setState({ ratingA: obj[0].Rating }))
-        this.productsRepository.getSellerRating(b.SellerID)
-          .then(obj => this.setState({ ratingB: obj[0].Rating }))
-
-        return this.state.ratingB - this.state.ratingA;
+        return b.Rating - a.Rating;
       })
     }
 
@@ -196,25 +191,7 @@ export class Home extends React.Component {
       }
     }
 
-
-
-
-
   }
-
-  // myGetSellerRating(sellerId) {
-  //   this.productsRepository.getSellerRating(sellerId)
-  //     .then(object => {
-  //       if (!object[0].Rating) {
-  //         this.setState({ sellerRating: 0 })
-  //       }
-  //       else {
-  //         this.setState({ sellerRating: object[0].Rating })
-  //       }
-  //     })
-
-  //   return this.state.sellerRating
-  // }
 
 
 
@@ -236,7 +213,7 @@ export class Home extends React.Component {
                 <i class='fas fa-user'></i>
               </a>
               
-              <Link className='shopping-cart-logo' to='/chat'>
+              <Link className='message-logo' to='/chat'>
                 <i className='fas fa-comments'></i>
               </Link>
             </div>
@@ -453,11 +430,9 @@ export class Home extends React.Component {
                             this.state.users.find(user => user.UserID === product.SellerID).Username
                           }
                         </Link>
-                        <p>
-                          {
-                            // this.myGetSellerRating(product.SellerID)
-                          }
-                        </p>
+                        
+                        <Rating value={ product.Rating } class="stars-box-sm" />
+                       
                         <p><small className="text-muted">{new Date(product.DatePosted).getFullYear()}-{new Date(product.DatePosted).getMonth() + 1}-{new Date(product.DatePosted).getDate()}</small></p>
                       </p>
                     </div>
@@ -471,22 +446,11 @@ export class Home extends React.Component {
     );
   }
 
-  // Get an array of products from the API to populate our ProductsList
   componentDidMount() {
     this.productsRepository.getProducts()
       .then(products => this.setState({ products }));
     this.productsRepository.getUsers()
       .then(users => this.setState({ users }));
-
-    // this.productsRepository.getSellerRating(1)
-    //   .then(object => {
-    //     if (!object[0].Rating) {
-    //       this.setState({ sellerRating: 0 })
-    //     }
-    //     else {
-    //       this.setState({ sellerRating: object[0].Rating })
-    //     }
-    //   })
   }
 }
 

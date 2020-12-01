@@ -74,7 +74,7 @@
   color: white;
   font-size: 1.4rem;
 }
-.shopping-cart-logo {
+.message-logo {
   color: white;
   font-size: 1.4rem;
   /* To remove the underline on hover */
@@ -82,7 +82,7 @@
   margin-left: 2rem;
 }
 .account-logo:hover,
-.shopping-cart-logo:hover {
+.message-logo:hover {
   transform: scale(1.1
   );
   color: #e1e3e4;

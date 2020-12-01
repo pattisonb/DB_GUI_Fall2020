@@ -48,7 +48,7 @@ class ReviewForm extends React.Component {
               </select>
             </div>
 
-            <Rating value={this.state.rating} />
+            <Rating value={this.state.rating} class="stars-box" />
           </div>
 
 

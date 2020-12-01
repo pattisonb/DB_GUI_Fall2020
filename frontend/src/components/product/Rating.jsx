@@ -4,7 +4,7 @@ import './Rating.css'
 
 function Rating(props) {
   return (
-    <div className="stars-box">
+    <div className={props.class}>
       <span className="stars">
         {
           [1, 2, 3, 4, 5].map(x => (<i key={x} className={(x > props.value ? 'empty-star' : 'full-star')}></i>))

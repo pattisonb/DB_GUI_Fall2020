@@ -21,6 +21,7 @@
 .rating-text {
   padding-top: 0.8rem;
   margin-bottom: 0 !important;
+  display: flex;
 }
 
 .seller-info-box img {
