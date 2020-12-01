@@ -364,7 +364,7 @@ app.post('/addTime', (req, res) => {
 //ITEMS CALLS
 app.get('/items', function (req, res) {
     connection.query(
-        'SELECT Items.ItemID, Items.SellerID, Username, AVG(Reviews.Rating) as Rating, OnCampus, ItemName, ItemCost, ItemDetails, `Condition`, ImageURL, DatePosted FROM Items Inner Join Users on Items.SellerID = Users.UserID Left Outer Join Reviews on Items.SellerID = Reviews.SellerID group by ItemID;',
+        'SELECT Items.ItemID, Items.SellerID, Username, AVG(Reviews.Rating) as Rating, OnCampus, ItemName, ItemCost, ItemDetails, `Condition`, IsSold, ImageURL, DatePosted FROM Items Inner Join Users on Items.SellerID = Users.UserID Left Outer Join Reviews on Items.SellerID = Reviews.SellerID group by ItemID;',
         function (err, result, fields) {
             if (err) throw err;
             res.end(JSON.stringify(result));
@@ -374,7 +374,7 @@ app.get('/items', function (req, res) {
 
 app.get('/item/:ItemID', (req, res) => {
     connection.query(
-        'SELECT Items.ItemID, Items.SellerID, Username, AVG(Reviews.Rating) as Rating, OnCampus, ItemName, ItemCost, ItemDetails, `Condition`, ImageURL, DatePosted FROM Items Inner Join Users on Items.SellerID = Users.UserID Left Outer Join Reviews on Items.SellerID = Reviews.SellerID WHERE Items.ItemID = ?',
+        'SELECT Items.ItemID, Items.SellerID, Username, AVG(Reviews.Rating) as Rating, OnCampus, ItemName, ItemCost, ItemDetails, `Condition`, IsSold, ImageURL, DatePosted FROM Items Inner Join Users on Items.SellerID = Users.UserID Left Outer Join Reviews on Items.SellerID = Reviews.SellerID WHERE Items.ItemID = ?;',
         [req.params.ItemID],
         function (err, result, fields) {
             if (err) throw err;
@@ -474,6 +474,14 @@ app.put('/updateItem', async (req, res) => {
   });
 });
 
+app.patch('/updateIsSold/:ItemID', async (req, res) => {
+    connection.query("UPDATE Items SET IsSold = 1 WHERE ItemID = ?", [req.params.ItemID],function (err, result, fields) {
+    if (err) throw err;
+    //console.log(result);
+    res.end(JSON.stringify(result)); 
+    });
+  });
+
 
 // app.get('/addSale/:UserID', (req, res) => {
 //     connection.query("UPDATE Users SET NumSales = NumSales + 1 WHERE UserID = ?",
@@ -510,6 +518,17 @@ app.get('/SellerID/:ItemID', (req, res) => {
 app.get('/isSold/:ItemID', (req, res) => {
     connection.query(
         'SELECT COUNT(1) FROM Transactions WHERE ItemID = ?',
+        [req.params.ItemID],
+        function (err, result, fields) {
+            if (err) throw err;
+            res.end(JSON.stringify(result));
+        }
+    );
+});
+
+app.get('/favoritedBy/:ItemID', (req, res) => {
+    connection.query(
+        "Select f.UserID, Username from Favorites f inner join Users u on f.UserID = u.UserID where ItemID = ?",
         [req.params.ItemID],
         function (err, result, fields) {
             if (err) throw err;
