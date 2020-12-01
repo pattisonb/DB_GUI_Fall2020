@@ -31,13 +31,28 @@ class ProductDetails extends React.Component {
       Rating
     );
 
-    this.productsRepository.addReview(newReview).then(review => {
-      let reviews = this.state.sellerReviews;
-      reviews.push(review);
-      this.setState({ sellerReviews: reviews });
-      alert('User review added!');
-    });
+    this.productsRepository.addReview(newReview)
+        .then(review => {
+          let reviews = this.state.sellerReviews;
+          reviews.push(review);
+          this.setState({ sellerReviews: reviews });
+          alert('User review added!');
+        });
   };
+
+  myAddFavoriteItem() {
+    let userId = window.localStorage.getItem('id');
+    let itemId = this.state.product.ItemID;
+    let favoriteItem = {userId, itemId}
+
+    this.productsRepository.addFavoriteItem(favoriteItem)
+      .then(x => alert('Item added to your favorite list!'))
+  }
+
+
+
+
+
 
   thumbsBoxRef = React.createRef();
 
@@ -100,20 +115,21 @@ class ProductDetails extends React.Component {
             </div>
             <button
               type='button'
-              className='btn btn-warning btn-lg'
+              className='btn btn-info btn-lg'
+              onClick={ () => this.myAddFavoriteItem() }
             >
-              Add to cart
+              Favorite this item
                         </button>
           </div>
         </div>
 
-        <SellerInfo seller={this.state.seller} />
+        <SellerInfo seller={this.state.seller} product={this.state.product} />
 
         <ReviewList reviews={this.state.sellerReviews} />
 
         <ReviewForm
-          myAddReview={(ReviewText, Rating) =>
-            this.myAddReview(ReviewText, Rating)
+          myAddReview={ (ReviewText, Rating) =>
+            this.myAddReview(ReviewText, Rating )
           }
         />
       </div>

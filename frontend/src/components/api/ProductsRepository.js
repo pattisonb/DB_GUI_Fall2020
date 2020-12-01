@@ -103,7 +103,17 @@ export class ProductsRepository {
         });
     });
   }
-
+  addFavoriteItem(item) {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(`${this.url}/addFavorite`, item, this.config)
+        .then(x => resolve(x.data))
+        .catch(err => {
+          alert(err);
+          reject();
+        });
+    });
+  }
 
 
 }

@@ -20,10 +20,9 @@ const DetailNav = () => {
                 <a href='#' className='account-logo'>
                     <i className='fas fa-user'></i>
                 </a>
-                <a href='#' className='shopping-cart-logo'>
-                    <i className='fas fa-shopping-cart'></i>(
-                    <span className='cart-count'>0</span>)
-                </a>
+                <Link className='message-logo' to='/chat'>
+                    <i className='fas fa-comments'></i>
+                </Link>
             </div>
         </nav>
     );

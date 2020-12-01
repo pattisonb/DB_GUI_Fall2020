@@ -21,7 +21,7 @@ class ReviewList extends React.Component {
           this.props.reviews.map((review, idx) =>
             <article key={idx} className="card mb-4">
               <div className="card-header">
-                <Rating value={ review.Rating } />
+                <Rating value={ review.Rating } class="stars-box" />
               </div>
               <div className="card-body">
                 <p className="text-secondary">{ review.Username }
