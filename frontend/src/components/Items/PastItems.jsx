@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { API_URL } from '../../api_url';
 import DetailNav from '../layout/DetailNav';
 const PastItems = () => {
@@ -19,26 +19,33 @@ const PastItems = () => {
     };
 
     useEffect(() => {
-        /**
-         * app.get('/soldItems/:UserID', (req, res) => {
-});
-         */
         axios
-            .get(`${API_URL}/soldItems/${window.localStorage.getItem('id')}`)
-            .then(res => setpastItems(res.data));
+            .get(`${API_URL}/userItems/${userId}`)
+            .then(res =>
+                setpastItems(res.data.filter(item => item.IsSold === 1))
+            );
     }, []);
+
+    const { userId } = useParams();
 
     return (
         <div className='container mt-4'>
             <DetailNav />
             <div className='row'>
-                <Link
-                    to={`/manageItems/${window.localStorage.getItem('id')}`}
-                    style={{ color: 'var(--smu-blue)' }}
-                >
-                    <i className={`fas fa-arrow-left fa-2x mr-2`}></i>
-                </Link>
-                <small className='ml-0 p-0'>Back to Manage Items</small>
+                {userId === window.localStorage.getItem('id') && (
+                    <>
+                        <Link
+                            to={`/manageItems/${window.localStorage.getItem(
+                                'id'
+                            )}`}
+                            style={{ color: 'var(--smu-blue)' }}
+                        >
+                            <i className={`fas fa-arrow-left fa-2x mr-2`}></i>
+                        </Link>
+                        <small className='ml-0 p-0'>Back to Manage Items</small>
+                    </>
+                )}
+
                 <h2 className='text-center display-4 mb-5 col-11'>
                     Sale History
                 </h2>
@@ -62,7 +69,10 @@ const PastItems = () => {
             </div>
             {pastItems.length === 0 && (
                 <h2 className='text-center display-3'>
-                    You haven't sold any items...
+                    {userId === window.localStorage.getItem('id')
+                        ? "You haven't"
+                        : "This seller hasn't"}{' '}
+                    sold any items...
                 </h2>
             )}
             <ul className='list-group'>
@@ -73,7 +83,12 @@ const PastItems = () => {
                             key={item.itemID}
                         >
                             <div className='d-flex flex-column col-5'>
-                                <h4>{item.ItemName}</h4>
+                                <Link
+                                    style={{ color: 'black' }}
+                                    to={`/products/${item.ItemID}`}
+                                >
+                                    <h4>{item.ItemName}</h4>
+                                </Link>
                                 <img
                                     style={{
                                         width: '100px',
