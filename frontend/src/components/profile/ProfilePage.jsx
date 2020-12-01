@@ -55,8 +55,8 @@ const ProfilePage = () => {
                     className='mx-auto'
                     style={{
                         width: '75%',
-                        maxWidth: '700px',
-                        maxHeight: '700px',
+                        maxWidth: '400px',
+                        maxHeight: '400px',
                         border: '1rem solid var(--smu-blue)',
                         borderRadius: '15px',
                     }}
