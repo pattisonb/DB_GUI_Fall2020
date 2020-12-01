@@ -22,12 +22,6 @@ const DetailNav = () => {
                     className='account-logo'
                 >
                     <i className='fas fa-user'></i>
-<<<<<<< HEAD
-                </a>
-                <Link className='message-logo' to='/chat'>
-                    <i className='fas fa-comments'></i>
-=======
->>>>>>> eli/profile-page
                 </Link>
             </div>
         </nav>

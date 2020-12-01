@@ -11,6 +11,7 @@ import ReviewList from '../product/ReviewList';
 // http:/localhost:3000/profile/:id
 
 import './ProfilePage.css';
+import { Input } from '../messaging/Input';
 
 Array.prototype.swap = function (x, y) {
     if (this[x] > this[y]) {
@@ -65,8 +66,18 @@ const ProfilePage = () => {
                     }`}
                     alt='Profile-Image'
                 />
-                {selfId === user.UserID && <h1>Change Profile Image</h1>}
-                <table className='table table-striped my-5'>
+                {selfId === user.UserID && (
+                    <>
+                        <h6 className='mt-5'>Change Profile Image</h6>
+                        <div className='d-flex'>
+                            <input className='w-75 p-2 mx-2' type='text' />
+                            <button className='btn btn-warning w-25 mx-2'>
+                                Update
+                            </button>
+                        </div>
+                    </>
+                )}
+                <table className='table table-striped my-5 w-50'>
                     <thead></thead>
                     <tbody>
                         <tr>
@@ -92,18 +103,18 @@ const ProfilePage = () => {
                     </tbody>
                 </table>
 
-                <div className='ProfilePage-Actions my-5 d-flex flex-column justify-content-between'>
+                <div className='ProfilePage-Actions my-5 w-50 d-flex flex-column justify-content-between'>
                     {selfId !== user.UserID ? (
                         <>
                             <Link
                                 to={`/manageItems/${user.UserID}/pastSales`}
-                                className='btn btn-block btn-previousSales'
+                                className='btn mx-auto w-75 btn-block btn-previousSales'
                             >
                                 View Previous Sales{' '}
                             </Link>
                             <Link
                                 to={`/manageItems/${user.UserID}/currentSales`}
-                                className='btn btn-block btn-currentSales'
+                                className='btn mx-auto w-75 btn-block btn-currentSales'
                             >
                                 {' '}
                                 View Current Sales{' '}
@@ -118,7 +129,7 @@ const ProfilePage = () => {
                                 ]
                                     .swap(0, 2)
                                     .join('')}`}
-                                className='btn btn-block btn-chat'
+                                className='btn mx-auto w-75 btn-block btn-chat'
                             >
                                 Contact User
                             </Link>
@@ -147,7 +158,7 @@ const ProfilePage = () => {
                     )}
                 </div>
 
-                <div className='d-flex flex-column justify-content-center align-items-center w-100'>
+                <div className='d-flex flex-column justify-content-center align-items-center w-75'>
                     <h2 className='display-4 mx-auto text-center'>
                         Seller Rating
                     </h2>
