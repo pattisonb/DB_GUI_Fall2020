@@ -92,7 +92,8 @@ class ProductDetails extends React.Component {
                             {this.state.product.ItemName}
                         </p>
                         <div className='productDetails-price'>
-                            ${this.state.product.ItemCost}
+                            ${this.state.product.ItemCost}{' '}
+                            {this.state.product.IsSold ? '(SOLD)' : null}
                         </div>
                         <p>{this.state.product.ItemDetails}</p>
                         <div
@@ -110,16 +111,17 @@ class ProductDetails extends React.Component {
                                 />
                             ))}
                         </div>
-                        {parseInt(window.localStorage.getItem('id')) !==
-                            this.state.seller.UserID && (
-                            <button
-                                type='button'
-                                className='btn btn-info btn-lg'
-                                onClick={() => this.myAddFavoriteItem()}
-                            >
-                                Favorite this item
-                            </button>
-                        )}
+                        {this.state.product.IsSold === 0 &&
+                            parseInt(window.localStorage.getItem('id')) !==
+                                this.state.seller.UserID && (
+                                <button
+                                    type='button'
+                                    className='btn btn-info btn-lg'
+                                    onClick={() => this.myAddFavoriteItem()}
+                                >
+                                    Favorite this item
+                                </button>
+                            )}
                     </div>
                 </div>
 

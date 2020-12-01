@@ -502,7 +502,11 @@ export class Home extends React.Component {
     componentDidMount() {
         this.productsRepository
             .getProducts()
-            .then(products => this.setState({ products }));
+            .then(products =>
+                this.setState({
+                    products: products.filter(product => product.IsSold !== 1),
+                })
+            );
         this.productsRepository
             .getUsers()
             .then(users => this.setState({ users }));
