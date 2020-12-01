@@ -9,6 +9,7 @@ class SellerInfo extends React.Component {
         return (
             <div className='seller-info-box'>
                 <img
+                    className='cover'
                     src={this.props.seller.ProfilePicture}
                     alt='seller-photo'
                 />

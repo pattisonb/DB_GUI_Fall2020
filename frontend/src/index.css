@@ -44,3 +44,7 @@ body {
 body {
     margin: 0;
 }
+
+.cover {
+    object-fit: cover;
+}

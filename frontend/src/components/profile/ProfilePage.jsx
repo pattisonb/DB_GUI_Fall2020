@@ -52,7 +52,7 @@ const ProfilePage = () => {
                     Profile
                 </h1>
                 <img
-                    className='mx-auto'
+                    className='mx-auto cover'
                     style={{
                         width: '75%',
                         maxWidth: '400px',
