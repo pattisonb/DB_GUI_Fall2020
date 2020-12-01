@@ -55,7 +55,9 @@ class ProductDetails extends React.Component {
     thumbnailClicked = idx => {
         this.setState({ currImgIndex: idx });
 
-        const images = this.thumbsBoxRef.current.children;
+        const images = this.thumbsBoxRef.current
+            ? this.thumbsBoxRef.current.children
+            : null;
         for (let i = 0; i < images.length; i += 1) {
             images[i].className = images[i].className.replace('active', '');
         }
