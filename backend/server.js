@@ -372,12 +372,21 @@ app.post('/addTime', (req, res) => {
 //    });
 //});
 
-app.patch('/addProfilePicture/:UserID/:ProfilePicture', (req, res) => {
-    connection.query(
-      'UPDATE users SET (ProfilePicture) VALUES (?) WHERE UserID = ?',
+app.patch('/updateMilesAway/:UserID/:MilesAway', async (req, res) => {
+   connection.query("UPDATE PonyList.Users SET MilesAway = ? WHERE UserID=?;", [req.params.MilesAway, req.params.UserID],function (err, result, fields) {
+   if (err) throw err;
+   console.log(result);
+   res.end(JSON.stringify(result)); 
+   });
+});
+
+app.patch('/updateProfilePicture', (req, res) => {
+    var UserID = req.body.UserID
+    var ProfilePicture = req.body.ProfilePicture
+    connection.query('UPDATE Users SET ProfilePicture = ? WHERE UserID = ?',
       [
-        req.body.UserID,
-        req.body.ProfilePictureURL,
+        ProfilePicture,
+        UserID
       ],
       function (err, rows, fields) {
         if (err) {
@@ -395,6 +404,7 @@ app.patch('/addProfilePicture/:UserID/:ProfilePicture', (req, res) => {
       }
     )
 })
+
 
 //ITEMS CALLS
 app.get('/items', function (req, res) {
