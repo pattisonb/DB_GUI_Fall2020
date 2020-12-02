@@ -365,8 +365,7 @@ app.post('/addTime', (req, res) => {
 app.put('/updateProfilePicture', async (req, res) => {
     var ProfilePicture = req.body.ProfilePicture;
     var UserID = req.body.UserID;
-  
-    connection.query("UPDATE PonyList.Items SET ProfilePicture = ? WHERE UserID=?;", [ProfilePicture, UserID],function (err, result, fields) {
+    connection.query("UPDATE PonyList.Users SET ProfilePicture = ? WHERE UserID=?;", [ProfilePicture, UserID],function (err, result, fields) {
     if (err) throw err;
     //console.log(result);
     res.end(JSON.stringify(result)); 
