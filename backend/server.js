@@ -362,15 +362,39 @@ app.post('/addTime', (req, res) => {
 });
 
 
-app.put('/updateProfilePicture', async (req, res) => {
-    var ProfilePicture = req.body.ProfilePicture;
-    var UserID = req.body.UserID;
-    connection.query("UPDATE PonyList.Users SET ProfilePicture = ? WHERE UserID=?;", [ProfilePicture, UserID],function (err, result, fields) {
-    if (err) throw err;
-    //console.log(result);
-    res.end(JSON.stringify(result)); 
-    });
-  });
+//app.patch('/:UserID/:ProfilePicture', async (req, res) => {
+//    var ProfilePicture = req.body.ProfilePicture;
+//    var UserID = req.body.UserID;
+//    connection.query("UPDATE PonyList.Users SET ProfilePicture = ? WHERE UserID=?;", [ProfilePicture, UserID],function (err, result, fields) {
+//    if (err) throw err;
+//    console.log(result);
+//    res.end(JSON.stringify(result)); 
+//    });
+//});
+
+app.patch('/addProfilePicture/:UserID/:ProfilePicture', (req, res) => {
+    connection.query(
+      'UPDATE users SET (ProfilePicture) VALUES (?) WHERE UserID = ?',
+      [
+        req.body.UserID,
+        req.body.ProfilePictureURL,
+      ],
+      function (err, rows, fields) {
+        if (err) {
+          logger.error('Error while executing Query')
+          res.status(400).json({
+            data: [],
+            error: 'MySQL error',
+          })
+        } else {
+          console.log('check')
+          res.status(200).json({
+            data: rows,
+          })
+        }
+      }
+    )
+})
 
 //ITEMS CALLS
 app.get('/items', function (req, res) {
