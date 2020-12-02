@@ -7,6 +7,7 @@ import './Login.css';
 import UserCredentials from './UserCredentials';
 import { Redirect, useHistory } from 'react-router-dom';
 import { API_URL } from '../../api_url';
+import { distance } from './Distance_Util';
 var sha256 = hash.sha256;
 
 export default function Login(props) {
@@ -33,15 +34,34 @@ export default function Login(props) {
                     Password: sha256(password),
                 })
                 .then(res => {
-                    const location = navigator.geolocation;
                     window.localStorage.setItem('id', res.data);
                     if (res.data === false) {
                         throw new Error('bad');
                     }
-                    location.getCurrentPosition(position => {
-                        console.log(position.coords.latitude);
-                        console.log(position.coords.longitude);
-                    });
+                    window.navigator.geolocation.getCurrentPosition(
+                        position => {
+                            var config = {
+                                method: 'patch',
+                                url: `http://18.188.219.228:8000/updateMilesAway/${window.localStorage.getItem(
+                                    'id'
+                                )}/${distance(
+                                    parseFloat(position.coords.latitude),
+                                    parseFloat(position.coords.longitude)
+                                )}`,
+                                headers: {},
+                                data: {},
+                            };
+
+                            axios(config)
+                                .then(function (response) {
+                                    console.log(JSON.stringify(response.data));
+                                })
+                                .catch(function (error) {
+                                    console.log(error);
+                                });
+                        }
+                    );
+
                     setLoggedUser(res.data);
                     setLoggedIn(true);
                 })

@@ -269,24 +269,30 @@ app.get('/favorites/:UserID', (req, res) => {
 
 app.delete('/deleteFavorite/:ItemID', async (req, res) => {
     var ItemID = req.body.ItemID;
-  
-    connection.query("DELETE FROM Favorites WHERE ItemID = ?", [req.params.ItemID], function (err, result, fields) {
-      if (err) 
-        return console.error(error.message);
-      res.end(JSON.stringify(result)); 
-      });
-  });
+
+    connection.query(
+        'DELETE FROM Favorites WHERE ItemID = ?',
+        [req.params.ItemID],
+        function (err, result, fields) {
+            if (err) return console.error(error.message);
+            res.end(JSON.stringify(result));
+        }
+    );
+});
 
 //delete favorite by UserID and ItemID
 app.delete('/deleteFavorite/:UserID/:ItemID', async (req, res) => {
     var UserID = req.body.UserID;
     var ItemID = req.body.ItemID;
-    connection.query("DELETE FROM Favorites WHERE (UserID = ? and ItemID = ?)", [req.params.UserID], [req.params.ItemID], function (err, result, fields) {
-      if (err) 
-        return console.error(error.message);
-      res.end(JSON.stringify(result)); 
-      });
-  });
+    connection.query(
+        `DELETE FROM Favorites WHERE (UserID = ${req.params.UserID} and ItemID = ${req.params.ItemID})`,
+
+        function (err, result, fields) {
+            if (err) return console.error(error.message);
+            res.end(JSON.stringify(result));
+        }
+    );
+});
 
 app.post('/addFavorite', (req, res) => {
     connection.query(
@@ -311,13 +317,16 @@ app.post('/addFavorite', (req, res) => {
 
 app.delete('/deleteShared/:ItemID', async (req, res) => {
     var ItemID = req.body.ItemID;
-  
-    connection.query("DELETE FROM SharedProducts WHERE ItemID = ?", [req.params.ItemID], function (err, result, fields) {
-      if (err) 
-        return console.error(error.message);
-      res.end(JSON.stringify(result)); 
-      });
-  });
+
+    connection.query(
+        'DELETE FROM SharedProducts WHERE ItemID = ?',
+        [req.params.ItemID],
+        function (err, result, fields) {
+            if (err) return console.error(error.message);
+            res.end(JSON.stringify(result));
+        }
+    );
+});
 
 app.post('/shareProduct', (req, res) => {
     connection.query(
@@ -372,49 +381,50 @@ app.post('/addTime', (req, res) => {
     );
 });
 
-
 //app.patch('/:UserID/:ProfilePicture', async (req, res) => {
 //    var ProfilePicture = req.body.ProfilePicture;
 //    var UserID = req.body.UserID;
 //    connection.query("UPDATE PonyList.Users SET ProfilePicture = ? WHERE UserID=?;", [ProfilePicture, UserID],function (err, result, fields) {
 //    if (err) throw err;
 //    console.log(result);
-//    res.end(JSON.stringify(result)); 
+//    res.end(JSON.stringify(result));
 //    });
 //});
 
 app.patch('/updateMilesAway/:UserID/:MilesAway', async (req, res) => {
-    connection.query("UPDATE PonyList.Users SET MilesAway = ? WHERE UserID=?;", [req.params.MilesAway, req.params.UserID],function (err, result, fields) {
-    if (err) throw err;
-    console.log(result);
-    res.end(JSON.stringify(result)); 
-    });
- });
- 
- app.patch('/updateProfilePicture', (req, res) => {
-     var UserID = req.body.UserID
-     var ProfilePicture = req.body.ProfilePicture
-     connection.query('UPDATE Users SET ProfilePicture = ? WHERE UserID = ?',
-       [
-         ProfilePicture,
-         UserID
-       ],
-       function (err, rows, fields) {
-         if (err) {
-           logger.error('Error while executing Query')
-           res.status(400).json({
-             data: [],
-             error: 'MySQL error',
-           })
-         } else {
-           console.log('check')
-           res.status(200).json({
-             data: rows,
-           })
-         }
-       }
-     )
- })
+    connection.query(
+        'UPDATE PonyList.Users SET MilesAway = ? WHERE UserID=?;',
+        [req.params.MilesAway, req.params.UserID],
+        function (err, result, fields) {
+            if (err) throw err;
+            console.log(result);
+            res.end(JSON.stringify(result));
+        }
+    );
+});
+
+app.patch('/updateProfilePicture', (req, res) => {
+    var UserID = req.body.UserID;
+    var ProfilePicture = req.body.ProfilePicture;
+    connection.query(
+        'UPDATE Users SET ProfilePicture = ? WHERE UserID = ?',
+        [ProfilePicture, UserID],
+        function (err, rows, fields) {
+            if (err) {
+                logger.error('Error while executing Query');
+                res.status(400).json({
+                    data: [],
+                    error: 'MySQL error',
+                });
+            } else {
+                console.log('check');
+                res.status(200).json({
+                    data: rows,
+                });
+            }
+        }
+    );
+});
 
 //ITEMS CALLS
 app.get('/items', function (req, res) {
@@ -439,39 +449,36 @@ app.get('/item/:ItemID', (req, res) => {
 });
 
 app.get('/images/:ItemID', (req, res) => {
-  connection.query(
-    'SELECT ImageURL FROM Images WHERE ItemID = ?',
-    [req.params.ItemID],
-    function (err, result, fields) {
-      if (err) throw err
-      res.end(JSON.stringify(result))
-    }
-  )
-})
+    connection.query(
+        'SELECT ImageURL FROM Images WHERE ItemID = ?',
+        [req.params.ItemID],
+        function (err, result, fields) {
+            if (err) throw err;
+            res.end(JSON.stringify(result));
+        }
+    );
+});
 
 app.post('/addImage', (req, res) => {
-  connection.query(
-    'INSERT INTO Images (ItemID, ImageURL) VALUES (?, ?)',
-    [
-      req.body.ImageID,
-      req.body.ImageURL,
-    ],
-    function (err, rows, fields) {
-      if (err) {
-        logger.error('Error while executing Query')
-        res.status(400).json({
-          data: [],
-          error: 'MySQL error',
-        })
-      } else {
-        console.log('check')
-        res.status(200).json({
-          data: rows,
-        })
-      }
-    }
-  )
-})
+    connection.query(
+        'INSERT INTO Images (ItemID, ImageURL) VALUES (?, ?)',
+        [req.body.ImageID, req.body.ImageURL],
+        function (err, rows, fields) {
+            if (err) {
+                logger.error('Error while executing Query');
+                res.status(400).json({
+                    data: [],
+                    error: 'MySQL error',
+                });
+            } else {
+                console.log('check');
+                res.status(200).json({
+                    data: rows,
+                });
+            }
+        }
+    );
+});
 
 app.post('/addItem', (req, res) => {
     connection.query(
@@ -502,39 +509,57 @@ app.post('/addItem', (req, res) => {
 });
 
 app.delete('/deleteItem/:ItemID', async (req, res) => {
-  var ItemID = req.body.ItemID;
+    var ItemID = req.body.ItemID;
 
-  connection.query("DELETE FROM Items WHERE ItemID = ?", [req.params.ItemID], function (err, result, fields) {
-    if (err) 
-      return console.error(error.message);
-    res.end(JSON.stringify(result)); 
-    });
+    connection.query(
+        'DELETE FROM Items WHERE ItemID = ?',
+        [req.params.ItemID],
+        function (err, result, fields) {
+            if (err) return console.error(error.message);
+            res.end(JSON.stringify(result));
+        }
+    );
 });
 
 app.put('/updateItem', async (req, res) => {
-  var SellerID = req.body.SellerID;
-  var ItemName =  req.body.ItemName;
-  var ItemCost = req.body.ItemCost;
-  var ItemDetails =  req.body.ItemDetails;
-  var Condition = req.body.Condition;
-  var ImageURL = req.body.ImageURL;
-  var ItemID = req.body.ItemID;
+    var SellerID = req.body.SellerID;
+    var ItemName = req.body.ItemName;
+    var ItemCost = req.body.ItemCost;
+    var ItemDetails = req.body.ItemDetails;
+    var Condition = req.body.Condition;
+    var ImageURL = req.body.ImageURL;
+    var ItemID = req.body.ItemID;
 
-  connection.query("UPDATE PonyList.Items SET SellerID=?, ItemName=?, ItemCost=?, ItemDetails=?, `Condition`=?, ImageURL=?, DatePosted=CURRENT_TIMESTAMP WHERE ItemID=?;", [SellerID, ItemName, ItemCost, ItemDetails, Condition, ImageURL, ItemID],function (err, result, fields) {
-  if (err) throw err;
-  //console.log(result);
-  res.end(JSON.stringify(result)); 
-  });
+    connection.query(
+        'UPDATE PonyList.Items SET SellerID=?, ItemName=?, ItemCost=?, ItemDetails=?, `Condition`=?, ImageURL=?, DatePosted=CURRENT_TIMESTAMP WHERE ItemID=?;',
+        [
+            SellerID,
+            ItemName,
+            ItemCost,
+            ItemDetails,
+            Condition,
+            ImageURL,
+            ItemID,
+        ],
+        function (err, result, fields) {
+            if (err) throw err;
+            //console.log(result);
+            res.end(JSON.stringify(result));
+        }
+    );
 });
 
 app.patch('/updateIsSold/:ItemID', async (req, res) => {
-    connection.query("UPDATE Items SET IsSold = 1 WHERE ItemID = ?", [req.params.ItemID],function (err, result, fields) {
-    if (err) throw err;
-    //console.log(result);
-    res.end(JSON.stringify(result)); 
-    });
-  });
-
+    connection.query(
+        'UPDATE Items SET IsSold = 1 WHERE ItemID = ?',
+        [req.params.ItemID],
+        function (err, result, fields) {
+            if (err) throw err;
+            //console.log(result);
+            res.end(JSON.stringify(result));
+        }
+    );
+});
 
 // app.get('/addSale/:UserID', (req, res) => {
 //     connection.query("UPDATE Users SET NumSales = NumSales + 1 WHERE UserID = ?",
@@ -546,14 +571,17 @@ app.patch('/updateIsSold/:ItemID', async (req, res) => {
 //     );
 // });
 
-
 app.patch('/addSale/:UserID', async (req, res) => {
-    connection.query("UPDATE Users SET NumSales = NumSales + 1 WHERE UserID = ?", [req.params.UserID],function (err, result, fields) {
-    if (err) throw err;
-    //console.log(result);
-    res.end(JSON.stringify(result)); 
-    });
-  });
+    connection.query(
+        'UPDATE Users SET NumSales = NumSales + 1 WHERE UserID = ?',
+        [req.params.UserID],
+        function (err, result, fields) {
+            if (err) throw err;
+            //console.log(result);
+            res.end(JSON.stringify(result));
+        }
+    );
+});
 
 app.get('/SellerID/:ItemID', (req, res) => {
     connection.query(
@@ -565,8 +593,6 @@ app.get('/SellerID/:ItemID', (req, res) => {
         }
     );
 });
-
-
 
 app.get('/isSold/:ItemID', (req, res) => {
     connection.query(
@@ -581,7 +607,7 @@ app.get('/isSold/:ItemID', (req, res) => {
 
 app.get('/favoritedBy/:ItemID', (req, res) => {
     connection.query(
-        "Select f.UserID, Username from Favorites f inner join Users u on f.UserID = u.UserID where ItemID = ?",
+        'Select f.UserID, Username from Favorites f inner join Users u on f.UserID = u.UserID where ItemID = ?',
         [req.params.ItemID],
         function (err, result, fields) {
             if (err) throw err;
@@ -658,13 +684,16 @@ app.get('/messages/:SenderID/:RecipientID', (req, res) => {
 
 app.delete('/deleteMessafe/:MessageID', async (req, res) => {
     var ItemID = req.body.ItemID;
-  
-    connection.query("DELETE FROM Messages WHERE MessageID = ?", [req.params.MessageID], function (err, result, fields) {
-      if (err) 
-        return console.error(error.message);
-      res.end(JSON.stringify(result)); 
-      });
-  });
+
+    connection.query(
+        'DELETE FROM Messages WHERE MessageID = ?',
+        [req.params.MessageID],
+        function (err, result, fields) {
+            if (err) return console.error(error.message);
+            res.end(JSON.stringify(result));
+        }
+    );
+});
 
 app.get('/contacts/:SenderID', (req, res) => {
     connection.query(

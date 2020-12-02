@@ -19,9 +19,13 @@ const DetailNav = () => {
             <div className='banner-logo-box'>
                 <Link
                     to={`/profile/${window.localStorage.getItem('id')}`}
-                    className='account-logo'
+                    className='user-logo mr-4'
                 >
                     <i className='fas fa-user'></i>
+                </Link>
+                <Link to="/home"
+                      className='home-logo'>
+                    <i class="fas fa-home"></i>
                 </Link>
             </div>
         </nav>

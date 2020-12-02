@@ -27,11 +27,9 @@ const ProfilePage = () => {
     const [user, setUser] = useState('');
     const [userRating, setUserRating] = useState('');
     const [reviews, setReviews] = useState([]);
+    const [updating, setUpdating] = useState(false);
+    const [newImage, setNewImage] = useState('');
     useEffect(() => {
-        axios.get(`${API_URL}/user/${id}`).then(res => {
-            console.log(res.data[0]);
-            setUser(res.data[0]);
-        });
         axios.get(`${API_URL}/userRating/${id}`).then(res => {
             console.log(res.data[0]);
             setUserRating(res.data[0]);
@@ -41,7 +39,25 @@ const ProfilePage = () => {
             setReviews(res.data);
         });
     }, []);
+    useEffect(() => {
+        axios.get(`${API_URL}/user/${id}`).then(res => {
+            console.log(res.data[0]);
+            setUser(res.data[0]);
+        });
+        console.log('test');
+    }, [updating]);
 
+    const handleUpdateProfile = () => {
+        axios
+            .patch(`${API_URL}/updateProfilePicture`, {
+                ProfilePicture: newImage,
+                UserID: id,
+            })
+            .then(res => {
+                setNewImage('');
+                setUpdating(false);
+            });
+    };
     const selfId = parseInt(window.localStorage.getItem('id'));
     return (
         <div className='ProfilePage mt-4 p-4'>
@@ -66,13 +82,38 @@ const ProfilePage = () => {
                     }`}
                     alt='Profile-Image'
                 />
-                {selfId === user.UserID && (
+                {!updating && selfId === user.UserID && (
+                    <button
+                        className='btn mt-5 btn-warning'
+                        onClick={e => setUpdating(true)}
+                    >
+                        Update Profile Image
+                    </button>
+                )}
+                {selfId === user.UserID && updating && (
                     <>
                         <h6 className='mt-5'>Change Profile Image</h6>
                         <div className='d-flex'>
-                            <input className='w-75 p-2 mx-2' type='text' />
-                            <button className='btn btn-warning w-25 mx-2'>
+                            <input
+                                className='w-75 p-2 mx-2'
+                                value={newImage}
+                                onChange={e => setNewImage(e.target.value)}
+                                type='text'
+                            />
+                            <button
+                                onClick={e => handleUpdateProfile()}
+                                className='btn btn-warning w-25 mx-2'
+                            >
                                 Update
+                            </button>
+                            <button
+                                className='btn btn-warning w-25 mx-2'
+                                onClick={e => {
+                                    setNewImage('');
+                                    setUpdating(false);
+                                }}
+                            >
+                                Cancel
                             </button>
                         </div>
                     </>
@@ -144,7 +185,7 @@ const ProfilePage = () => {
                             </Link>
                             <Link
                                 className='btn btn-block btn-warning'
-                                to={`/favoriteItems/${selfId}`}
+                                to={`/favoritedItems/${selfId}`}
                             >
                                 View Your favorite Items
                             </Link>

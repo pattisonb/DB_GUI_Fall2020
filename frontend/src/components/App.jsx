@@ -21,6 +21,7 @@ import PastItems from './Items/PastItems';
 import { CurrentItems } from './Items/CurrentItems';
 import ProfilePage from './profile/ProfilePage';
 import Favorites from './Items/Favorites';
+import FavoritedItems from './profile/FavoritedItems';
 const getLogged = () => {
     let id = window.localStorage.getItem('id');
     console.log(id);
@@ -75,6 +76,11 @@ function App() {
                             path='/sellItems/:userId'
                             exact
                             component={SellItem}
+                        />
+                        <Route
+                            path='/favoritedItems/:userId'
+                            exact
+                            component={FavoritedItems}
                         />
                         <Route path='/chat' exact component={Chat}></Route>
                         <Route component={Error} />
