@@ -13,6 +13,8 @@ import DetailNav from '../layout/DetailNav';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Alert from '../layout/Alert';
 import shortid from 'shortid';
+import Axios from 'axios';
+import { API_URL } from '../../api_url';
 
 class ProductDetails extends React.Component {
     productsRepository = new ProductsRepository();
@@ -25,6 +27,7 @@ class ProductDetails extends React.Component {
         currImgIndex: 0,
         alertMessage: '',
         alertKey: '',
+        favorited: false,
     };
     getId() {
         const id = shortid.generate();
@@ -54,9 +57,30 @@ class ProductDetails extends React.Component {
         let itemId = this.state.product.ItemID;
         let favoriteItem = { userId, itemId };
 
-        this.productsRepository
-            .addFavoriteItem(favoriteItem)
-            .then(x => alert('Item added to your favorite list!'));
+        Axios.post(`${API_URL}/addFavorite`, {
+            UserID: userId,
+            ItemID: itemId,
+        })
+            .then(res => {
+                this.setState({ favorited: true });
+                this.setState({ alertKey: this.getId() });
+            })
+            .catch(err => console.log('bad'));
+    }
+
+    myRemoveFavoriteItem() {
+        let userId = window.localStorage.getItem('id');
+        let itemId = this.state.product.ItemID;
+        console.log('we are here');
+        Axios.delete(`${API_URL}/deleteFavorite/${userId}/${itemId}`, {
+            UserID: userId,
+            ItemID: itemId,
+        })
+            .then(res => {
+                console.log('good');
+                this.setState({ favorited: false });
+            })
+            .catch(err => console.log('bad'));
     }
 
     thumbsBoxRef = React.createRef();
@@ -131,13 +155,31 @@ class ProductDetails extends React.Component {
                         {this.state.product.IsSold === 0 &&
                             parseInt(window.localStorage.getItem('id')) !==
                                 this.state.seller.UserID && (
-                                <button
-                                    type='button'
-                                    className='btn btn-info btn-lg'
-                                    onClick={() => this.myAddFavoriteItem()}
-                                >
-                                    Favorite this item
-                                </button>
+                                <>
+                                    {!this.state.favorited && (
+                                        <button
+                                            type='button'
+                                            className='btn btn-info btn-lg'
+                                            onClick={() =>
+                                                this.myAddFavoriteItem()
+                                            }
+                                        >
+                                            Favorite this item
+                                        </button>
+                                    )}
+
+                                    {this.state.favorited && (
+                                        <button
+                                            type='button'
+                                            className='btn btn-info btn-lg'
+                                            onClick={() =>
+                                                this.myRemoveFavoriteItem()
+                                            }
+                                        >
+                                            Unfavorite Item
+                                        </button>
+                                    )}
+                                </>
                             )}
                         <CopyToClipboard text={url}>
                             <button
@@ -203,9 +245,26 @@ class ProductDetails extends React.Component {
                     .then(() => {
                         // To add the "active" className to the initial active image
                         const idx = this.state.currImgIndex;
-                        this.thumbsBoxRef.current.children[idx].className =
-                            'active';
+                        if (this.thumbsBoxRef.current) {
+                            this.thumbsBoxRef.current.children[idx].className =
+                                'active';
+                        }
                     });
+            })
+            .then(() => {
+                {
+                    Axios.get(
+                        `${API_URL}/favoritedBy/${this.state.product.ItemID}`
+                    ).then(res => {
+                        let likedByMe =
+                            res.data.filter(
+                                user =>
+                                    user.UserID ===
+                                    parseInt(window.localStorage.getItem('id'))
+                            ).length > 0;
+                        this.setState({ favorited: likedByMe });
+                    });
+                }
             });
     }
 }
