@@ -7,6 +7,9 @@ import Rating from './product/Rating';
 import PonyListLogo from '../img/PonyList.PNG';
 import { ProductsRepository } from './api/ProductsRepository';
 import Alert from 'react-bootstrap/Alert';
+import axios from 'axios';
+import { distance } from './auth/Distance_Util';
+import { API_URL } from '../api_url';
 
 export class Home extends React.Component {
     state = {
@@ -499,14 +502,43 @@ export class Home extends React.Component {
         );
     }
 
-    componentDidMount() {
-        this.productsRepository
-            .getProducts()
-            .then(products =>
-                this.setState({
-                    products: products.filter(product => product.IsSold !== 1),
-                })
-            );
+    async componentDidMount() {
+        var thing;
+        var thing1;
+        var myPosition = await window.navigator.geolocation.getCurrentPosition(
+            await function (position) {
+                thing = position;
+                thing1 = thing.coords.latitude;
+                console.log(thing, 'is good');
+                return position;
+            }
+        );
+        console.log(thing1, ' should be ');
+        // var config = {
+        //     method: 'patch',
+        //     url: `http://18.188.219.228:8000/updateMilesAway/${window.localStorage.getItem(
+        //         'id'
+        //     )}/${distance(
+        //         parseFloat(myPosition.coords.latitude),
+        //         parseFloat(myPosition.coords.longitude)
+        //     )}`,
+        //     headers: {},
+        //     data: data,
+        // };
+
+        // axios(config)
+        //     .then(function (response) {
+        //         console.log(JSON.stringify(response.data));
+        //     })
+        //     .catch(function (error) {
+        //         console.log(error);
+        //     });
+
+        this.productsRepository.getProducts().then(products =>
+            this.setState({
+                products: products.filter(product => product.IsSold !== 1),
+            })
+        );
         this.productsRepository
             .getUsers()
             .then(users => this.setState({ users }));
