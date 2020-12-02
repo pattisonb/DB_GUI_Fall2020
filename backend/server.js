@@ -277,6 +277,17 @@ app.delete('/deleteFavorite/:ItemID', async (req, res) => {
       });
   });
 
+//delete favorite by user ID
+app.delete('/deleteFavorite/:UserID:ItemID', async (req, res) => {
+    var UserID = req.body.UserID;
+    var ItemID = req.body.ItemID;
+    connection.query("DELETE FROM Favorites WHERE (UserID = ? and ItemID = ?)", [req.params.UserID], [req.params.ItemID], function (err, result, fields) {
+      if (err) 
+        return console.error(error.message);
+      res.end(JSON.stringify(result)); 
+      });
+  });
+
 app.post('/addFavorite', (req, res) => {
     connection.query(
         'INSERT INTO PonyList.Favorites (UserID, ItemID) VALUES(?, ?)',
@@ -373,38 +384,37 @@ app.post('/addTime', (req, res) => {
 //});
 
 app.patch('/updateMilesAway/:UserID/:MilesAway', async (req, res) => {
-   connection.query("UPDATE PonyList.Users SET MilesAway = ? WHERE UserID=?;", [req.params.MilesAway, req.params.UserID],function (err, result, fields) {
-   if (err) throw err;
-   console.log(result);
-   res.end(JSON.stringify(result)); 
-   });
-});
-
-app.patch('/updateProfilePicture', (req, res) => {
-    var UserID = req.body.UserID
-    var ProfilePicture = req.body.ProfilePicture
-    connection.query('UPDATE Users SET ProfilePicture = ? WHERE UserID = ?',
-      [
-        ProfilePicture,
-        UserID
-      ],
-      function (err, rows, fields) {
-        if (err) {
-          logger.error('Error while executing Query')
-          res.status(400).json({
-            data: [],
-            error: 'MySQL error',
-          })
-        } else {
-          console.log('check')
-          res.status(200).json({
-            data: rows,
-          })
-        }
-      }
-    )
-})
-
+    connection.query("UPDATE PonyList.Users SET MilesAway = ? WHERE UserID=?;", [req.params.MilesAway, req.params.UserID],function (err, result, fields) {
+    if (err) throw err;
+    console.log(result);
+    res.end(JSON.stringify(result)); 
+    });
+ });
+ 
+ app.patch('/updateProfilePicture', (req, res) => {
+     var UserID = req.body.UserID
+     var ProfilePicture = req.body.ProfilePicture
+     connection.query('UPDATE Users SET ProfilePicture = ? WHERE UserID = ?',
+       [
+         ProfilePicture,
+         UserID
+       ],
+       function (err, rows, fields) {
+         if (err) {
+           logger.error('Error while executing Query')
+           res.status(400).json({
+             data: [],
+             error: 'MySQL error',
+           })
+         } else {
+           console.log('check')
+           res.status(200).json({
+             data: rows,
+           })
+         }
+       }
+     )
+ })
 
 //ITEMS CALLS
 app.get('/items', function (req, res) {
@@ -500,8 +510,6 @@ app.delete('/deleteItem/:ItemID', async (req, res) => {
     res.end(JSON.stringify(result)); 
     });
 });
-
-
 
 app.put('/updateItem', async (req, res) => {
   var SellerID = req.body.SellerID;
