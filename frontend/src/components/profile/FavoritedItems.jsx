@@ -38,7 +38,7 @@ const FavoritedItems = () => {
                         })
                     ) : (
                         <h2 className='text-center display-4'>
-                            No user has favorited this item...
+                            You have not favorite items...
                         </h2>
                     )}
                 </tbody>
