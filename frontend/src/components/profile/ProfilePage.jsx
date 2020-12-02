@@ -185,7 +185,7 @@ const ProfilePage = () => {
                             </Link>
                             <Link
                                 className='btn btn-block btn-warning'
-                                to={`/favoriteItems/${selfId}`}
+                                to={`/favoritedItems/${selfId}`}
                             >
                                 View Your favorite Items
                             </Link>

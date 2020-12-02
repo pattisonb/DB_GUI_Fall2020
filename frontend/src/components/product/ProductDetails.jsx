@@ -71,12 +71,15 @@ class ProductDetails extends React.Component {
     myRemoveFavoriteItem() {
         let userId = window.localStorage.getItem('id');
         let itemId = this.state.product.ItemID;
-
-        Axios.post(`${API_URL}/addFavorite`, {
+        console.log('we are here');
+        Axios.delete(`${API_URL}/deleteFavorite/${userId}/${itemId}`, {
             UserID: userId,
             ItemID: itemId,
         })
-            .then(res => this.setState({ favorited: true }))
+            .then(res => {
+                console.log('good');
+                this.setState({ favorited: false });
+            })
             .catch(err => console.log('bad'));
     }
 
@@ -150,25 +153,34 @@ class ProductDetails extends React.Component {
                             ))}
                         </div>
                         {this.state.product.IsSold === 0 &&
-                        !this.state.favorited &&
-                        parseInt(window.localStorage.getItem('id')) !==
-                            this.state.seller.UserID ? (
-                            <button
-                                type='button'
-                                className='btn btn-info btn-lg'
-                                onClick={() => this.myAddFavoriteItem()}
-                            >
-                                Favorite this item
-                            </button>
-                        ) : (
-                            <button
-                                type='button'
-                                className='btn btn-info btn-lg'
-                                onClick={() => this.myAddFavoriteItem()}
-                            >
-                                Unfavorite Item
-                            </button>
-                        )}
+                            parseInt(window.localStorage.getItem('id')) !==
+                                this.state.seller.UserID && (
+                                <>
+                                    {!this.state.favorited && (
+                                        <button
+                                            type='button'
+                                            className='btn btn-info btn-lg'
+                                            onClick={() =>
+                                                this.myAddFavoriteItem()
+                                            }
+                                        >
+                                            Favorite this item
+                                        </button>
+                                    )}
+
+                                    {this.state.favorited && (
+                                        <button
+                                            type='button'
+                                            className='btn btn-info btn-lg'
+                                            onClick={() =>
+                                                this.myRemoveFavoriteItem()
+                                            }
+                                        >
+                                            Unfavorite Item
+                                        </button>
+                                    )}
+                                </>
+                            )}
                         <CopyToClipboard text={url}>
                             <button
                                 onClick={e => {
