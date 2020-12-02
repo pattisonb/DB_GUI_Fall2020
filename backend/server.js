@@ -362,14 +362,15 @@ app.post('/addTime', (req, res) => {
 });
 
 
-app.patch('/updateProfilePicture/:ProfilePicture/:UserID', async (req, res) => {
-    connection.query("UPDATE PonyList.Users SET ProfilePicture = ? WHERE UserID=?;", [req.params.ProfilePicture, req.params.UserID],function (err, result, fields) {
+app.put('/updateProfilePicture', async (req, res) => {
+    var ProfilePicture = req.body.ProfilePicture;
+    var UserID = req.body.UserID;
+    connection.query("UPDATE PonyList.Users SET ProfilePicture = ? WHERE UserID=?;", [ProfilePicture, UserID],function (err, result, fields) {
     if (err) throw err;
     //console.log(result);
     res.end(JSON.stringify(result)); 
     });
   });
-
 
 //ITEMS CALLS
 app.get('/items', function (req, res) {
