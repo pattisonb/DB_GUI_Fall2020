@@ -61,7 +61,10 @@ class ProductDetails extends React.Component {
             UserID: userId,
             ItemID: itemId,
         })
-            .then(res => this.setState({ favorited: true }))
+            .then(res => {
+                this.setState({ favorited: true });
+                this.setState({ alertKey: this.getId() });
+            })
             .catch(err => console.log('bad'));
     }
 
