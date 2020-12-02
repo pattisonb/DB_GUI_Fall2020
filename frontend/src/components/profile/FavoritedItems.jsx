@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { API_URL } from '../../api_url';
+import DetailNav from '../layout/DetailNav';
 
 const FavoritedItems = () => {
     const [items, setItems] = useState([]);
@@ -13,6 +14,7 @@ const FavoritedItems = () => {
     }, []);
     return (
         <div>
+            <DetailNav />
             <h1 className='text-center'>Your Favorited Items</h1>
             <table className='table table-striped my-5'>
                 <tbody>
