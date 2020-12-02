@@ -149,7 +149,7 @@ class ProductDetails extends React.Component {
                                 }}
                                 className='ml-3 btn btn-info btn-lg'
                             >
-                                <i className='fas fa-share-alt'></i>
+                                <i className='fas fa-share-alt share-logo'></i>
                             </button>
                         </CopyToClipboard>
                     </div>

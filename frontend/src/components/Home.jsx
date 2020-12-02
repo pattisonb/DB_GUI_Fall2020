@@ -16,11 +16,8 @@ export class Home extends React.Component {
         searchItemName: '',
         searchSellerName: '',
         noMatchAlertShow: false,
-        // sellerRating: '',
-        // ratingA: 0,
-        // ratingB: 0
+        // For sorting
         sortMethod: '',
-
         // For filtering
         location: '',
         condition: '',
@@ -32,7 +29,7 @@ export class Home extends React.Component {
 
     searchItem(input) {
         this.productsRepository.getProducts().then(products => {
-            // This resets the products
+            // This resets the products on every new search
             this.setState({ products });
             // This makes the search case-insensitive and whitespace-insensitive
             let filtered_products = this.state.products.filter(item =>
@@ -50,7 +47,7 @@ export class Home extends React.Component {
     }
     searchSeller(input) {
         this.productsRepository.getProducts().then(products => {
-            // This resets the products
+            // This resets the products on every new search
             this.setState({ products });
             // This makes the search case-insensitive and whitespace-insensitive
             let filtered_products = this.state.products.filter(item =>
@@ -192,7 +189,7 @@ export class Home extends React.Component {
         return (
             <>
                 {/* {window.localStorage.getItem('id') === null && <Redirect to='/' />} */}
-                <Navbar className='mb-3' />
+                {/* <Navbar className='mb-3' /> */}
                 <div className='container-fluid master-container mt-4'>
                     <div className='banner-container jumbotron'>
                         <div className='banner-logo-box--home'>

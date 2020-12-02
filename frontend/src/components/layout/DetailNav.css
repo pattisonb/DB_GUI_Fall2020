@@ -14,72 +14,15 @@
     margin-left: auto;
     margin-right: 2rem;
 }
-.account-logo {
+.user-logo,
+.home-logo,
+.share-logo {
     color: white;
     font-size: 1.4rem;
 }
-.shopping-cart-logo {
-    color: white;
-    font-size: 1.4rem;
-    /* To remove the underline on hover */
-    text-decoration: none !important;
-    margin-left: 2rem;
-}
-.account-logo:hover,
-.shopping-cart-logo:hover {
+
+.user-logo:hover,
+.home-logo:hover {
     transform: scale(1.1);
     color: #e1e3e4;
-}
-
-.detailNav-box {
-    display: flex;
-}
-.product-img-box {
-    /* width: 600px;
-  height: 600px; */
-}
-.product-img-box img {
-    width: 600px;
-    height: 600px;
-    object-fit: contain;
-}
-.detailNav-name {
-    font-size: 3rem;
-}
-.detailNav-price {
-    font-size: 1.5rem;
-    font-weight: 700;
-    text-align: center;
-    width: 90px;
-    background-color: #007bff;
-    color: white;
-    border-radius: 0.3rem;
-    margin-bottom: 2rem;
-}
-.condition-text {
-    margin: 1rem 0 3rem;
-}
-
-.product-thumbnails-box {
-    width: 100%;
-    height: 100px;
-    display: flex;
-    cursor: pointer;
-    margin-bottom: 5rem;
-}
-.product-thumbnails-box img {
-    width: 90px;
-    height: 100%;
-    display: block;
-    object-fit: contain;
-    /* object-fit: cover; */
-    border: 1px solid #dddddd;
-    margin-right: 5px;
-    opacity: 0.4;
-    border-radius: 0.3rem;
-    transition: 0.5s linear;
-}
-.product-thumbnails-box img.active {
-    opacity: 1;
-    border: 1px solid lightseagreen;
 }
