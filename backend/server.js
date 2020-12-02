@@ -277,8 +277,8 @@ app.delete('/deleteFavorite/:ItemID', async (req, res) => {
       });
   });
 
-//delete favorite by user ID
-app.delete('/deleteFavorite/:UserID:ItemID', async (req, res) => {
+//delete favorite by UserID and ItemID
+app.delete('/deleteFavorite/:UserID/:ItemID', async (req, res) => {
     var UserID = req.body.UserID;
     var ItemID = req.body.ItemID;
     connection.query("DELETE FROM Favorites WHERE (UserID = ? and ItemID = ?)", [req.params.UserID], [req.params.ItemID], function (err, result, fields) {
