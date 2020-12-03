@@ -258,7 +258,7 @@ app.get('/sharedProducts/:UserID', (req, res) => {
 
 app.get('/favorites/:UserID', (req, res) => {
     connection.query(
-        'SELECT Distinct Items.ItemID, ItemName, ItemCost, ItemDetails, ImageURL FROM Items INNER JOIN Favorites on Favorites.ItemID = Items.ItemID WHERE Favorites.UserID = ?',
+        'SELECT Distinct Items.ItemID, ItemName, ItemCost, ItemDetails, ImageURL, DatePosted FROM Items INNER JOIN Favorites on Favorites.ItemID = Items.ItemID WHERE Favorites.UserID = ?',
         [req.params.UserID],
         function (err, result, fields) {
             if (err) throw err;
@@ -533,13 +533,7 @@ app.put('/updateItem', async (req, res) => {
     connection.query(
         'UPDATE PonyList.Items SET SellerID=?, ItemName=?, ItemCost=?, ItemDetails=?, `Condition`=?, ImageURL=?, DatePosted=CURRENT_TIMESTAMP WHERE ItemID=?;',
         [
-            SellerID,
-            ItemName,
-            ItemCost,
-            ItemDetails,
-            Condition,
-            ImageURL,
-            ItemID,
+            SellerID, ItemName, ItemCost, ItemDetails, Condition, ImageURL, ItemID,
         ],
         function (err, result, fields) {
             if (err) throw err;
