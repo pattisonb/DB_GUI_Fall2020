@@ -189,12 +189,6 @@ const ProfilePage = () => {
                             >
                                 View Your favorite Items
                             </Link>
-                            <Link
-                                className='btn btn-block btn-warning'
-                                to={`/manageItems/${selfId}`}
-                            >
-                                View Your favorite Sellers
-                            </Link>
                         </>
                     )}
                 </div>
