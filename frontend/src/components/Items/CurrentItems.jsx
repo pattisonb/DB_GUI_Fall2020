@@ -131,7 +131,7 @@ export const CurrentItems = () => {
                     message={okayMessage}
                 />
             )}
-            <div className='container mt-4'>
+            <div className='container w-100 mt-4'>
                 {deletingItemId && (
                     <AreYouSure
                         message='Are you sure you want to delete this item?'
@@ -248,7 +248,7 @@ export const CurrentItems = () => {
                                                               e.target.value
                                                           )
                                                       }
-                                                      className='Edit-Price bg-primary rounded text-center'
+                                                      className='Edit-Price w-50 bg-primary rounded text-center'
                                                   />
                                                   <select
                                                       value={updateCondition}
@@ -269,12 +269,13 @@ export const CurrentItems = () => {
                                                   </select>
                                                   <textarea
                                                       value={updateItemDetails}
+                                                      style={{ height: '33%' }}
                                                       onChange={e =>
                                                           setUpdateItemDetails(
                                                               e.target.value
                                                           )
                                                       }
-                                                      className='CurrentItems-Description mt-4 h-75 w-100'
+                                                      className='CurrentItems-Description mt-4 w-100'
                                                   >
                                                       {item.ItemDetails}
                                                   </textarea>
@@ -303,15 +304,15 @@ export const CurrentItems = () => {
                                                       alt={item.ItemName}
                                                   />
                                               </div>
-                                              <div className='col-5'>
+                                              <div className='col-5 w-100'>
                                                   <span className='CurrentItems-Price badge badge-primary p-2'>
                                                       ${item.ItemCost}
                                                   </span>
-                                                  <p className='CurrentItems-Description mt-4'>
+                                                  <p className='ItemDetails CurrentItems-Description p-0 mb-0 mr-0 ml-0 mt-4 w-100'>
                                                       {item.ItemDetails}
                                                   </p>
                                               </div>
-                                              <div className='col-2 d-flex justify-content-center align-items-center'>
+                                              <div className='col-2 d-flex flex-row-lg justify-content-center align-items-center'>
                                                   {window.localStorage.getItem(
                                                       'id'
                                                   ) === userId && (
@@ -368,7 +369,7 @@ export const CurrentItems = () => {
                                   })}
                         </ul>
                         {updateItemId && (
-                            <div className='mt-3 d-flex justify-content-center align-items-center'>
+                            <div className='mt-3 mb-5 d-flex justify-content-center align-items-center'>
                                 <button
                                     onClick={handleConfirmEdit}
                                     className='mx-2 Confirm-Edit btn'
