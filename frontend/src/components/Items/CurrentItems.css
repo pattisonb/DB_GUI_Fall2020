@@ -36,9 +36,6 @@ button > i {
 button > i:hover {
     color: #aaa;
 }
-li:last-child {
-    margin-bottom: 699px !important;
-}
 
 .ItemDetails {
     overflow-wrap: break-word;

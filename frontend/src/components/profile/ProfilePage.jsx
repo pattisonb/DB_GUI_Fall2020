@@ -1,9 +1,5 @@
 import React from 'react';
-import { useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import axios from 'axios';
-import { API_URL } from '../../api_url';
-import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import DetailNav from '../layout/DetailNav';
 import Rating from '../product/Rating';
 import PastItems from '../Items/PastItems';
@@ -63,10 +59,10 @@ export class ProfilePage extends React.Component {
             return <div>Loading Home...</div>;
         }
         return (
-            <div className='ProfilePage mt-4 p-4'>
+            <div className='ProfilePage p-4'>
                 <DetailNav />
-            <div className='container-fluid master-container mt-4'>
-            <div className='jumbotron bg-smu-blue-home'>
+            <div className='container master-container m-0 p-0'>
+            <div className='jumbotron bg-smu-blue-home m-0'>
             <div className='side-nav-bar-img-box'>
                 <img src={this.state.user.ProfilePicture} alt='profile-img' width='150px' height='150px' />
                 </div>
@@ -129,27 +125,27 @@ export class ProfilePage extends React.Component {
                     
             </div>
 
-            <div class="container emp-profile">
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li class="nav-item">
-                    <a class="nav-link active" id="reviews-tab" data-toggle="tab" href="#reviews" role="tab" aria-controls="reviews" aria-selected="true"><h4 id="text">Reviews({this.state.reviews.length})</h4></a>
+            <div className="container emp-profile">
+                <ul className="nav nav-tabs p-0 m-0" id="myTab" role="tablist">
+                    <li className="nav-item">
+                    <a className="nav-link active" id="reviews-tab" data-toggle="tab" href="#reviews" role="tab" aria-controls="reviews" aria-selected="true"><h4 id="text">Reviews({this.state.reviews.length})</h4></a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="listings-tab" data-toggle="tab" href="#listings" role="tab" aria-controls="listings" aria-selected="false"><h4 id="text">Listings({this.state.listingCount})</h4></a>
+                    <li className="nav-item">
+                        <a className="nav-link" id="listings-tab" data-toggle="tab" href="#listings" role="tab" aria-controls="listings" aria-selected="false"><h4 id="text">Listings({this.state.listingCount})</h4></a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="pastSales-tab" data-toggle="tab" href="#pastSales" role="tab" aria-controls="pastSales" aria-selected="false"><h4 id="text">Past Sales({this.state.salesCount})</h4></a>
+                    <li className="nav-item">
+                        <a className="nav-link" id="pastSales-tab" data-toggle="tab" href="#pastSales" role="tab" aria-controls="pastSales" aria-selected="false"><h4 id="text">Past Sales({this.state.salesCount})</h4></a>
                     </li>
                     {this.state.selfId === this.state.user.UserID &&
                     <>
-                    <li class="nav-item">
-                        <a class="nav-link" id="favoriteItems-tab" data-toggle="tab" href="#favoriteItems" role="tab" aria-controls="favoriteItems" aria-selected="false"><h4 id="text">Favorited Items({this.state.favoriteItems.length})</h4></a>
+                    <li className="nav-item">
+                        <a className="nav-link" id="favoriteItems-tab" data-toggle="tab" href="#favoriteItems" role="tab" aria-controls="favoriteItems" aria-selected="false"><h4 id="text">Favorited Items({this.state.favoriteItems.length})</h4></a>
                     </li>
                     </>
                     }
                 </ul>
-                <div class="tab-content profile-tab">
-                    <div class="tab-pane fade show active" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+                <div className="tab-content profile-tab">
+                    <div className="tab-pane fade show active" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
                     {this.state.reviews.length === 0 && (
                         <>
                         <h2 className='text-center display-3'>
@@ -177,13 +173,13 @@ export class ProfilePage extends React.Component {
                         </article>)
                     }
                     </div>
-                    <div class="tab-pane fade" id="listings" role="tabpanel" aria-labelledby="listings-tab">
+                    <div className="tab-pane fade" id="listings" role="tabpanel" aria-labelledby="listings-tab">
                         <CurrentItems id={this.state.id}/>
                     </div>
-                    <div class="tab-pane fade" id="pastSales" role="tabpanel" aria-labelledby="pastSales-tab">
+                    <div className="tab-pane fade" id="pastSales" role="tabpanel" aria-labelledby="pastSales-tab">
                         <PastItems id={this.state.id}/>
                     </div>
-                    <div class="tab-pane fade" id="favoriteItems" role="tabpanel" aria-labelledby="favoriteItems-tab">
+                    <div className="tab-pane fade" id="favoriteItems" role="tabpanel" aria-labelledby="favoriteItems-tab">
                     {this.state.favoriteItems.length === 0 && (
                         <h2 className='display-3 mt-5 text-center'>
                             No items to show...
