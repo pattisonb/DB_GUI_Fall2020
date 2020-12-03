@@ -109,8 +109,9 @@ class ProductDetails extends React.Component {
                 <DetailNav />
                 {this.state.alertMessage && (
                     <Alert
+                        fixed
                         key={this.state.alertKey}
-                        top='45px'
+                        top='550px'
                         bgColor='var(--smu-red)'
                         message={this.state.alertMessage}
                     />
