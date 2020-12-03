@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { API_URL } from '../../api_url';
-import Navbar from '../layout/Navbar';
+import DetailNav from '../layout/DetailNav';
 export const Contacts = props => {
     Array.prototype.swap = function (x, y) {
         if (this[x] > this[y]) {
@@ -33,7 +33,7 @@ export const Contacts = props => {
     }, []);
     return (
         <div>
-            <Navbar />
+            <DetailNav />
             <h1 className='text-center display-4'>Recent Contacts</h1>
             <ul>
                 {contacts.map(contact => {
