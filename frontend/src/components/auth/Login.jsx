@@ -36,6 +36,7 @@ export default function Login(props) {
                 .then(res => {
                     window.localStorage.setItem('id', res.data);
                     if (res.data === false) {
+                        window.localStorage.removeItem('id');
                         throw new Error('bad');
                     }
                     window.navigator.geolocation.getCurrentPosition(
