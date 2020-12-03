@@ -444,7 +444,7 @@ export class Home extends React.Component {
                                         </b>
                                     </div>
                                     <div className='m-2'>
-                                        <p className='text-secondary'>
+                                        <p className='productDetails-text text-secondary'>
                                             {/* Limit the productDetail text to 80 chars */}
                                             {product.ItemDetails.length < 80 ? 
                                                 product.ItemDetails : `${product.ItemDetails.slice(0, 80)}...`

@@ -50,6 +50,10 @@
   color: black;
   margin: 0.5rem;
 }
+/* This will break a long string (no whitespace) and wrap it to the next line. */
+.productDetails-text {
+  word-wrap: break-word;
+}
 .lower-half-product-box {
   display: flex;
 }
