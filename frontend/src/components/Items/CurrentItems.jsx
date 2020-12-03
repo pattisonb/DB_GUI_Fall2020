@@ -263,7 +263,7 @@ export class CurrentItems extends React.Component {
                                                                           .value,
                                                               })
                                                           }
-                                                          className='Edit-Price bg-primary rounded text-center'
+                                                          className='Edit-Price bg-primary rounded text-center w-50'
                                                       />
                                                       <select
                                                           value={
@@ -299,7 +299,7 @@ export class CurrentItems extends React.Component {
                                                                           .value,
                                                               })
                                                           }
-                                                          className='CurrentItems-Description mt-4 h-75 w-100'
+                                                          className='CurrentItems-Description mt-4 h-50 w-100'
                                                       >
                                                           {item.ItemDetails}
                                                       </textarea>
