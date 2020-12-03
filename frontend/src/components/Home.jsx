@@ -189,7 +189,6 @@ export class Home extends React.Component {
         return (
             <>
                 {/* {window.localStorage.getItem('id') === null && <Redirect to='/' />} */}
-                {/* <Navbar className='mb-3' /> */}
                 <div className='container-fluid master-container mt-4'>
 
                     <div className='banner-container'>
@@ -218,7 +217,7 @@ export class Home extends React.Component {
                         </div>
                     </div>
 
-                    <nav className='side-nav-bar-container jumbotron'>
+                    <nav className='side-nav-bar-container'>
                         <div className='side-nav-bar-img-box'>
                             <img
                                 src={PonyListLogo}
@@ -446,7 +445,10 @@ export class Home extends React.Component {
                                     </div>
                                     <div className='m-2'>
                                         <p className='text-secondary'>
-                                            {product.ItemDetails}
+                                            {/* Limit the productDetail text to 80 chars */}
+                                            {product.ItemDetails.length < 80 ? 
+                                                product.ItemDetails : `${product.ItemDetails.slice(0, 80)}...`
+                                            }
                                         </p>
                                     </div>
                                 </Link>
@@ -455,9 +457,6 @@ export class Home extends React.Component {
                                     <img
                                         src={product.ImageURL}
                                         alt='product-image'
-                                        width='100px'
-                                        height='100px'
-                                        className='ml-3 mr-2'
                                     />
                                     <div>
                                         <div className='badge badge-primary ml-2'>
