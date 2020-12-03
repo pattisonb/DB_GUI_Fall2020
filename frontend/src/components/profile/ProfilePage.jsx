@@ -6,12 +6,11 @@ import { API_URL } from '../../api_url';
 import { useState } from 'react';
 import DetailNav from '../layout/DetailNav';
 import Rating from '../product/Rating';
-import SellerInfo from '../product/SellerInfo';
-import ReviewList from '../product/ReviewList';
-// http:/localhost:3000/profile/:id
+import PastItems from '../Items/PastItems';
+import { CurrentItems } from '../Items/CurrentItems';
+import { ProductsRepository } from '../api/ProductsRepository';
 
 import './ProfilePage.css';
-import { Input } from '../messaging/Input';
 
 Array.prototype.swap = function (x, y) {
     if (this[x] > this[y]) {
@@ -22,190 +21,224 @@ Array.prototype.swap = function (x, y) {
     return this;
 };
 
-const ProfilePage = () => {
-    const { id } = useParams();
-    const [user, setUser] = useState('');
-    const [userRating, setUserRating] = useState('');
-    const [reviews, setReviews] = useState([]);
-    const [updating, setUpdating] = useState(false);
-    const [newImage, setNewImage] = useState('');
-    useEffect(() => {
-        axios.get(`${API_URL}/userRating/${id}`).then(res => {
-            console.log(res.data[0]);
-            setUserRating(res.data[0]);
-        });
-        axios.get(`${API_URL}/reviews/${id}`).then(res => {
-            console.log(res.data);
-            setReviews(res.data);
-        });
-    }, []);
-    useEffect(() => {
-        axios.get(`${API_URL}/user/${id}`).then(res => {
-            console.log(res.data[0]);
-            setUser(res.data[0]);
-        });
-        console.log('test');
-    }, [updating]);
-
-    const handleUpdateProfile = () => {
-        axios
-            .patch(`${API_URL}/updateProfilePicture`, {
-                ProfilePicture: newImage,
-                UserID: id,
-            })
-            .then(res => {
-                setNewImage('');
-                setUpdating(false);
-            });
+export class ProfilePage extends React.Component {
+    state = {
+        id: +this.props.match.params.id,
+        user: '',
+        userRating: '',
+        reviews: [],
+        favoriteItems: [],
+        selfId: parseInt(window.localStorage.getItem('id')),
+        listingCount: null,
+        salesCount: null
     };
-    const selfId = parseInt(window.localStorage.getItem('id'));
-    return (
-        <div className='ProfilePage mt-4 p-4'>
-            <DetailNav />
-            <div className='ProfilePage-UserDetails d-flex flex-column m-3 justify-content-center align-items-center'>
-                <h1 className='display-4 mb-4 align-self-start'>
-                    {user.UserID === selfId ? 'Your' : user.Username + "'s"}{' '}
-                    Profile
-                </h1>
-                <img
-                    className='mx-auto cover'
-                    style={{
-                        width: '75%',
-                        maxWidth: '400px',
-                        maxHeight: '400px',
-                        border: '1rem solid var(--smu-blue)',
-                        borderRadius: '15px',
-                    }}
-                    src={`${
-                        user.ProfilePicture ||
-                        'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'
-                    }`}
-                    alt='Profile-Image'
-                />
-                {!updating && selfId === user.UserID && (
-                    <button
-                        className='btn mt-5 btn-warning'
-                        onClick={e => setUpdating(true)}
-                    >
-                        Update Profile Image
-                    </button>
-                )}
-                {selfId === user.UserID && updating && (
-                    <>
-                        <h6 className='mt-5'>Change Profile Image</h6>
-                        <div className='d-flex'>
-                            <input
-                                className='w-75 p-2 mx-2'
-                                value={newImage}
-                                onChange={e => setNewImage(e.target.value)}
-                                type='text'
-                            />
-                            <button
-                                onClick={e => handleUpdateProfile()}
-                                className='btn btn-warning w-25 mx-2'
-                            >
-                                Update
-                            </button>
-                            <button
-                                className='btn btn-warning w-25 mx-2'
-                                onClick={e => {
-                                    setNewImage('');
-                                    setUpdating(false);
-                                }}
-                            >
-                                Cancel
-                            </button>
-                        </div>
-                    </>
-                )}
-                <table className='table table-striped my-5 w-50'>
-                    <thead></thead>
-                    <tbody>
-                        <tr>
-                            <th>On Campus?</th>
-                            <td>{user.OnCampus}</td>
-                        </tr>
-                        <tr>
-                            <th>Dorm</th>
-                            <td>{user.Dorm}</td>
-                        </tr>
-                        <tr>
-                            <th>Miles Away</th>
-                            <td>{user.MilesAway}</td>
-                        </tr>
-                        <tr>
-                            <th>Location</th>
-                            <td>{user.Location}</td>
-                        </tr>
-                        <tr>
-                            <th>Number of Sales</th>
-                            <td>{user.NumSales}</td>
-                        </tr>
-                    </tbody>
-                </table>
 
-                <div className='ProfilePage-Actions my-5 w-50 d-flex flex-column justify-content-between'>
-                    {selfId !== user.UserID ? (
+    productsRepository = new ProductsRepository();
+
+
+    imageExists(image_url){
+        var http = new XMLHttpRequest();
+        http.open('HEAD', image_url, false);
+        try {
+            http.send();
+        }
+        catch(err) {
+            return false;
+        }
+        return http.status != 404;
+    }
+
+    changeProfileImage() {
+        var imgUrl = prompt("Please paste your img URL", "URL goes here");
+        if (imgUrl != null && this.imageExists(imgUrl)) {
+            alert("Success");
+            //Update profile picture here
+        }else{
+            alert("URL is invalid or Does not exist");
+        }
+    }
+
+    render(){
+        if(this.state.user == 0){
+            return <div>Loading Home...</div>;
+        }
+        return (
+            <div className='ProfilePage mt-4 p-4'>
+                <DetailNav />
+            <div className='container-fluid master-container mt-4'>
+            <div className='jumbotron bg-smu-blue-home'>
+            <div className='side-nav-bar-img-box'>
+                <img src={this.state.user.ProfilePicture} alt='profile-img' width='150px' height='150px' />
+                </div>
+                {this.state.selfId === this.state.user.UserID &&
+                    <button type="button" class="btn btn-secondary btn-sm" onClick={() => {this.changeProfileImage()}}>Change img</button>
+                }
+                <h1 className='text-align-center'>
+                {this.state.user.Username}
+                </h1>
+                <div className='logo-separator'></div>
+                <table className='tablew-50'>
+                        <thead></thead>
+                        <tbody>
+                            <tr>
+                                <th>Rating</th>
+                                <td><Rating value={this.state.userRating.Rating} /></td>
+                            </tr>
+                            <tr>
+                                <th>Location</th>
+                                <td>{this.state.user.Location}</td>
+                            </tr>
+                            {this.state.user.OnCampus === "YES" &&
+                            <tr>
+                                <th>Dorm</th>
+                                <td>{this.state.user.Dorm}</td>
+                            </tr>}
+                            <tr>
+                                <th>Miles Away</th>
+                                <td>{this.state.user.MilesAway}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    {this.state.id == window.localStorage.getItem('id')
+                            ? 
+                                <Link
+                                    className='btn mx-auto mt-5 w-75 btn-block btn-primary'
+                                    to={`/sellItems/${this.state.id}`}
+                                >
+                                    {' '}
+                                    Creat a new listing!{' '}
+                                </Link>
+                            :
+                            <Link
+                            to={`/chat?name=${window.localStorage.getItem(
+                                'id'
+                            )}&room=${[
+                                `${window.localStorage.getItem('id')}`,
+                                '-',
+                                this.state.user.UserID,
+                            ]
+                                .swap(0, 2)
+                                .join('')}`}
+                            className='btn mx-auto mt-5 w-75 btn-block btn-chat'
+                        >
+                            Contact User
+                        </Link>
+                    }
+                    
+
+                    
+            </div>
+
+            <div class="container emp-profile">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                    <a class="nav-link active" id="reviews-tab" data-toggle="tab" href="#reviews" role="tab" aria-controls="reviews" aria-selected="true"><h4 id="text">Reviews({this.state.reviews.length})</h4></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="listings-tab" data-toggle="tab" href="#listings" role="tab" aria-controls="listings" aria-selected="false"><h4 id="text">Listings({this.state.listingCount})</h4></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pastSales-tab" data-toggle="tab" href="#pastSales" role="tab" aria-controls="pastSales" aria-selected="false"><h4 id="text">Past Sales({this.state.salesCount})</h4></a>
+                    </li>
+                    {this.state.selfId === this.state.user.UserID &&
+                    <>
+                    <li class="nav-item">
+                        <a class="nav-link" id="favoriteItems-tab" data-toggle="tab" href="#favoriteItems" role="tab" aria-controls="favoriteItems" aria-selected="false"><h4 id="text">Favorited Items({this.state.favoriteItems.length})</h4></a>
+                    </li>
+                    </>
+                    }
+                </ul>
+                <div class="tab-content profile-tab">
+                    <div class="tab-pane fade show active" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+                    {this.state.reviews.length === 0 && (
                         <>
-                            <Link
-                                to={`/manageItems/${user.UserID}/pastSales`}
-                                className='btn mx-auto w-75 btn-block btn-previousSales'
-                            >
-                                View Previous Sales{' '}
-                            </Link>
-                            <Link
-                                to={`/manageItems/${user.UserID}/currentSales`}
-                                className='btn mx-auto w-75 btn-block btn-currentSales'
-                            >
-                                {' '}
-                                View Current Sales{' '}
-                            </Link>
-                            <Link
-                                to={`/chat?name=${window.localStorage.getItem(
-                                    'id'
-                                )}&room=${[
-                                    `${window.localStorage.getItem('id')}`,
-                                    '-',
-                                    user.UserID,
-                                ]
-                                    .swap(0, 2)
-                                    .join('')}`}
-                                className='btn mx-auto w-75 btn-block btn-chat'
-                            >
-                                Contact User
-                            </Link>
-                        </>
-                    ) : (
-                        <>
-                            <Link
-                                className='btn btn-block btn-warning'
-                                to={`/manageItems/${selfId}`}
-                            >
-                                Manage your items
-                            </Link>
-                            <Link
-                                className='btn btn-block btn-warning'
-                                to={`/favoritedItems/${selfId}`}
-                            >
-                                View Your favorite Items
-                            </Link>
+                        <h2 className='text-center display-3'>
+                            {this.state.id == window.localStorage.getItem('id')
+                                ? "You don't have"
+                                : "This seller doesn't have"}{' '}
+                        </h2>
+                        <h2 className='text-center display-3'>
+                            any reviews yet.
+                        </h2>
                         </>
                     )}
-                </div>
-
-                <div className='d-flex flex-column justify-content-center align-items-center w-75'>
-                    <h2 className='display-4 mx-auto text-center'>
-                        Seller Rating
-                    </h2>
-
-                    <Rating value={userRating.Rating} />
-                    <div className='mt-5 w-75'>
-                        <ReviewList reviews={reviews} />
+                    {
+                    this.state.reviews.map((review, idx) =>
+                        <article key={idx} className="card mb-4">
+                        <div className="card-header">
+                            <Rating value={ review.Rating } />
+                        </div>
+                        <div className="card-body">
+                            <p className="text-secondary">{ review.Username }
+                            <span className="float-right">{ new Date(review.Date).getFullYear() }-{ new Date(review.Date).getMonth() + 1 }-{ new Date(review.Date).getDate() }</span>
+                            </p>
+                            <p>"{ review.ReviewText }"</p>
+                        </div>
+                        </article>)
+                    }
+                    </div>
+                    <div class="tab-pane fade" id="listings" role="tabpanel" aria-labelledby="listings-tab">
+                        <CurrentItems id={this.state.id}/>
+                    </div>
+                    <div class="tab-pane fade" id="pastSales" role="tabpanel" aria-labelledby="pastSales-tab">
+                        <PastItems id={this.state.id}/>
+                    </div>
+                    <div class="tab-pane fade" id="favoriteItems" role="tabpanel" aria-labelledby="favoriteItems-tab">
+                    {this.state.favoriteItems.length === 0 && (
+                        <h2 className='display-3 mt-5 text-center'>
+                            No items to show...
+                        </h2>
+                    )}
+                    {
+                    this.state.favoriteItems.map((product, idx) =>
+                        <article key={idx} className="card mb-4">
+                        <div className="card-header">
+                            <Link to={`/products/${product.ItemID}`}>
+                            {product.ItemName}
+                            </Link>
+                        </div>
+                        <div className="card-body">
+                        <Link to={`/products/${product.ItemID}`}>
+                            <img
+                            src={product.ImageURL}
+                            alt='product-image'
+                            width='100px'
+                            height='100px'
+                            className='ml-3 mr-2'
+                            />
+                        </Link>
+                            <p className="text-secondary">
+                            <span className="float-right">{ new Date(product.DatePosted).getFullYear() }-{ new Date(product.DatePosted).getMonth() + 1 }-{ new Date(product.DatePosted).getDate() }</span>
+                            </p>
+                            <p>"{ product.ItemDetails }"</p>
+                        </div>
+                        </article>)
+                }
                     </div>
                 </div>
             </div>
-        </div>
-    );
-};
+            </div>
+            </div>
+        );
+    }
+
+    componentDidMount() {
+        const userId = +this.props.match.params.id;
+        if(userId){
+          this.productsRepository.getFavorites(userId) 
+            .then(items => this.setState({ favoriteItems: items }))
+          this.productsRepository.getUser(userId)
+            .then(user => this.setState({ user: user[0] }))
+          this.productsRepository.getSellerReviews(userId)
+            .then(reviews => this.setState({ reviews: reviews }))
+          this.productsRepository.getSellerRating(userId)
+            .then(rating => this.setState({ userRating: rating[0] }))
+          this.productsRepository.getListingsCount(userId)
+            .then(count => this.setState({ listingCount: count }))
+          this.productsRepository.getSoldItemsCount(userId)
+            .then(count => this.setState({ salesCount: count }))
+        }
+      }
+}
 
 export default ProfilePage;
