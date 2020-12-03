@@ -73,7 +73,7 @@ export class ProfilePage extends React.Component {
                                 <div className="col-sm-auto">
                                     {this.state.id == window.localStorage.getItem('id')
                                         ? 
-                                            <button type="button" class="btn btn-secondary btn-sm" onClick={() => {this.changeProfileImage()}}>Change img</button>
+                                            <button type="button" className="btn btn-secondary btn-sm" onClick={() => {this.changeProfileImage()}}>Change img</button>
                                         :
                                             <Link
                                             to={`/chat?name=${window.localStorage.getItem(
