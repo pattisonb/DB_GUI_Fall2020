@@ -259,6 +259,14 @@ export class ProfilePage extends React.Component {
             .then(count => this.setState({ salesCount: count }))
         }
       }
+
+      componentDidUpdate (prevProps) {
+        if (prevProps.location.key !== this.props.location.key) {
+            this.setState({
+                id: '',
+            })
+        }
+    }
 }
 
 export default ProfilePage;

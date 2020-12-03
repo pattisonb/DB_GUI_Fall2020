@@ -18,14 +18,17 @@ const DetailNav = () => {
             </div>
             <div className='banner-logo-box'>
                 <Link
-                    to={`/profile/${window.localStorage.getItem('id')}`}
+                    to={`/x_profile/${window.localStorage.getItem('id')}`}
                     className='user-logo'
                 >
                     <i className='fas fa-user'></i>
                 </Link>
+                <Link className='message-logo' to='/chat' id="changeMargins">
+                    <i className='fas fa-comments'></i>
+                </Link>
                 <Link to="/home"
                     className='home-logo'>
-                    <i class="fas fa-home"></i>
+                    <i className="fas fa-home"></i>
                 </Link>
                 <a
                     className='logout-btn'

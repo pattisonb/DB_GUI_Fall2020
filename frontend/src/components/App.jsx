@@ -32,6 +32,7 @@ function App() {
                     {/* {window.localStorage.getItem('id') === null && <Redirect to='/' />} */}
                     <Switch>
                         <Route path='/' exact component={Landing}></Route>
+                        <Redirect from="/x_profile/:id" to='/profile/:id'/>
                         <Route
                             path='/profile/:id'
                             exact

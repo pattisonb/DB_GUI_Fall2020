@@ -207,7 +207,7 @@ export class Home extends React.Component {
                                 )}`}
                                 className='account-logo'
                             >
-                                <i class='fas fa-user'></i>
+                                <i className='fas fa-user'></i>
                             </Link>
 
                             <Link className='message-logo' to='/chat'>
