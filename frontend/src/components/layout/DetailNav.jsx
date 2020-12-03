@@ -24,9 +24,18 @@ const DetailNav = () => {
                     <i className='fas fa-user'></i>
                 </Link>
                 <Link to="/home"
-                      className='home-logo'>
+                    className='home-logo mr-4'>
                     <i class="fas fa-home"></i>
                 </Link>
+                <a
+                    className='logout-btn mr-4 mt-1'
+                    href='/'
+                    onClick={() => {
+                        window.localStorage.removeItem('id');
+                    }}
+                >
+                    Logout
+                </a>
             </div>
         </nav>
     );

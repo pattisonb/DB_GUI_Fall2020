@@ -11,8 +11,9 @@
     margin-left: 1rem;
 }
 .banner-logo-box {
-    margin-left: auto;
-    margin-right: 2rem;
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
 }
 .user-logo,
 .home-logo,
@@ -20,9 +21,15 @@
     color: white;
     font-size: 1.4rem;
 }
+.logout-btn {
+    color: white;
+    text-decoration: none !important;
+}
 
 .user-logo:hover,
-.home-logo:hover {
+.home-logo:hover,
+.share-logo:hover,
+.logout-btn:hover {
     transform: scale(1.1);
     color: #e1e3e4;
 }

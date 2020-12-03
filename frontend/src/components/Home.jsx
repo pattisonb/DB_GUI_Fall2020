@@ -191,7 +191,7 @@ export class Home extends React.Component {
                 {/* {window.localStorage.getItem('id') === null && <Redirect to='/' />} */}
                 {/* <Navbar className='mb-3' /> */}
                 <div className='container-fluid master-container mt-4'>
-                    
+
                     <div className='banner-container'>
                         <div className='banner-logo-box--home'>
                             <Link
@@ -206,6 +206,15 @@ export class Home extends React.Component {
                             <Link className='message-logo' to='/chat'>
                                 <i className='fas fa-comments'></i>
                             </Link>
+                            <a
+                                className='logout-btn ml-4 mt-1'
+                                href='/'
+                                onClick={() => {
+                                    window.localStorage.removeItem('id');
+                                }}
+                            >
+                                Logout
+                            </a>
                         </div>
                     </div>
 
