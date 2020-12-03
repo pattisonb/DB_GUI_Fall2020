@@ -78,6 +78,7 @@ export class Home extends React.Component {
             priceMin: '',
             priceMax: '',
         });
+        window.location.reload();  // Can't figure out how to reset the radio btn without reloading
     }
 
     sortProducts(sortMethod) {
@@ -107,78 +108,85 @@ export class Home extends React.Component {
     }
 
     filterProducts() {
-        let products = this.state.products;
+        this.productsRepository.getProducts()
+            .then(x => {
+                // This resets the products on every new filter
+                this.setState({ products: x });
 
-        // Location
-        if (this.state.location == 'onCampus') {
-            let filtered_products = products.filter(
-                item => item.OnCampus == 'YES'
-            );
-            if (filtered_products.length > 0) {
-                this.setState({ products: filtered_products });
-                products = filtered_products;
-            } else {
-                this.setState({ noMatchAlertShow: true });
-            }
-        } else if (this.state.location == 'offCampus') {
-            let filtered_products = products.filter(
-                item => item.OnCampus == 'NO'
-            );
-            if (filtered_products.length > 0) {
-                this.setState({ products: filtered_products });
-                products = filtered_products;
-            } else {
-                this.setState({ noMatchAlertShow: true });
-            }
-        }
+                let products = this.state.products;
 
-        // Condition
-        if (this.state.condition == 'new') {
-            let filtered_products = products.filter(
-                item => item.Condition == 'New'
-            );
-            if (filtered_products.length > 0) {
-                this.setState({ products: filtered_products });
-                products = filtered_products;
-            } else {
-                this.setState({ noMatchAlertShow: true });
-            }
-        } else if (this.state.condition == 'used') {
-            let filtered_products = products.filter(
-                item => item.Condition == 'Used'
-            );
-            if (filtered_products.length > 0) {
-                this.setState({ products: filtered_products });
-                products = filtered_products;
-            } else {
-                this.setState({ noMatchAlertShow: true });
-            }
-        }
+                // Location
+                if (this.state.location == 'onCampus') {
+                    let filtered_products = products.filter(
+                        item => item.OnCampus == 'YES'
+                    );
+                    if (filtered_products.length > 0) {
+                        this.setState({ products: filtered_products });
+                        products = filtered_products;
+                    } else {
+                        this.setState({ noMatchAlertShow: true });
+                    }
+                } else if (this.state.location == 'offCampus') {
+                    let filtered_products = products.filter(
+                        item => item.OnCampus == 'NO'
+                    );
+                    if (filtered_products.length > 0) {
+                        this.setState({ products: filtered_products });
+                        products = filtered_products;
+                    } else {
+                        this.setState({ noMatchAlertShow: true });
+                    }
+                }
 
-        // Min price range
-        if (this.state.priceMin) {
-            let filtered_products = products.filter(
-                item => item.ItemCost >= this.state.priceMin
-            );
-            if (filtered_products.length > 0) {
-                this.setState({ products: filtered_products });
-                products = filtered_products;
-            } else {
-                this.setState({ noMatchAlertShow: true });
-            }
-        }
-        // Max price range
-        if (this.state.priceMax) {
-            let filtered_products = products.filter(
-                item => item.ItemCost <= this.state.priceMax
-            );
-            if (filtered_products.length > 0) {
-                this.setState({ products: filtered_products });
-                products = filtered_products;
-            } else {
-                this.setState({ noMatchAlertShow: true });
-            }
-        }
+                // Condition
+                if (this.state.condition == 'new') {
+                    let filtered_products = products.filter(
+                        item => item.Condition == 'New'
+                    );
+                    if (filtered_products.length > 0) {
+                        this.setState({ products: filtered_products });
+                        products = filtered_products;
+                    } else {
+                        this.setState({ noMatchAlertShow: true });
+                    }
+                } else if (this.state.condition == 'used') {
+                    let filtered_products = products.filter(
+                        item => item.Condition == 'Used'
+                    );
+                    if (filtered_products.length > 0) {
+                        this.setState({ products: filtered_products });
+                        products = filtered_products;
+                    } else {
+                        this.setState({ noMatchAlertShow: true });
+                    }
+                }
+
+                // Min price range
+                if (this.state.priceMin) {
+                    let filtered_products = products.filter(
+                        item => item.ItemCost >= this.state.priceMin
+                    );
+                    if (filtered_products.length > 0) {
+                        this.setState({ products: filtered_products });
+                        products = filtered_products;
+                    } else {
+                        this.setState({ noMatchAlertShow: true });
+                    }
+                }
+                // Max price range
+                if (this.state.priceMax) {
+                    let filtered_products = products.filter(
+                        item => item.ItemCost <= this.state.priceMax
+                    );
+                    if (filtered_products.length > 0) {
+                        this.setState({ products: filtered_products });
+                        products = filtered_products;
+                    } else {
+                        this.setState({ noMatchAlertShow: true });
+                    }
+                }
+
+            })
     }
 
     render() {
@@ -446,7 +454,7 @@ export class Home extends React.Component {
                                     <div className='m-2'>
                                         <p className='productDetails-text text-secondary'>
                                             {/* Limit the productDetail text to 80 chars */}
-                                            {product.ItemDetails.length < 80 ? 
+                                            {product.ItemDetails.length < 80 ?
                                                 product.ItemDetails : `${product.ItemDetails.slice(0, 80)}...`
                                             }
                                         </p>
