@@ -189,9 +189,8 @@ export class Home extends React.Component {
         return (
             <>
                 {/* {window.localStorage.getItem('id') === null && <Redirect to='/' />} */}
-                {/* <Navbar className='mb-3' /> */}
                 <div className='container-fluid master-container mt-4'>
-                    
+
                     <div className='banner-container'>
                         <div className='banner-logo-box--home'>
                             <Link
@@ -206,10 +205,19 @@ export class Home extends React.Component {
                             <Link className='message-logo' to='/chat'>
                                 <i className='fas fa-comments'></i>
                             </Link>
+                            <a
+                                className='logout-btn ml-4 mt-1'
+                                href='/'
+                                onClick={() => {
+                                    window.localStorage.removeItem('id');
+                                }}
+                            >
+                                Logout
+                            </a>
                         </div>
                     </div>
 
-                    <nav className='side-nav-bar-container jumbotron'>
+                    <nav className='side-nav-bar-container'>
                         <div className='side-nav-bar-img-box'>
                             <img
                                 src={PonyListLogo}
@@ -436,8 +444,11 @@ export class Home extends React.Component {
                                         </b>
                                     </div>
                                     <div className='m-2'>
-                                        <p className='text-secondary'>
-                                            {product.ItemDetails}
+                                        <p className='productDetails-text text-secondary'>
+                                            {/* Limit the productDetail text to 80 chars */}
+                                            {product.ItemDetails.length < 80 ? 
+                                                product.ItemDetails : `${product.ItemDetails.slice(0, 80)}...`
+                                            }
                                         </p>
                                     </div>
                                 </Link>
@@ -446,9 +457,6 @@ export class Home extends React.Component {
                                     <img
                                         src={product.ImageURL}
                                         alt='product-image'
-                                        width='100px'
-                                        height='100px'
-                                        className='ml-3 mr-2'
                                     />
                                     <div>
                                         <div className='badge badge-primary ml-2'>

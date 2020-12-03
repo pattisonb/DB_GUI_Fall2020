@@ -55,3 +55,12 @@
   opacity: 1;
   border: 1px solid lightseagreen;
 }
+
+.share-logo {
+  color: white;
+  font-size: 1.4rem;
+}
+.share-logo:hover {
+  transform: scale(1.1);
+  color: #e1e3e4;
+}

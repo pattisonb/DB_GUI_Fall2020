@@ -1,21 +1,22 @@
-.btn-previousSales {
-    background: var(--smu-blue-light);
-    color: white;
-}
-.btn-currentSales {
-    background: var(--smu-red-light);
-    color: white;
-}
 .btn-chat {
     background: var(--smu-red);
     color: white;
 }
-.btn-previousSales:hover {
-    background: var(--smu-blue-dark);
-}
-.btn-currentSales:hover {
-    background: var(--smu-red-dark);
-}
+
 .btn-chat:hover {
     background: darkred;
+}
+
+#text {
+    color: black;
+}
+
+.side-nav-bar-img-box {
+    text-align: center;
+}
+
+.logo-separator {
+    border: 0.5px solid rgb(223, 218, 218, 0.3);
+    border-radius: 10%;
+    margin: 2rem 0;
 }

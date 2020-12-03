@@ -6,6 +6,10 @@ export default function Alert(props) {
         top: props.top,
         textAlign: 'center',
     };
+
+    if (props.fixed) {
+        styling.position = 'fixed !important';
+    }
     return (
         <div style={styling} className='Alert w-50'>
             {props.message}

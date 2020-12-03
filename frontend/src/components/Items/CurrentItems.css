@@ -36,3 +36,7 @@ button > i {
 button > i:hover {
     color: #aaa;
 }
+
+.ItemDetails {
+    overflow-wrap: break-word;
+}

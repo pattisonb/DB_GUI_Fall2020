@@ -19,14 +19,23 @@ const DetailNav = () => {
             <div className='banner-logo-box'>
                 <Link
                     to={`/profile/${window.localStorage.getItem('id')}`}
-                    className='user-logo mr-4'
+                    className='user-logo'
                 >
                     <i className='fas fa-user'></i>
                 </Link>
                 <Link to="/home"
-                      className='home-logo'>
+                    className='home-logo'>
                     <i class="fas fa-home"></i>
                 </Link>
+                <a
+                    className='logout-btn'
+                    href='/'
+                    onClick={() => {
+                        window.localStorage.removeItem('id');
+                    }}
+                >
+                    Logout
+                </a>
             </div>
         </nav>
     );

@@ -13,7 +13,7 @@
                  ' side  prods  prods  prods '
                  ' side  prods  prods  prods ';
 
-  grid-template-columns: 244px auto auto auto;
+  grid-template-columns: auto auto auto auto;
   grid-template-rows: auto 92px auto auto auto;
 }
 
@@ -34,6 +34,11 @@
   border-radius: 5%;
   margin: 1rem;
 }
+@media (max-width: 550px) {
+  .product-box {
+    width: 240px;
+  }
+}
 .product-box:hover {
   transform: scale(1.05);
   background-color: #e1e3e4;
@@ -45,11 +50,23 @@
   color: black;
   margin: 0.5rem;
 }
+/* This will break a long string (no whitespace) and wrap it to the next line. */
+.productDetails-text {
+  word-wrap: break-word;
+}
 .lower-half-product-box {
   display: flex;
 }
 .lower-half-product-box img {
   border-radius: 5%;
+  width: 100px;
+  height: 100px;
+  margin: 0 0.8rem;
+}
+@media (max-width: 550px) {
+  .lower-half-product-box img {
+    margin: 0 0.3rem;
+  }
 }
 
 
@@ -96,7 +113,13 @@
   grid-area: side;
   background-color: rgb(75, 104, 201);
   color: white;
-  /* min-width: 244px; */
+  border-radius: .3rem;
+  padding: 2rem 1rem;
+}
+@media (max-width: 550px) {
+  .side-nav-bar-container {
+    padding: 0.5rem;
+  }
 }
 .side-nav-bar-img-box {
   text-align: center;
@@ -125,6 +148,7 @@
   display: flex;
   margin-top: 3rem;
 }
+
 
 
 
