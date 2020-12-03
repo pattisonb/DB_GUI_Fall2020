@@ -1,9 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import './ProductDetails.css';
-import PonyListLogo from '../../img/PonyList.PNG';
-import { Product } from '../../models/Product';
 import { UserReview } from '../../models/UserReview';
 import ReviewList from './ReviewList';
 import ReviewForm from './ReviewForm';
