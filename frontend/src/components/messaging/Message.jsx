@@ -20,7 +20,7 @@ export const Message = ({ message: { user, text }, name, username }) => {
             <div className='messageBox backgroundBlue'>
                 {isImage ? (
                     <a target='_blank' href={text}>
-                        <img width='300' height='200x' src={text} alt={text} />
+                        <img width='150' height='100' src={text} alt={text} />
                     </a>
                 ) : (
                     <p className='messageText'>{text}</p>
@@ -32,12 +32,7 @@ export const Message = ({ message: { user, text }, name, username }) => {
             <div className='messageBox backgroundLight'>
                 {isImage ? (
                     <a target='_blank' href={text}>
-                        <img
-                            width='300px'
-                            height='200px'
-                            src={text}
-                            alt={text}
-                        />
+                        <img width='150' height='100' src={text} alt={text} />
                     </a>
                 ) : (
                     <p className='messageText colorDark'>{text}</p>
