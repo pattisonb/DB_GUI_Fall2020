@@ -2,6 +2,7 @@
 
 .productDetails-box {
   display: flex;
+  flex-wrap: wrap;
 }
 .product-img-box {
   margin: 1rem;
@@ -9,9 +10,9 @@
   
 }
 .product-img-box img {
-  width: 600px;
-  height: 600px;
-  /* object-fit: contain; */
+  max-width: 100%;
+  width: 500px;
+  height: auto;
   border-radius: 3%;
 }
 .productDetails-name {

@@ -1,15 +1,12 @@
 import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-import Navbar from './layout/Navbar';
 import './Home.css';
 import Rating from './product/Rating';
 import PonyListLogo from '../img/PonyList.PNG';
 import { ProductsRepository } from './api/ProductsRepository';
 import Alert from 'react-bootstrap/Alert';
-import axios from 'axios';
-import { distance } from './auth/Distance_Util';
-import { API_URL } from '../api_url';
+
 
 export class Home extends React.Component {
     state = {
@@ -194,7 +191,8 @@ export class Home extends React.Component {
                 {/* {window.localStorage.getItem('id') === null && <Redirect to='/' />} */}
                 {/* <Navbar className='mb-3' /> */}
                 <div className='container-fluid master-container mt-4'>
-                    <div className='banner-container jumbotron'>
+                    
+                    <div className='banner-container'>
                         <div className='banner-logo-box--home'>
                             <Link
                                 to={`/profile/${window.localStorage.getItem(
