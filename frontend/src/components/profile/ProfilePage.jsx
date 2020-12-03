@@ -60,17 +60,17 @@ export class ProfilePage extends React.Component {
         }
         return (
             <div className='ProfilePage p-5'>
-                <DetailNav />
-                <div className="profileHeader bg-smu-blue-home">
+                <DetailNav/>
+                <div className="jumbotron bg-smu-blue-home p-0">
                     <div className="row p-3">
                         <div className="col-sm-6">
-                            <div class="row">
-                                <div class="col-sm-auto">
+                            <div className="row">
+                                <div className="col-sm-auto">
                                     <img src={this.state.user.ProfilePicture} alt='profile-img' width='150px' height='150px' />
                                 </div>
-                                <div class="col-sm-auto">Name</div>
-                                <div class="w-100"></div>
-                                <div class="col-sm-auto">
+                                <div className="col-sm-auto" id="username">{this.state.user.Username}</div>
+                                <div className="w-100"></div>
+                                <div className="col-sm-auto">
                                     {this.state.id == window.localStorage.getItem('id')
                                         ? 
                                             <button type="button" class="btn btn-secondary btn-sm" onClick={() => {this.changeProfileImage()}}>Change img</button>
@@ -94,25 +94,25 @@ export class ProfilePage extends React.Component {
                             </div>
                         </div>
                         <div className="col-sm">
-                        <table className='tablew-50'>
+                        <table>
                             <thead></thead>
-                            <tbody>
-                                <tr>
-                                    <th>Rating</th>
+                            <tbody id="tableBody">
+                                <tr className="my-4">
+                                    <th id="info">Rating</th>
                                     <td><Rating value={this.state.userRating.Rating} /></td>
                                 </tr>
                                 <tr>
-                                    <th>Location</th>
-                                    <td>{this.state.user.Location}</td>
+                                    <th id="info">Location</th>
+                                    <td id="infoo">{this.state.user.Location}</td>
                                 </tr>
                                 {this.state.user.OnCampus === "YES" &&
                                 <tr>
-                                    <th>Dorm</th>
-                                    <td>{this.state.user.Dorm}</td>
+                                    <th id="info" >Dorm</th>
+                                    <td id="infoo">{this.state.user.Dorm}</td>
                                 </tr>}
                                 <tr>
-                                    <th>Miles Away</th>
-                                    <td>{this.state.user.MilesAway}</td>
+                                    <th id="info">Miles Away</th>
+                                    <td id="infoo">{this.state.user.MilesAway}</td>
                                 </tr>
                             </tbody>
                         </table>
