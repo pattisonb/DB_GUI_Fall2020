@@ -682,7 +682,7 @@ app.get('/messages/:SenderID/:RecipientID', (req, res) => {
     );
 });
 
-app.delete('/deleteMessafe/:MessageID', async (req, res) => {
+app.delete('/deleteMessage/:MessageID', async (req, res) => {
     var ItemID = req.body.ItemID;
 
     connection.query(
