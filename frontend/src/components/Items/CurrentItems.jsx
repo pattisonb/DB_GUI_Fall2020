@@ -4,7 +4,9 @@ import { Link, useParams } from 'react-router-dom';
 import Loader from '../layout/Loader';
 import './CurrentItems.css';
 import OkayAlert from '../layout/OkayAlert';
+import axios from 'axios';
 import { ProductsRepository } from '../api/ProductsRepository';
+import { API_URL } from '../../api_url';
 
 export class CurrentItems extends React.Component {
     state = {
@@ -44,33 +46,51 @@ export class CurrentItems extends React.Component {
     }
 
     handleConfirmEdit() {
-        this.productsRepository.editListing(
-            this.state.id,
-            this.state.updateItemName,
-            this.state.updateItemPrice,
-            this.state.updateItemDetails,
-            this.state.updateCondition,
-            this.state.updateItemImage,
-            this.state.updateItemId
-        );
-        this.setState({
-            updateItemId: null,
-            updateItemImage: '',
-            updateItemName: '',
-            updateItemDetails: '',
-            updateCondition: '',
-            updateItemPrice: null,
-            okayPopup: true,
-            okayMessage: 'Item Updated!',
-        });
+        this.productsRepository
+            .editListing(
+                this.state.id,
+                this.state.updateItemName,
+                this.state.updateItemPrice,
+                this.state.updateItemDetails,
+                this.state.updateCondition,
+                this.state.updateItemImage,
+                this.state.updateItemId
+            )
+            .then(() => {
+                this.setState({
+                    updateItemId: null,
+                    updateItemImage: '',
+                    updateItemName: '',
+                    updateItemDetails: '',
+                    updateCondition: '',
+                    updateItemPrice: null,
+                    okayPopup: true,
+                    okayMessage: 'Item Updated!',
+                });
+                this.productsRepository
+                    .getListings(this.props.id)
+                    .then(products => this.setState({ items: products }));
+            });
     }
 
     handleSell(itemId) {
         this.productsRepository.sellItem(itemId);
-        this.setState({
-            okayPopup: true,
-            okayMessage: 'Item has been sold!',
-        });
+        axios
+            .patch(`${API_URL}/addSale/${window.localStorage.getItem('id')}`)
+            .then(res => {
+                axios.patch(`${API_URL}/updateIsSold/${itemId}`);
+            })
+            .then(() => {
+                this.setState({
+                    okayPopup: true,
+                    okayMessage: 'Item has been sold!',
+                });
+            })
+            .then(() => {
+                this.productsRepository
+                    .getListings(this.props.id)
+                    .then(products => this.setState({ items: products }));
+            });
     }
 
     handleEdit(itemId) {
@@ -94,15 +114,18 @@ export class CurrentItems extends React.Component {
 
     deleteItem(confirmed) {
         if (confirmed && this.state.deletingItemId) {
-            this.productsRepository.delete(this.state.deletingItemId);
-            this.setState({
-                okayPopup: true,
-                okayMessage: 'Item deleted!',
-                deletingItemId: null,
-            });
             this.productsRepository
-                .getListings(this.props.id)
-                .then(products => this.setState({ items: products }));
+                .delete(this.state.deletingItemId)
+                .then(() => {
+                    this.setState({
+                        okayPopup: true,
+                        okayMessage: 'Item deleted!',
+                        deletingItemId: null,
+                    });
+                    this.productsRepository
+                        .getListings(this.props.id)
+                        .then(products => this.setState({ items: products }));
+                });
         } else {
             this.setState({
                 deletingItemId: null,
